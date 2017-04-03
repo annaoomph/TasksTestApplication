@@ -10,6 +10,9 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.List;
 
+/**
+ * a class to connect to our sqlite database with the help of ormLite lib
+ */
 class DatabaseDataStore implements DataStore {
 
     private final RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmDao;

@@ -29,7 +29,9 @@ import com.example.annakocheshkova.testapplication.R;
 import java.util.Calendar;
 import java.util.List;
 
-
+/**
+ * a view of the main activity with list of all the tasks
+ */
 public class MainTasksActivity extends AppCompatActivity {
 
     List<Task> taskCategories; //list of all tasks
@@ -119,7 +121,7 @@ public class MainTasksActivity extends AppCompatActivity {
                 int pos = viewHolder.getAdapterPosition();
                 final Task simple = taskCategories.get(pos);
                 final boolean hadAlarms = simple.hasAlarms();
-                final List<SubTask> subcats = subTaskController.getAllByTask(false, simple);
+                final List<SubTask> subTasks = subTaskController.getAllByTask(false, simple);
                 taskController.delete( simple);
 
                 Snackbar.make(view, getString(R.string.deleted_string_firstpart) + simple.getName()+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
@@ -139,9 +141,9 @@ public class MainTasksActivity extends AppCompatActivity {
 
                         taskController.addOrUpdateTask(simple,intervalDuration, calendar,interval, false, hadAlarms);
                         taskController.getAll();
-                        for (int i=0; i<subcats.size(); i++)
-                            subcats.get(i).setTask(simple);
-                        subTaskController.create(false, subcats);
+                        for (int i=0; i<subTasks.size(); i++)
+                            subTasks.get(i).setTask(simple);
+                        subTaskController.create(false, subTasks);
                     }
                 }).show();
             }

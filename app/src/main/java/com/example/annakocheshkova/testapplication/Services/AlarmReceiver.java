@@ -82,7 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     /**
      * disable a certain alarm
      * @param id id of the alarm
-     * @param context applciation context
+     * @param context application context
      */
     public static void removeAlarm(int id, Context context) {
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);

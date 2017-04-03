@@ -6,7 +6,9 @@ import com.example.annakocheshkova.testapplication.Models.Task;
 
 import java.util.List;
 
-
+/**
+ * an interface to get all the data
+ */
 public interface DataStore {
 
     List<Task> getAllTasks();

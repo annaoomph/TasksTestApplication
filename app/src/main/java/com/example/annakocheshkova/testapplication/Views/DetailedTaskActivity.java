@@ -107,7 +107,7 @@ public class DetailedTaskActivity extends AppCompatActivity {
                 int pos = viewHolder.getAdapterPosition();
                 final SubTask simple = subTasks.get(pos);
                 subTaskController.delete(simple);
-                Snackbar.make(view, "Item "+simple.getName()+" deleted!", Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
+                Snackbar.make(view, R.string.deleted_string_firstpart+simple.getName()+R.string.deleted_string_secondpart, Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         subTaskController.create(simple);

@@ -7,6 +7,9 @@ import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Services.AlarmReceiver;
 import java.util.List;
 
+/**
+ * a controller which handles all the actions connected with alarms
+ */
 public class AlarmController{
 
     private static int alarmId; //id of the last created alarm

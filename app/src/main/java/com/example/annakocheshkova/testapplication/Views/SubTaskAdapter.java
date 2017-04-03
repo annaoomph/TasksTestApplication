@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.Views;
 
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,10 @@ import com.example.annakocheshkova.testapplication.R;
 import java.util.List;
 
 /**
- * Adapter for subtask recucler view
+ * Adapter for subtask recycler view
  */
 class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHolder> {
-    private List<SubTask> mDataset;
+    private List<SubTask> dataset;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTextView;
@@ -28,12 +29,12 @@ class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHolder> {
             mTextView = (TextView) view.findViewById(R.id.row_text);
             imgBtn = (ImageButton) view.findViewById(R.id.imageButton);
             //TODO Change to non-deprecated method
-            darkColor = view.getResources().getColor(R.color.colorPrimaryDark);
+            darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
         }
     }
 
     SubTaskAdapter(List<SubTask> myDataset) {
-        mDataset = myDataset;
+        dataset = myDataset;
     }
 
     @Override
@@ -44,8 +45,8 @@ class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(mDataset.get(position).getName());
-        if (mDataset.get(position).getStatus())
+        holder.mTextView.setText(dataset.get(position).getName());
+        if (dataset.get(position).getStatus())
             holder.mTextView.setTextColor(Color.GRAY);
         else
             holder.mTextView.setTextColor(holder.darkColor);
@@ -54,6 +55,6 @@ class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        return dataset.size();
     }
 }

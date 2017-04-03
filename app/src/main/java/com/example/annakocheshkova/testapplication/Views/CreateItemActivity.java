@@ -25,6 +25,9 @@ import com.example.annakocheshkova.testapplication.R;
 
 import java.util.Calendar;
 
+/**
+ * a view of the activity, which allows user to create a new task
+ */
 public class CreateItemActivity extends AppCompatActivity {
 
     TaskController cc;

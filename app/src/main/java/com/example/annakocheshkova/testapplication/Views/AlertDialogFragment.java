@@ -10,6 +10,9 @@ import android.widget.EditText;
 
 import com.example.annakocheshkova.testapplication.R;
 
+/**
+ * a view of the fragment, which allows user to add new subtask
+ */
 public class AlertDialogFragment extends DialogFragment {
 
     @NonNull

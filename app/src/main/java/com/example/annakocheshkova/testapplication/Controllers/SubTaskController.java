@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * a controller which handles all the actions connected with subtasks
+ */
 public class SubTaskController {
 
     private DataStore dataStore;
