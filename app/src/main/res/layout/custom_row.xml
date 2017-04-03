@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_margin="20dp"
+        android:textSize="20sp"
+        android:id="@+id/row_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
+    <ImageButton
+        android:layout_alignParentEnd="true"
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:scaleX="0.4"
+        android:scaleY="0.4"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/ic_lock_idle_alarm"
+         />
+</RelativeLayout>
