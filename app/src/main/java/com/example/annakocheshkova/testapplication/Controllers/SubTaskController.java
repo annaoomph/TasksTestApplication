@@ -1,11 +1,11 @@
 package com.example.annakocheshkova.testapplication.Controllers;
 
-import android.app.Activity;
 import com.example.annakocheshkova.testapplication.DataStore;
 import com.example.annakocheshkova.testapplication.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Models.SubTask;
 import com.example.annakocheshkova.testapplication.Models.Task;
-import com.example.annakocheshkova.testapplication.Views.DetailedTaskActivity;
+import com.example.annakocheshkova.testapplication.Views.SubTaskView;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -16,43 +16,46 @@ import java.util.List;
 public class SubTaskController {
 
     private DataStore dataStore;
-    private Activity view;
-    private static Task current; //current task we are working with
+    private SubTaskView view;
+    private static int current = -1; //current task we are working with
 
-    public SubTaskController(Activity view){
+    public SubTaskController(SubTaskView view){
         this.view = view;
-        dataStore = DataStoreFactory.getDataStore(view);
+        dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
-     * create a number of subtasks
-     * @param updateView (to be deleted)
-     * @param items list of subtasks
+     * create a subtask
+     * @param name name of the subtask to be created
      */
-    public void create(boolean updateView, List<SubTask> items) {
-        dataStore.createSubTasks(items);
-        if (current!=null && updateView)
+    public void create(String name) {
+        SubTask item = new SubTask(name, false);
+        Task main = dataStore.getTask(current);
+        item.setTask(main);
+        dataStore.createSubTask(item);
+        if (current!=-1)
             getAllByTask(true, current);
     }
 
     /**
      * create a subtask
-     * @param item subtask
+     * @param item subtask to be created
      */
     public void create(SubTask item) {
         dataStore.createSubTask(item);
-        if (current!=null)
+        if (current!=-1)
             getAllByTask(true, current);
     }
 
     /**
      * get a list of subtasks by their main task
      * @param updateView (to be deleted)
-     * @param main main task
+     * @param task_id id of the main task
      * @return list of subtasks
      */
-    public List<SubTask> getAllByTask(boolean updateView, Task main) {
-        current = main;
+    public List<SubTask> getAllByTask(boolean updateView, int task_id) {
+        Task main = dataStore.getTask(task_id);
+        current = task_id;
         List<SubTask> list = dataStore.getAllSubtasksByTask(main);
         Collections.sort(list, new Comparator<SubTask>() {
             @Override
@@ -66,10 +69,10 @@ public class SubTaskController {
                 return lhs.getName().compareTo(rhs.getName());
             }
         });
-        if (current!=null && updateView)
+        if (current!=-1 && updateView)
         {
-            DetailedTaskActivity curView = (DetailedTaskActivity)view;
-            curView.showItems(list);
+            view.showItems(list);
+            view.showTitle(main.getName());
         }
         return list;
     }
@@ -80,7 +83,7 @@ public class SubTaskController {
      */
     public void delete(SubTask item) {
         dataStore.deleteSubTask(item);
-        if (current!=null)
+        if (current!=-1)
             getAllByTask(true, current);
     }
 
@@ -90,7 +93,7 @@ public class SubTaskController {
      */
     public void update(SubTask item) {
         dataStore.updateSubTask(item);
-        if (current!=null)
+        if (current!=-1)
             getAllByTask(true, current);
     }
 }

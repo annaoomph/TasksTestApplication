@@ -15,28 +15,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.annakocheshkova.testapplication.Controllers.AlarmController;
-import com.example.annakocheshkova.testapplication.Controllers.TaskController;
 import com.example.annakocheshkova.testapplication.Controllers.SubTaskController;
-import com.example.annakocheshkova.testapplication.Models.Task;
 import com.example.annakocheshkova.testapplication.Models.SubTask;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.Services.AlarmReceiver;
 
 
 import java.util.List;
 
-public class DetailedTaskActivity extends AppCompatActivity {
+public class DetailedTaskActivity extends AppCompatActivity implements SubTaskView{
 
     FragmentManager fm = getSupportFragmentManager();
     List<SubTask> subTasks;
     private SubTask selectedItem;
     RecyclerView listView;
-    static Task mainTask;
     View view;
-    TaskController taskController;
     SubTaskController subTaskController;
-    AlarmController alarmController;
     Toolbar myToolbar;
 
     public SubTask getSelectedItem(){
@@ -75,9 +68,7 @@ public class DetailedTaskActivity extends AppCompatActivity {
      * get all controllers to work with later
      */
     void getControllers(){
-        taskController = new TaskController(this);
         subTaskController = new SubTaskController(this);
-        alarmController = new AlarmController(this);
     }
 
     /**
@@ -87,17 +78,7 @@ public class DetailedTaskActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        boolean from_notif = getIntent().getBooleanExtra("from_notif", false);
-        if (from_notif) {
-            int alarm_id = getIntent().getIntExtra("alarm_id", -1);
-            if (alarm_id>=0) {
-                AlarmReceiver.removeAlarm(alarm_id, getApplicationContext());
-                alarmController.delete(alarm_id);
-            }
-        }
-        mainTask = taskController.get(getIntent().getIntExtra("id", 0));
-        subTaskController.getAllByTask(true, mainTask);
-        getSupportActionBar().setTitle(mainTask.getName());
+        subTaskController.getAllByTask(true, getIntent().getIntExtra("id", 0));
         listView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(mLayoutManager);
@@ -107,7 +88,7 @@ public class DetailedTaskActivity extends AppCompatActivity {
                 int pos = viewHolder.getAdapterPosition();
                 final SubTask simple = subTasks.get(pos);
                 subTaskController.delete(simple);
-                Snackbar.make(view, R.string.deleted_string_firstpart+simple.getName()+R.string.deleted_string_secondpart, Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
+                Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         subTaskController.create(simple);
@@ -163,21 +144,26 @@ public class DetailedTaskActivity extends AppCompatActivity {
         listView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void showTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar!=null)
+            actionBar.setTitle(title);
+    }
+
     /**
      * AlertDialogFragment callback, creates a new subtask in the database or updates it, if needed
      * @param name name of the created subtask
      */
     public void itemCreatedCallback(String name) {
-        SubTaskController scc = new SubTaskController(this);
         if (selectedItem != null) {
             SubTask simple = selectedItem;
             simple.setName(name);
             simple.setStatus(false);
-            scc.update(simple);
+            subTaskController.update(simple);
         }
         else {
-            SubTask simple = new SubTask(mainTask, name, false);
-            scc.create(simple);
+            subTaskController.create(name);
         }
     }
 }

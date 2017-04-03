@@ -4,6 +4,7 @@ import android.app.Activity;
 import com.example.annakocheshkova.testapplication.DataStore;
 import com.example.annakocheshkova.testapplication.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
+import com.example.annakocheshkova.testapplication.Models.Task;
 import com.example.annakocheshkova.testapplication.Services.AlarmReceiver;
 import java.util.List;
 
@@ -15,11 +16,9 @@ public class AlarmController{
     private static int alarmId; //id of the last created alarm
     private static AlarmInfo deletedItem; // deleted item to be restored if Cancel button clicked
     private DataStore dataStore;
-    private Activity view;
 
-    public AlarmController(Activity view){
-        this.view = view;
-        dataStore = DataStoreFactory.getDataStore(view);
+    public AlarmController(){
+        dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
@@ -64,6 +63,13 @@ public class AlarmController{
         alarmId = item.getID();
     }
 
+    void restoreDeleted(Task task) {
+        if (deletedItem != null) {
+            deletedItem.setTask(task);
+            dataStore.createAlarm(deletedItem);
+        }
+
+    }
     /**
      * delete a certain alarm by its task id
      * @param id task id
@@ -73,7 +79,7 @@ public class AlarmController{
         for (int i=0; i<list.size(); i++)
         {
             deletedItem = list.get(i);
-            AlarmReceiver.removeAlarm(deletedItem.getID(), view.getApplicationContext());
+            AlarmReceiver.removeAlarm(deletedItem.getID());
             delete(list.get(i));
         }
     }

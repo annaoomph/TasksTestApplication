@@ -3,11 +3,13 @@ package com.example.annakocheshkova.testapplication.Controllers;
 import com.example.annakocheshkova.testapplication.DataStore;
 import com.example.annakocheshkova.testapplication.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
+import com.example.annakocheshkova.testapplication.Models.SubTask;
 import com.example.annakocheshkova.testapplication.Models.Task;
-import android.app.Activity;
 import com.example.annakocheshkova.testapplication.Services.AlarmReceiver;
 import com.example.annakocheshkova.testapplication.Views.MainTasksActivity;
+import com.example.annakocheshkova.testapplication.Views.TaskView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,11 +21,13 @@ import java.util.List;
 public class TaskController {
 
     private DataStore dataStore;
-    private Activity view;
+    private TaskView view;
+    private Task deletedItem;
+    private List<SubTask> deletedSubtasks;
 
-    public TaskController(Activity view){
+    public TaskController(TaskView view){
         this.view = view;
-        dataStore = DataStoreFactory.getDataStore(view);
+        dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
@@ -42,24 +46,45 @@ public class TaskController {
     }
 
     /**
-     * create a new task
-     * @param updateView (to be deleted)
-     * @param item new task to be created
+     * get the task by id
      */
-    private void create(boolean updateView, Task item) {
-        dataStore.createTask(item);
-        if (updateView)
-            getAll();
+    public void get(int id){
+        Task task = dataStore.getTask(id);
+        ArrayList<Task> t = new ArrayList<>();
+        t.add(task);
+        view.showItems(t);
     }
 
     /**
-     * get a task by its id
-     * @param id id of the task
-     * @return the task
+     * create a new task
+     * @param name name of the new task
      */
-    public Task get(int id)
+    public void create(String name, Calendar calendar, boolean fireAlarm) {
+        AlarmController ac = new AlarmController();
+        long mms = calendar.getTimeInMillis();
+        Task task = new Task(name);
+        dataStore.createTask(task);
+        if (fireAlarm) {
+            AlarmInfo alarm = new AlarmInfo(task, mms);
+            ac.create(alarm);
+            AlarmReceiver.addAlarm(task,mms, ac.getAlarmId() );
+        }
+    }
+
+    public void restoreDeleted()
     {
-        return dataStore.getTask(id);
+        AlarmController alarmController = new AlarmController();
+        if (deletedItem != null) {
+            Task task = new Task(deletedItem.getName());
+            dataStore.createTask(task);
+            for (int i=0; i<deletedSubtasks.size(); i++)
+                deletedSubtasks.get(i).setTask(task);
+            dataStore.createSubTasks(deletedSubtasks);
+            if (deletedItem.hasAlarms()) {
+                alarmController.restoreDeleted(task);
+            }
+        }
+        getAll();
     }
 
     /**
@@ -67,51 +92,35 @@ public class TaskController {
      * @param item task to be deleted
      */
     public void delete(Task item) {
+        deletedItem = item;
+        deletedSubtasks = dataStore.getAllSubtasksByTask(item);
         dataStore.deleteTask(item);
-        AlarmController ac = new AlarmController(view);
+        AlarmController ac = new AlarmController();
         ac.deleteByTaskId(item.getID());
         getAll();
     }
 
     /**
      * update a certain task
-     * @param updateView (to be deleted)
-     * @param item the task to be updated
+     * @param id id of the task to be updated
+     * @param name new name of the task to be updated
      */
-    private void update(boolean updateView, Task item) {
-        dataStore.updateTask(item);
-        if (updateView)
-            getAll();
-    }
-
-    /**
-     * create or update a certain task
-     * @param task task to be created or updated
-     * @param intervalDuration (to be deleted)
-     * @param calendar contains the time of the notification to be scheduled
-     * @param interval (to be deleted)
-     * @param update if a task is new or needs to be updated
-     * @param fireAlarm if the alarm is needed
-     */
-    public void addOrUpdateTask(Task task, int intervalDuration, Calendar calendar, int interval, boolean update, boolean fireAlarm) {
-        AlarmController ac = new AlarmController(view);
+    public void update(int id, String name, Calendar calendar, boolean fireAlarm) {
+        AlarmController ac = new AlarmController();
         long mms = calendar.getTimeInMillis();
-        if (update)
+        Task task = dataStore.getTask(id);
+        if (task.hasAlarms())
         {
-            if (task.hasAlarms())
-            {
-                int del_id = ac.get(task.getID()).getID();
-                ac.delete(del_id);
-                AlarmReceiver.removeAlarm(del_id, view.getApplicationContext());
-            }
-            update(false, task);
+            int del_id = ac.get(task.getID()).getID();
+            ac.delete(del_id);
+            AlarmReceiver.removeAlarm(del_id);
         }
-        else
-            create(false, task);
         if (fireAlarm) {
-            AlarmInfo alarm = new AlarmInfo(task, mms, (interval > 0) ? intervalDuration : -1);
+            AlarmInfo alarm = new AlarmInfo(task, mms);
             ac.create(alarm);
-            AlarmReceiver.addAlarm(view,task,(interval>0)?intervalDuration:-1,mms, ac.getAlarmId() );
+            AlarmReceiver.addAlarm(task,mms, ac.getAlarmId() );
         }
+        task.setName(name);
+        dataStore.updateTask(task);
     }
 }

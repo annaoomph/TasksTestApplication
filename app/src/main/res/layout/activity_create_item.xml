@@ -64,39 +64,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/third_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/second_line"
-        android:layout_marginStart="20dp"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/interval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/colorPrimaryDark" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/repeating_every"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:foregroundTint="@color/colorPrimaryDark" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/third_line"
         android:layout_margin="20dp"
         android:orientation="vertical">
 

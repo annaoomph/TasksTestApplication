@@ -24,20 +24,17 @@ public class MyBootReceiver extends BroadcastReceiver
      * @param ctxt application context
      */
     private void scheduleAlarms(Context ctxt) {
-        AlarmController ac = new AlarmController((Activity)ctxt);
+        AlarmController ac = new AlarmController();
         List<AlarmInfo> alarms = ac.getAll();
         for (int i=0; i<alarms.size(); i++)
         {
             long mms = alarms.get(i).getTime();
             String name = alarms.get(i).getName();
-            int interval = alarms.get(i).getInterval();
             Intent alarmIntent = new Intent(ctxt, AlarmReceiver.class);
             alarmIntent.putExtra("name", name);
             PendingIntent mAlarmSender = PendingIntent.getBroadcast(ctxt, 0, alarmIntent, 0);
             AlarmManager am = (AlarmManager)ctxt.getSystemService(Context.ALARM_SERVICE);
-            if (interval<0)
-                am.set(AlarmManager.RTC_WAKEUP, mms, mAlarmSender);
-            else am.setRepeating(AlarmManager.RTC_WAKEUP, mms, interval, mAlarmSender);
+            am.set(AlarmManager.RTC_WAKEUP, mms, mAlarmSender);
         }
     }
 }

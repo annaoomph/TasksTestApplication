@@ -19,20 +19,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.example.annakocheshkova.testapplication.Controllers.AlarmController;
 import com.example.annakocheshkova.testapplication.Controllers.TaskController;
-import com.example.annakocheshkova.testapplication.Controllers.SubTaskController;
 import com.example.annakocheshkova.testapplication.Models.Task;
-import com.example.annakocheshkova.testapplication.Models.SubTask;
 import com.example.annakocheshkova.testapplication.R;
-
-import java.util.Calendar;
 import java.util.List;
 
 /**
  * a view of the main activity with list of all the tasks
  */
-public class MainTasksActivity extends AppCompatActivity {
+public class MainTasksActivity extends AppCompatActivity implements TaskView{
 
     List<Task> taskCategories; //list of all tasks
     ActionBarDrawerToggle drawerToggle;
@@ -43,8 +38,6 @@ public class MainTasksActivity extends AppCompatActivity {
     View view;
     Toolbar toolbar;
     TaskController taskController;
-    SubTaskController subTaskController;
-    AlarmController alarmController;
 
     interface ClickListener {
         void onClick(View view, int position);
@@ -62,8 +55,6 @@ public class MainTasksActivity extends AppCompatActivity {
 
     void getControllers() {
         taskController = new TaskController(this);
-        subTaskController = new SubTaskController(this);
-        alarmController = new AlarmController(this);
         taskController.getAll();
     }
 
@@ -119,31 +110,13 @@ public class MainTasksActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                final Task simple = taskCategories.get(pos);
-                final boolean hadAlarms = simple.hasAlarms();
-                final List<SubTask> subTasks = subTaskController.getAllByTask(false, simple);
-                taskController.delete( simple);
+                Task simple = taskCategories.get(pos);
+                taskController.delete(simple);
 
-                Snackbar.make(view, getString(R.string.deleted_string_firstpart) + simple.getName()+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
+                Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.clear();
-                        int interval = -1;
-                        int intervalDuration = -1;
-                        if (hadAlarms) {
-                            intervalDuration = alarmController.getDeletedItem().getInterval();
-                            if (intervalDuration>0)
-                                interval = 1;
-                            else interval = -1;
-                            calendar.setTimeInMillis(alarmController.getDeletedItem().getTime());
-                        }
-
-                        taskController.addOrUpdateTask(simple,intervalDuration, calendar,interval, false, hadAlarms);
-                        taskController.getAll();
-                        for (int i=0; i<subTasks.size(); i++)
-                            subTasks.get(i).setTask(simple);
-                        subTaskController.create(false, subTasks);
+                        taskController.restoreDeleted();
                     }
                 }).show();
             }

@@ -18,30 +18,27 @@ public class AlarmInfo {
     @DatabaseField
     private
     long time;
-    @DatabaseField
-    private
-    int interval;
     @DatabaseField(columnName = "id_cat", foreign = true)
     private Task task;
 
-    public AlarmInfo(Task cat, long time, int interval){
+    public AlarmInfo(Task cat, long time){
         this.task = cat;
         this._name = cat.getName();
         this.time = time;
-        this.interval = interval;
     }
 
     public AlarmInfo(){}
 
+
+    public void setTask(Task task){
+        this.task = task;
+    }
     public int getID(){return  this._id;}
     public String getName(){
         return this._name;
     }
     public long getTime(){
         return this.time;
-    }
-    public int getInterval(){
-        return this.interval;
     }
 
 }

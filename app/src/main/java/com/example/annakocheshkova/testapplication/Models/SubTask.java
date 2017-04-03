@@ -17,9 +17,8 @@ public class SubTask {
     Boolean completed;
 
     public SubTask(){}
-    public SubTask(Task cat, String name, Boolean cmpl){
+    public SubTask(String name, Boolean cmpl){
         this.completed = cmpl;
-        this.task = cat;
         this._name = name;
     }
 
