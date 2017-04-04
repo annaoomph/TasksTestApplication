@@ -22,6 +22,7 @@ public class SubTask {
         this._name = name;
     }
 
+    public int getID(){return this._id;}
     public boolean getStatus(){
         return this.completed;
     }
