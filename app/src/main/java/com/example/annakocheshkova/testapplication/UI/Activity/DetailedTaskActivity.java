@@ -46,7 +46,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     }
 
     /**
-     * get all view items to work with later
+     * onViewLoaded all view items to work with later
      */
     void getViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,7 +66,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
         List<SubTask> items = new ArrayList<>();
         subTaskAdapter = new SubTaskAdapter(items, subTaskController);
         listView.setAdapter(subTaskAdapter);
-        subTaskController.getAllByTask(true, getIntent().getIntExtra("id", 0));
+        subTaskController.onViewLoaded(true, getIntent().getIntExtra("id", 0));
         listView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(mLayoutManager);
@@ -74,15 +74,8 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                SubTask simple = subTasks.get(pos);
-                subTaskController.delete(simple);
-                Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
-                        getString(R.string.cancel_btn), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        subTaskController.restoreDeleted();
-                    }
-                }).show();
+                subTaskController.onDelete(pos);
+
             }
 
             @Override
@@ -126,23 +119,28 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     }
 
     @Override
-    public void showDialog(SubTask subTask) {
+    public void showDialog(SubTask subTask, int taskId) {
         AlertDialogFragment alertdFragment = new AlertDialogFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
+        Bundle bundle = new Bundle();
         if (subTask != null) {
-            Bundle bundle = new Bundle();
             bundle.putInt("id", subTask.getID());
-            bundle.putString("name", subTask.getName());
-            alertdFragment.setArguments(bundle);
         }
+        bundle.putInt("taskId",  taskId);
+        alertdFragment.setArguments(bundle);
+        alertdFragment.setOnItemEditedListener(subTaskController);
         alertdFragment.show(supportFragmentManager, getString(R.string.alertDialogFragmentTag));
+
     }
 
-    /**
-     * AlertDialogFragment callback, creates a new subtask in the database or updates it, if needed
-     * @param name name of the created subtask
-     */
-    public void itemCreatedCallback(String name) {
-            subTaskController.onEditingEnded(name);
+    @Override
+    public void showCancelBar(String subTaskName) {
+        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTaskName +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
+                getString(R.string.cancel_btn), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        subTaskController.onRestoreDeleted();
+                    }
+                }).show();
     }
 }

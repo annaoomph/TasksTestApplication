@@ -14,4 +14,6 @@ public interface TaskView {
      * @param items tasks
      */
     void showItems(List<Task> items);
+
+    void showCancelBar(String name);
 }

@@ -12,7 +12,7 @@ public class AlarmInfo {
 
     @DatabaseField(generatedId = true)
     private
-    int _id;
+    int id;
     @DatabaseField
     private
     String _name;
@@ -35,7 +35,7 @@ public class AlarmInfo {
     }
 
     public int getID() {
-        return this._id;
+        return this.id;
     }
 
     public String getName() {

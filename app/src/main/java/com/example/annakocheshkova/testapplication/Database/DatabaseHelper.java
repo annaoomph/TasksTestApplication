@@ -18,7 +18,7 @@ import com.j256.ormlite.table.TableUtils;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final String DATABASE_NAME = "tasks.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     /**
      * Dao for tasks database
@@ -66,7 +66,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to get access to alarms dao
+     * a method for datastore to onViewLoaded access to alarms dao
       * @return alarms dao
      */
     RuntimeExceptionDao<AlarmInfo, Integer> getSimpleAlarmInfoDao() {
@@ -77,7 +77,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to get access to tasks dao
+     * a method for datastore to onViewLoaded access to tasks dao
      * @return tasks dao
      */
     RuntimeExceptionDao<Task, Integer> getSimpleTaskDao() {
@@ -88,7 +88,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to get access to subtask dao
+     * a method for datastore to onViewLoaded access to subtask dao
      * @return subtask dao
      */
     RuntimeExceptionDao<SubTask, Integer> getSimpleSubTaskDao() {

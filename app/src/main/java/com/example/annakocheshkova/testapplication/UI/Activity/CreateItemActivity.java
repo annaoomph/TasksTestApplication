@@ -47,7 +47,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         createItemController = new CreateItemController(this);
         id = getIntent().getIntExtra("id", 0);
         if (id > 0)
-            createItemController.get(id);
+            createItemController.onViewLoaded(id);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
             if (actionBar != null)
@@ -61,7 +61,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * get all the views needed to work with
+     * onViewLoaded all the views needed to work with
      */
     void getViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);

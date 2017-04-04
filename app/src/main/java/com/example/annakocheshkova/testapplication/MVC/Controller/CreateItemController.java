@@ -22,10 +22,10 @@ public class CreateItemController {
     }
 
     /**
-     * get the task by id
+     * onViewLoaded the task by id
      * @param id id of the task to be shown
      */
-    public void get(int id) {
+    public void onViewLoaded(int id) {
         Task task = dataStore.getTask(id);
         view.showItem(task);
     }

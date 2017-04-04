@@ -7,7 +7,7 @@ import com.example.annakocheshkova.testapplication.Model.Task;
 import java.util.List;
 
 /**
- * an interface of the datastore to get all the data
+ * an interface of the datastore to onViewLoaded all the data
  */
 public interface DataStore {
 
@@ -31,5 +31,6 @@ public interface DataStore {
     List<AlarmInfo> deleteAlarm(int id);
 
     Task getTask(int id);
+    SubTask getSubTask(int id);
     AlarmInfo getAlarm(int id);
 }

@@ -114,14 +114,20 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public List<AlarmInfo> deleteAlarm(int id) {
-        List<AlarmInfo> list = simpleAlarmDao.queryForEq("_id", id);
+        List<AlarmInfo> list = simpleAlarmDao.queryForEq("id", id);
         simpleAlarmDao.delete(list.get(0));
         return getAllAlarms();
     }
 
     @Override
     public Task getTask(int id) {
-        List<Task> list = simpleTaskDao.queryForEq("_id", id);
+        List<Task> list = simpleTaskDao.queryForEq("id", id);
+        return list.get(0);
+    }
+
+    @Override
+    public SubTask getSubTask(int id) {
+        List<SubTask> list = simpleSubTaskDao.queryForEq("id", id);
         return list.get(0);
     }
 

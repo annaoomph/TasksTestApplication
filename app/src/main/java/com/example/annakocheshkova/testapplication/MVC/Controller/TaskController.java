@@ -16,6 +16,7 @@ public class TaskController {
 
     private DataStore dataStore;
     private TaskView view;
+    private List<Task> tasksList;
 
     /**
      * deleted task (to be restored if needed)
@@ -33,9 +34,9 @@ public class TaskController {
     }
 
     /**
-     * get the list of all tasks in the database
+     * onViewLoaded the list of all tasks in the database
      */
-    public void getAll() {
+    public void onViewLoaded() {
         List<Task> tasks = dataStore.getAllTasks();
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
@@ -43,6 +44,7 @@ public class TaskController {
                 return firstTask.getName().compareTo(secondTask.getName());
             }
         });
+        tasksList = tasks;
         view.showItems(tasks);
     }
 
@@ -50,7 +52,7 @@ public class TaskController {
     /**
      * restore deleted task (if cancel button was pressed)
      */
-    public void restoreDeleted() {
+    public void onRestoreDeleted() {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         if (deletedItem != null) {
             Task task = new Task(deletedItem.getName());
@@ -62,20 +64,22 @@ public class TaskController {
                 customAlarmManager.restoreDeleted(task);
             }
         }
-        getAll();
+        onViewLoaded();
     }
 
     /**
-     * delete a certain task
-     * @param item task to be deleted
+     * onDelete a certain task
+     * @param position position of the chosen task to be deleted
      */
-    public void delete(Task item) {
+    public void onDelete(int position) {
+        Task item = tasksList.get(position);
         deletedItem = item;
         deletedSubtasks = dataStore.getAllSubtasksByTask(item);
         dataStore.deleteTask(item);
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         customAlarmManager.deleteByTaskId(item.getID());
-        getAll();
+        onViewLoaded();
+        view.showCancelBar(deletedItem.getName());
     }
 
 }

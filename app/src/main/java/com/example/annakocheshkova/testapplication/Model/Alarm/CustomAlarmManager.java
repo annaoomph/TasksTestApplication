@@ -22,7 +22,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * delete alarm from the database
+     * onDelete alarm from the database
      * @param id id of the alarm to be deleted
      */
     public void delete(int id) {
@@ -30,7 +30,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * get all the alarms from the database
+     * onViewLoaded all the alarms from the database
      * @return list of all the alarms
      */
     public List<AlarmInfo> getAll() {
@@ -38,7 +38,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * get a certain alarm from the database
+     * onViewLoaded a certain alarm from the database
      * @param id id of the needed alarm
      * @return alarm
      */
@@ -68,7 +68,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * delete a certain alarm by its task id
+     * onDelete a certain alarm by its task id
      * @param id task id
      */
     public void deleteByTaskId(int id) {

@@ -23,6 +23,13 @@ public interface SubTaskView {
     /**
      * shows alert dialog fragment to create or update subtask
      * @param subTask subtask to be updated (if there is no such subtask, then it is null)
+     * @param taskId id of the main task
      */
-    void showDialog(SubTask subTask);
+    void showDialog(SubTask subTask, int taskId);
+
+    /**
+     * show toast with information that item is deleted and Cancel button
+     * @param subTaskName name of the deleted item to be shown in a Toast
+     */
+    void showCancelBar(String subTaskName);
 }

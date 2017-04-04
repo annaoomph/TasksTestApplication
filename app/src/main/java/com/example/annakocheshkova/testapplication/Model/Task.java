@@ -14,9 +14,9 @@ import com.j256.ormlite.field.ForeignCollectionField;
 public class Task
 {
     @DatabaseField(generatedId = true)
-    int _id;
+    int id;
     @DatabaseField
-    String _name;
+    String name;
     @ForeignCollectionField
     private ForeignCollection<SubTask> subTasks;
 
@@ -28,8 +28,8 @@ public class Task
     }
 
     public Task(int id, String name) {
-        this._id = id;
-        this._name = name;
+        this.id = id;
+        this.name = name;
     }
 
     public boolean hasAlarms() {
@@ -39,18 +39,18 @@ public class Task
     }
 
     public Task(String name) {
-        this._name = name;
+        this.name = name;
     }
 
     public int getID() {
-        return this._id;
+        return this.id;
     }
 
     public String getName() {
-        return this._name;
+        return this.name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 }

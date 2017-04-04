@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SubTask {
 
     @DatabaseField(generatedId = true)
-    int _id;
+    int id;
 
     /**
      * the main task of the subtask
@@ -21,7 +21,7 @@ public class SubTask {
      * name of the subtask
      */
     @DatabaseField
-    String _name;
+    String name;
 
     /**
      * if the subtask is completed
@@ -33,11 +33,15 @@ public class SubTask {
 
     public SubTask(String name, Boolean completed) {
         this.completed = completed;
-        this._name = name;
+        this.name = name;
+    }
+
+    public int getTaskId() {
+        return this.task.getID();
     }
 
     public int getID() {
-        return this._id;
+        return this.id;
     }
 
     public boolean getStatus() {
@@ -53,10 +57,10 @@ public class SubTask {
     }
 
     public String getName() {
-        return this._name;
+        return this.name;
     }
 
     public void setName(String name) {
-        this._name = name;
+        this.name = name;
     }
 }

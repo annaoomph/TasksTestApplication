@@ -33,7 +33,6 @@ import java.util.List;
  */
 public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
-    List<Task> taskCategories;
     TaskAdapter taskAdapter;
     ActionBarDrawerToggle drawerToggle;
     String[] leftDrawerTitles;
@@ -55,7 +54,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     void getControllers() {
         taskController = new TaskController(this);
-        taskController.getAll();
+        taskController.onViewLoaded();
     }
 
     void getViews() {
@@ -109,15 +108,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                Task simple = taskCategories.get(pos);
-                taskController.delete(simple);
-
-                Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        taskController.restoreDeleted();
-                    }
-                }).show();
+                taskController.onDelete(pos);
             }
 
             @Override
@@ -161,5 +152,15 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void showCancelBar(String taskName) {
+        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + taskName+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskController.onRestoreDeleted();
+            }
+        }).show();
     }
 }
