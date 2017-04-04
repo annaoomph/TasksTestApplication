@@ -18,31 +18,44 @@ public class SubTaskController {
     private DataStore dataStore;
     private SubTaskView view;
     private static int current = -1; //current task we are working with
+    private SubTask subTask; // current subtask we are updating
+    SubTask deletedItem;
 
     public SubTaskController(SubTaskView view){
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }
 
-    /**
-     * create a subtask
-     * @param name name of the subtask to be created
-     */
-    public void create(String name) {
-        SubTask item = new SubTask(name, false);
-        Task main = dataStore.getTask(current);
-        item.setTask(main);
-        dataStore.createSubTask(item);
+
+    public void onUpdate(SubTask subTask){
+        view.showDialog(subTask);
+        this.subTask = subTask;
+    }
+
+    public void onCreate(){
+        view.showDialog(null);
+        this.subTask = null;
+    }
+
+    public void onEditingEnded(String newName){
+        if (subTask != null) {
+            subTask.setName(newName);
+            subTask.setStatus(false);
+            dataStore.updateSubTask(subTask);
+            subTask = null;
+        } else {
+            SubTask item = new SubTask(newName, false);
+            Task main = dataStore.getTask(current);
+            item.setTask(main);
+            dataStore.createSubTask(item);
+        }
         if (current!=-1)
             getAllByTask(true, current);
     }
 
-    /**
-     * create a subtask
-     * @param item subtask to be created
-     */
-    public void create(SubTask item) {
-        dataStore.createSubTask(item);
+    public void onStatusChanged(SubTask subTask){
+        subTask.setStatus(!subTask.getStatus());
+            dataStore.updateSubTask(subTask);
         if (current!=-1)
             getAllByTask(true, current);
     }
@@ -82,18 +95,17 @@ public class SubTaskController {
      * @param item subtask to be deleted
      */
     public void delete(SubTask item) {
+        deletedItem = item;
         dataStore.deleteSubTask(item);
         if (current!=-1)
             getAllByTask(true, current);
     }
 
-    /**
-     * update a certain subtask
-     * @param item subtask to be deleted
-     */
-    public void update(SubTask item) {
-        dataStore.updateSubTask(item);
+    public void restoreDeleted(){
+        dataStore.createSubTask(deletedItem);
         if (current!=-1)
             getAllByTask(true, current);
     }
+
+
 }

@@ -21,27 +21,28 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        runNotification((Activity)context, intent.getStringExtra("name"), intent.getIntExtra("id", 0),intent.getIntExtra("alarm_id", 0));
+        runNotification(context, intent.getStringExtra("name"), intent.getIntExtra("id", 0),intent.getIntExtra("alarm_id", 0));
     }
 
     /**
      * this method is responsible for showing notification for a certain task
-     * @param activity activity
+     * @param
      * @param name name of the task
      * @param id id of the task
      * @param alarm_id id of the alarm
      */
-    public static void runNotification(Activity activity, String name, int id, int alarm_id) {
+    public static void runNotification(Context context, String name, int id, int alarm_id) {
         AlarmManager ac = new AlarmManager();
-        Intent alarmIntent = new Intent(activity, DetailedTaskActivity.class);
+
+        Intent alarmIntent = new Intent(context, DetailedTaskActivity.class);
         ac.delete(alarm_id);
         alarmIntent.putExtra("id", id);
-        NotificationManager nm = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent p = PendingIntent.getActivity(activity, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity);
+        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        PendingIntent p = PendingIntent.getActivity(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker("Attention");
         builder.setSmallIcon(android.R.drawable.ic_lock_idle_alarm);
-        builder.setContentTitle(activity.getString(R.string.notification_title));
+        builder.setContentTitle(context.getString(R.string.notification_title));
         builder.setContentText(name);
         builder.setContentIntent(p);
         builder.setVibrate(new long[]{200, 100, 100, 100});

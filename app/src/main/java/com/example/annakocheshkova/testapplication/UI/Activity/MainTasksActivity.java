@@ -24,6 +24,8 @@ import com.example.annakocheshkova.testapplication.UI.Adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +34,7 @@ import java.util.List;
 public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     List<Task> taskCategories; //list of all tasks
+    TaskAdapter taskAdapter;
     ActionBarDrawerToggle drawerToggle;
     String[] leftDrawerTitles; //left menu list
     ListView drawerListView;
@@ -40,11 +43,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     View view;
     Toolbar toolbar;
     TaskController taskController;
-
-    public interface ClickListener {
-        void onClick(View view, int position);
-        void onLongClick(View view, int position);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +65,10 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (RecyclerView)findViewById(R.id.tasks_view);
         view = findViewById(R.id.main_content);
+
+        List<Task> tasks = new ArrayList<>();
+        taskAdapter = new TaskAdapter(tasks);
+        listView.setAdapter(taskAdapter);
     }
 
     void setContent(){
@@ -131,26 +133,10 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
-       /* listView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), listView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(getApplicationContext(), DetailedTaskActivity.class);
-                intent.putExtra("id", taskCategories.get(position).getID());
-                startActivity(intent);
-            }
-            @Override
-            public void onLongClick(View view, int position) {
-                Intent intent = new Intent(getApplicationContext(), CreateItemActivity.class);
-                intent.putExtra("id", taskCategories.get(position).getID());
-                startActivity(intent);
-            }
-        }));*/
     }
 
     public void showItems(List<Task> items) {
-        taskCategories = items;
-        TaskAdapter mAdapter = new TaskAdapter(taskCategories);
-        listView.setAdapter(mAdapter);
+        taskAdapter.changeData(items);
     }
 
     @Override

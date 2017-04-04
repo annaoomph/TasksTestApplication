@@ -42,35 +42,9 @@ public class TaskController {
                 return lhs.getName().compareTo(rhs.getName());
             }
         });
-        MainTasksActivity curView = (MainTasksActivity)view;
-        curView.showItems(cats);
+        view.showItems(cats);
     }
 
-    /**
-     * get the task by id
-     */
-    public void get(int id){
-        Task task = dataStore.getTask(id);
-        ArrayList<Task> t = new ArrayList<>();
-        t.add(task);
-        view.showItems(t);
-    }
-
-    /**
-     * create a new task
-     * @param name name of the new task
-     */
-    public void create(String name, Calendar calendar, boolean fireAlarm) {
-        AlarmManager ac = new AlarmManager();
-        long mms = calendar.getTimeInMillis();
-        Task task = new Task(name);
-        dataStore.createTask(task);
-        if (fireAlarm) {
-            AlarmInfo alarm = new AlarmInfo(task, mms);
-            ac.create(alarm);
-            AlarmReceiver.addAlarm(task,mms, ac.getAlarmId() );
-        }
-    }
 
     public void restoreDeleted()
     {
@@ -101,27 +75,4 @@ public class TaskController {
         getAll();
     }
 
-    /**
-     * update a certain task
-     * @param id id of the task to be updated
-     * @param name new name of the task to be updated
-     */
-    public void update(int id, String name, Calendar calendar, boolean fireAlarm) {
-        AlarmManager ac = new AlarmManager();
-        long mms = calendar.getTimeInMillis();
-        Task task = dataStore.getTask(id);
-        if (task.hasAlarms())
-        {
-            int del_id = ac.get(task.getID()).getID();
-            ac.delete(del_id);
-            AlarmReceiver.removeAlarm(del_id);
-        }
-        if (fireAlarm) {
-            AlarmInfo alarm = new AlarmInfo(task, mms);
-            ac.create(alarm);
-            AlarmReceiver.addAlarm(task,mms, ac.getAlarmId() );
-        }
-        task.setName(name);
-        dataStore.updateTask(task);
-    }
 }

@@ -20,10 +20,9 @@ class DatabaseDataStore implements DataStore {
     private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
 
     DatabaseDataStore() {
-        Context context = MyApplication.getAppContext();
-        simpleAlarmDao = new DatabaseHelper(context).getSimpleAIDao();
-        simpleTaskDao = new DatabaseHelper(context).getSimpleTaskDao();
-        simpleSubTaskDao = new DatabaseHelper(context).getSimpleSubTaskDao();
+        simpleAlarmDao = new DatabaseHelper().getSimpleAIDao();
+        simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
+        simpleSubTaskDao = new DatabaseHelper().getSimpleSubTaskDao();
     }
 
     @Override

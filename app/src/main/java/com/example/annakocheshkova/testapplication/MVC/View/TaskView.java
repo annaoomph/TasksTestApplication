@@ -10,5 +10,4 @@ import java.util.List;
 
 public interface TaskView {
     void showItems(List<Task> items);
-
 }

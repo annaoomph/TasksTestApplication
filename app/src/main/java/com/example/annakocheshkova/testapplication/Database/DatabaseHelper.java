@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -18,8 +19,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private RuntimeExceptionDao<SubTask, Integer> simpleSubTaskRuntimeDao;
     private RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmRuntimeDao;
 
-    public DatabaseHelper(Context context) {
-        super(context,DATABASE_NAME, null, DATABASE_VERSION);
+    public DatabaseHelper() {
+        super(MyApplication.getAppContext(),DATABASE_NAME, null, DATABASE_VERSION);
         simpleTaskRuntimeDao = null;
         simpleSubTaskRuntimeDao = null;
         simpleAlarmRuntimeDao = null;

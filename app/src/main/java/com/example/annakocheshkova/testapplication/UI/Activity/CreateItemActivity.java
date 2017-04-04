@@ -13,8 +13,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
 import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
-import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
+import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 
@@ -24,12 +26,12 @@ import java.util.List;
 /**
  * a view of the activity, which allows user to create a new task
  */
-public class CreateItemActivity extends AppCompatActivity implements TaskView {
+public class CreateItemActivity extends AppCompatActivity implements CreateItemView {
 
-    TaskController taskController;
+    CreateItemController createItemController;
     Toolbar toolbar;
-    TextView textS;
-    CheckBox rem;
+    TextView nameText;
+    CheckBox reminderCheckBox;
     int id = 0;
 
     @Override
@@ -37,19 +39,14 @@ public class CreateItemActivity extends AppCompatActivity implements TaskView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_item);
         getViews();
-        getControllers();
         setContent();
     }
 
-    void getControllers(){
-        taskController = new TaskController(this);
-    }
-
-
     void setContent(){
+        createItemController = new CreateItemController(this);
         id = getIntent().getIntExtra("id", 0);
         if (id>0)
-            taskController.get(id);
+            createItemController.get(id);
         ActionBar actionBar = getSupportActionBar();
         if (id>0)
         {
@@ -65,8 +62,8 @@ public class CreateItemActivity extends AppCompatActivity implements TaskView {
 
     void getViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        textS = (EditText)this.findViewById(R.id.name_edittext);
-        rem = (CheckBox)this.findViewById(R.id.enable_reminder);
+        nameText = (EditText)this.findViewById(R.id.name_edittext);
+        reminderCheckBox = (CheckBox)this.findViewById(R.id.enable_reminder);
         setSupportActionBar(toolbar);
     }
 
@@ -98,21 +95,19 @@ public class CreateItemActivity extends AppCompatActivity implements TaskView {
         calendar.set(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), Hour, Minute);
 
         if (id>0) {
-            taskController.update(id, textS.getText().toString(), calendar, rem.isChecked());
+            createItemController.update(id, nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
         }
         else
-            taskController.create(textS.getText().toString(), calendar, rem.isChecked());
+            createItemController.create(nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
         startActivity(new Intent(this, MainTasksActivity.class));
     }
 
-
     @Override
-    public void showItems(List<Task> items) {
-        Task task = items.get(0);
-        textS.setText(task.getName());
-        rem.setChecked(task.hasAlarms());
+    public void showItem(Task item) {
+        nameText.setText(item.getName());
+        reminderCheckBox.setChecked(item.hasAlarms());
 
-            //TODO Get alarm time and  Handle calendar bug
+        //TODO Get alarm time and  Handle calendar bug
                 /*DatePicker dp = (DatePicker)this.findViewById(R.id.datePicker);
                 TimePicker tp = (TimePicker)this.findViewById(R.id.timePicker);
 

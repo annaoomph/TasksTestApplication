@@ -33,6 +33,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
+            //TODO Remove this
             Intent intent = new Intent(view.getContext(), DetailedTaskActivity.class);
             intent.putExtra("id", dataset.get(getAdapterPosition()).getID());
             view.getContext().startActivity(intent);
@@ -53,10 +54,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
  @Override
  public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-     View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_row, null);
+     View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, null);
      return new ViewHolder(itemLayoutView);
  }
 
+    public void changeData(List<Task> newItems) {
+        dataset = newItems;
+        this.notifyDataSetChanged();
+    }
  @Override
  public void onBindViewHolder(ViewHolder holder, int position) {
      holder.mTextView.setText(dataset.get(position).getName());

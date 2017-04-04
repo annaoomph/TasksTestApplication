@@ -2,6 +2,7 @@ package com.example.annakocheshkova.testapplication.UI.Activity;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,15 +29,10 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
 
     List<SubTask> subTasks;
     SubTaskAdapter subTaskAdapter;
-    private SubTask selectedItem;
     RecyclerView listView;
     View view;
     SubTaskController subTaskController;
     Toolbar myToolbar;
-
-    public SubTask getSelectedItem(){
-        return selectedItem;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +71,12 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                final SubTask simple = subTasks.get(pos);
+                SubTask simple = subTasks.get(pos);
                 subTaskController.delete(simple);
                 Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        subTaskController.create(simple);
+                        subTaskController.restoreDeleted();
                     }
                 }).show();
             }
@@ -106,9 +102,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add) {
-            selectedItem = null;
-            AlertDialogFragment alertdFragment = new AlertDialogFragment();
-            alertdFragment.show(getSupportFragmentManager(), "Alert Dialog Fragment");
+            subTaskController.onCreate();
         }
         if (id == android.R.id.home)
             startActivity(new Intent(this, MainTasksActivity.class));
@@ -126,19 +120,24 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
             actionBar.setTitle(title);
     }
 
+    @Override
+    public void showDialog(SubTask subTask) {
+        AlertDialogFragment alertdFragment = new AlertDialogFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        if (subTask != null) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("id", subTask.getID());
+            bundle.putString("name", subTask.getName());
+            alertdFragment.setArguments(bundle);
+        }
+        alertdFragment.show(fm, getString(R.string.alertDialogFragmentTag));
+    }
+
     /**
      * AlertDialogFragment callback, creates a new subtask in the database or updates it, if needed
      * @param name name of the created subtask
      */
     public void itemCreatedCallback(String name) {
-        if (selectedItem != null) {
-            SubTask simple = selectedItem;
-            simple.setName(name);
-            simple.setStatus(false);
-            subTaskController.update(simple);
-        }
-        else {
-            subTaskController.create(name);
-        }
+            subTaskController.onEditingEnded(name);
     }
 }

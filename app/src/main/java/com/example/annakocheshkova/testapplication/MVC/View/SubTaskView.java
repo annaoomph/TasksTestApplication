@@ -11,4 +11,5 @@ import java.util.List;
 public interface SubTaskView {
     void showItems(List<SubTask> items);
     void showTitle(String title);
+    void showDialog(SubTask subTask);
 }
