@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.Views;
+package com.example.annakocheshkova.testapplication.UI.Activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -19,15 +19,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.example.annakocheshkova.testapplication.Controllers.TaskController;
-import com.example.annakocheshkova.testapplication.Models.Task;
+import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
+import com.example.annakocheshkova.testapplication.UI.Adapter.TaskAdapter;
+import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
+import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import java.util.List;
 
 /**
  * a view of the main activity with list of all the tasks
  */
-public class MainTasksActivity extends AppCompatActivity implements TaskView{
+public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     List<Task> taskCategories; //list of all tasks
     ActionBarDrawerToggle drawerToggle;
@@ -39,7 +41,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView{
     Toolbar toolbar;
     TaskController taskController;
 
-    interface ClickListener {
+    public interface ClickListener {
         void onClick(View view, int position);
         void onLongClick(View view, int position);
     }
@@ -129,7 +131,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView{
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
-        listView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), listView, new ClickListener() {
+       /* listView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), listView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(getApplicationContext(), DetailedTaskActivity.class);
@@ -142,7 +144,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView{
                 intent.putExtra("id", taskCategories.get(position).getID());
                 startActivity(intent);
             }
-        }));
+        }));*/
     }
 
     public void showItems(List<Task> items) {

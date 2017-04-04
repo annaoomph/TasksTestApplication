@@ -1,8 +1,7 @@
-package com.example.annakocheshkova.testapplication.Views;
+package com.example.annakocheshkova.testapplication.UI.Activity;
 
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,17 +14,20 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.annakocheshkova.testapplication.Controllers.SubTaskController;
-import com.example.annakocheshkova.testapplication.Models.SubTask;
+import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
+import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DetailedTaskActivity extends AppCompatActivity implements SubTaskView{
+public class DetailedTaskActivity extends AppCompatActivity implements SubTaskView {
 
-    FragmentManager fm = getSupportFragmentManager();
     List<SubTask> subTasks;
+    SubTaskAdapter subTaskAdapter;
     private SubTask selectedItem;
     RecyclerView listView;
     View view;
@@ -36,21 +38,11 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
         return selectedItem;
     }
 
-    /**
-     * mark subtask as complete
-     * @param subTask the subtask chosen by user
-     */
-    private void markAsComplete(SubTask subTask) {
-        subTask.setStatus(!subTask.getStatus());
-        subTaskController.update(subTask);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtask);
         getViews();
-        getControllers();
         setContent();
     }
 
@@ -65,19 +57,16 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     }
 
     /**
-     * get all controllers to work with later
-     */
-    void getControllers(){
-        subTaskController = new SubTaskController(this);
-    }
-
-    /**
      * set all content configuration and click listeners
      */
     void setContent(){
+        subTaskController = new SubTaskController(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
+        List<SubTask> items = new ArrayList<>();
+        subTaskAdapter = new SubTaskAdapter(items, subTaskController);
+        listView.setAdapter(subTaskAdapter);
         subTaskController.getAllByTask(true, getIntent().getIntExtra("id", 0));
         listView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -104,18 +93,6 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
-        listView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), listView, new MainTasksActivity.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                markAsComplete(subTasks.get(position));
-            }
-            @Override
-            public void onLongClick(View view, int position) {
-                AlertDialogFragment alertdFragment = new AlertDialogFragment();
-                alertdFragment.show(fm, "Alert Dialog Fragment");
-                selectedItem = subTasks.get(position);
-            }
-        }));
     }
 
     @Override
@@ -131,7 +108,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
         if (id == R.id.action_add) {
             selectedItem = null;
             AlertDialogFragment alertdFragment = new AlertDialogFragment();
-            alertdFragment.show(fm, "Alert Dialog Fragment");
+            alertdFragment.show(getSupportFragmentManager(), "Alert Dialog Fragment");
         }
         if (id == android.R.id.home)
             startActivity(new Intent(this, MainTasksActivity.class));
@@ -139,9 +116,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     }
 
     public void showItems(List<SubTask> items){
-        subTasks = items;
-        final SubTaskAdapter mAdapter = new SubTaskAdapter(items);
-        listView.setAdapter(mAdapter);
+        subTaskAdapter.changeData(items);
     }
 
     @Override

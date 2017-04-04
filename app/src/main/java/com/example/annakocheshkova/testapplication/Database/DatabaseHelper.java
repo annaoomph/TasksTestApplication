@@ -1,10 +1,10 @@
-package com.example.annakocheshkova.testapplication.Services;
+package com.example.annakocheshkova.testapplication.Database;
 import java.sql.SQLException;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Models.SubTask;
-import com.example.annakocheshkova.testapplication.Models.Task;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.Model.Task;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;

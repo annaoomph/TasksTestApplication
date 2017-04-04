@@ -1,10 +1,12 @@
-package com.example.annakocheshkova.testapplication.Views;
+package com.example.annakocheshkova.testapplication.UI.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.example.annakocheshkova.testapplication.UI.Activity.MainTasksActivity;
 
 /**
  * A touch listener for the recycler view

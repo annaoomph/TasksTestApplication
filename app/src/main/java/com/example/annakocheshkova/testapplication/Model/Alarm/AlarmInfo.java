@@ -1,5 +1,6 @@
-package com.example.annakocheshkova.testapplication.Models;
+package com.example.annakocheshkova.testapplication.Model.Alarm;
 
+import com.example.annakocheshkova.testapplication.Model.Task;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 

@@ -1,8 +1,8 @@
-package com.example.annakocheshkova.testapplication;
+package com.example.annakocheshkova.testapplication.Database;
 
-import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Models.SubTask;
-import com.example.annakocheshkova.testapplication.Models.Task;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.Model.Task;
 
 import java.util.List;
 

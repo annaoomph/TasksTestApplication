@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.Views;
+package com.example.annakocheshkova.testapplication.UI.Activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,13 +18,20 @@ public class AlertDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Bundle bundle = getArguments();
+        int id = -1;
+        String name = "";
+        if (bundle != null) {
+            id = bundle.getInt("id", -1);
+            name = bundle.getString("name", "");
+        }
         final EditText input = new EditText(getActivity());
-        DetailedTaskActivity act = (DetailedTaskActivity) getActivity();
         boolean edit = false;
-        if (act.getSelectedItem() != null)
+
+        if (id >= 0)
         {
             edit = true;
-            input.setText(act.getSelectedItem().getName());
+            input.setText(name);
         }
         return new AlertDialog.Builder(getActivity())
                 .setTitle((edit)?getString(R.string.edit):getString(R.string.enter_new))
@@ -33,6 +40,7 @@ public class AlertDialogFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
+                                //TODO Do something here
                                 ((DetailedTaskActivity) getActivity()).itemCreatedCallback(input.getText().toString());
                             }
                         })

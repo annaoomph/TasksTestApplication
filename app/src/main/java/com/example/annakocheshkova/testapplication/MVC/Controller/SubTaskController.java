@@ -1,10 +1,10 @@
-package com.example.annakocheshkova.testapplication.Controllers;
+package com.example.annakocheshkova.testapplication.MVC.Controller;
 
-import com.example.annakocheshkova.testapplication.DataStore;
-import com.example.annakocheshkova.testapplication.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Models.SubTask;
-import com.example.annakocheshkova.testapplication.Models.Task;
-import com.example.annakocheshkova.testapplication.Views.SubTaskView;
+import com.example.annakocheshkova.testapplication.Database.DataStore;
+import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
 
 import java.util.Collections;
 import java.util.Comparator;

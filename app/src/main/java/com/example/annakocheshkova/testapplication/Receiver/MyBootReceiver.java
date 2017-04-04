@@ -1,13 +1,11 @@
-package com.example.annakocheshkova.testapplication.Services;
+package com.example.annakocheshkova.testapplication.Receiver;
 
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.example.annakocheshkova.testapplication.Controllers.AlarmController;
-import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmManager;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class MyBootReceiver extends BroadcastReceiver
      * @param ctxt application context
      */
     private void scheduleAlarms(Context ctxt) {
-        AlarmController ac = new AlarmController();
+        AlarmManager ac = new AlarmManager();
         List<AlarmInfo> alarms = ac.getAll();
         for (int i=0; i<alarms.size(); i++)
         {
@@ -33,8 +31,8 @@ public class MyBootReceiver extends BroadcastReceiver
             Intent alarmIntent = new Intent(ctxt, AlarmReceiver.class);
             alarmIntent.putExtra("name", name);
             PendingIntent mAlarmSender = PendingIntent.getBroadcast(ctxt, 0, alarmIntent, 0);
-            AlarmManager am = (AlarmManager)ctxt.getSystemService(Context.ALARM_SERVICE);
-            am.set(AlarmManager.RTC_WAKEUP, mms, mAlarmSender);
+            android.app.AlarmManager am = (android.app.AlarmManager)ctxt.getSystemService(Context.ALARM_SERVICE);
+            am.set(android.app.AlarmManager.RTC_WAKEUP, mms, mAlarmSender);
         }
     }
 }

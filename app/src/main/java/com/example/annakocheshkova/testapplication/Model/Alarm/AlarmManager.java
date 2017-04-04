@@ -1,23 +1,21 @@
-package com.example.annakocheshkova.testapplication.Controllers;
+package com.example.annakocheshkova.testapplication.Model.Alarm;
 
-import android.app.Activity;
-import com.example.annakocheshkova.testapplication.DataStore;
-import com.example.annakocheshkova.testapplication.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Models.Task;
-import com.example.annakocheshkova.testapplication.Services.AlarmReceiver;
+import com.example.annakocheshkova.testapplication.Database.DataStore;
+import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
+import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
 import java.util.List;
 
 /**
  * a controller which handles all the actions connected with alarms
  */
-public class AlarmController{
+public class AlarmManager {
 
     private static int alarmId; //id of the last created alarm
     private static AlarmInfo deletedItem; // deleted item to be restored if Cancel button clicked
     private DataStore dataStore;
 
-    public AlarmController(){
+    public AlarmManager(){
         dataStore = DataStoreFactory.getDataStore();
     }
 
@@ -58,12 +56,12 @@ public class AlarmController{
      * create an alarm
      * @param item alarm
      */
-    void create(AlarmInfo item) {
+    public void create(AlarmInfo item) {
         dataStore.createAlarm(item);
         alarmId = item.getID();
     }
 
-    void restoreDeleted(Task task) {
+    public void restoreDeleted(Task task) {
         if (deletedItem != null) {
             deletedItem.setTask(task);
             dataStore.createAlarm(deletedItem);
@@ -74,7 +72,7 @@ public class AlarmController{
      * delete a certain alarm by its task id
      * @param id task id
      */
-    void deleteByTaskId(int id) {
+    public void deleteByTaskId(int id) {
         List<AlarmInfo> list = dataStore.getAllAlarmsByTaskId(id);
         for (int i=0; i<list.size(); i++)
         {

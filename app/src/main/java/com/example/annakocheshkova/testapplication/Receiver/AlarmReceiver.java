@@ -1,7 +1,6 @@
-package com.example.annakocheshkova.testapplication.Services;
+package com.example.annakocheshkova.testapplication.Receiver;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -9,11 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import com.example.annakocheshkova.testapplication.Controllers.AlarmController;
-import com.example.annakocheshkova.testapplication.Models.Task;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmManager;
+import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.Views.DetailedTaskActivity;
+import com.example.annakocheshkova.testapplication.UI.Activity.DetailedTaskActivity;
 
 /**
  * listener responding to scheduled alarms, shows notifications when it is needed, creates or disables them
@@ -33,7 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
      * @param alarm_id id of the alarm
      */
     public static void runNotification(Activity activity, String name, int id, int alarm_id) {
-        AlarmController ac = new AlarmController();
+        AlarmManager ac = new AlarmManager();
         Intent alarmIntent = new Intent(activity, DetailedTaskActivity.class);
         ac.delete(alarm_id);
         alarmIntent.putExtra("id", id);
@@ -58,14 +57,14 @@ public class AlarmReceiver extends BroadcastReceiver {
      */
     public static void addAlarm(Task newTask, long timeToSchedule, int alarm_id){
         Context context = MyApplication.getAppContext();
-        AlarmController ac = new AlarmController();
+        AlarmManager ac = new AlarmManager();
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
         alarmIntent.putExtra("name", newTask.getName());
         alarmIntent.putExtra("id", newTask.getID());
         alarmIntent.putExtra("alarm_id", alarm_id);
         PendingIntent mAlarmSender = PendingIntent.getBroadcast(context, ac.getAlarmId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, timeToSchedule, mAlarmSender);
+        android.app.AlarmManager am = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        am.set(android.app.AlarmManager.RTC_WAKEUP, timeToSchedule, mAlarmSender);
     }
 
     /**
@@ -76,7 +75,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Context context = MyApplication.getAppContext();
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
         PendingIntent mAlarmSender = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        android.app.AlarmManager am = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         am.cancel(mAlarmSender);
     }
 }

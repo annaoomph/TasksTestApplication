@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Views.MainTasksActivity">
+        <activity android:name=".UI.Activity.MainTasksActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,15 +19,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Views.CreateItemActivity"
+            android:name=".UI.Activity.CreateItemActivity"
             android:label="@string/title_activity_create_item" />
-        <activity android:name=".Views.DetailedTaskActivity" />
+        <activity android:name=".UI.Activity.DetailedTaskActivity" />
 
         <receiver
-            android:name=".Services.AlarmReceiver"
+            android:name=".Receiver.AlarmReceiver"
             android:process=":remote" />
         <receiver
-            android:name=".Services.MyBootReceiver"
+            android:name=".Receiver.MyBootReceiver"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">

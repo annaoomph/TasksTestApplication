@@ -1,13 +1,14 @@
-package com.example.annakocheshkova.testapplication.Controllers;
+package com.example.annakocheshkova.testapplication.MVC.Controller;
 
-import com.example.annakocheshkova.testapplication.DataStore;
-import com.example.annakocheshkova.testapplication.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Models.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Models.SubTask;
-import com.example.annakocheshkova.testapplication.Models.Task;
-import com.example.annakocheshkova.testapplication.Services.AlarmReceiver;
-import com.example.annakocheshkova.testapplication.Views.MainTasksActivity;
-import com.example.annakocheshkova.testapplication.Views.TaskView;
+import com.example.annakocheshkova.testapplication.Database.DataStore;
+import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmManager;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
+import com.example.annakocheshkova.testapplication.UI.Activity.MainTasksActivity;
+import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,7 +61,7 @@ public class TaskController {
      * @param name name of the new task
      */
     public void create(String name, Calendar calendar, boolean fireAlarm) {
-        AlarmController ac = new AlarmController();
+        AlarmManager ac = new AlarmManager();
         long mms = calendar.getTimeInMillis();
         Task task = new Task(name);
         dataStore.createTask(task);
@@ -73,7 +74,7 @@ public class TaskController {
 
     public void restoreDeleted()
     {
-        AlarmController alarmController = new AlarmController();
+        AlarmManager alarmManager = new AlarmManager();
         if (deletedItem != null) {
             Task task = new Task(deletedItem.getName());
             dataStore.createTask(task);
@@ -81,7 +82,7 @@ public class TaskController {
                 deletedSubtasks.get(i).setTask(task);
             dataStore.createSubTasks(deletedSubtasks);
             if (deletedItem.hasAlarms()) {
-                alarmController.restoreDeleted(task);
+                alarmManager.restoreDeleted(task);
             }
         }
         getAll();
@@ -95,7 +96,7 @@ public class TaskController {
         deletedItem = item;
         deletedSubtasks = dataStore.getAllSubtasksByTask(item);
         dataStore.deleteTask(item);
-        AlarmController ac = new AlarmController();
+        AlarmManager ac = new AlarmManager();
         ac.deleteByTaskId(item.getID());
         getAll();
     }
@@ -106,7 +107,7 @@ public class TaskController {
      * @param name new name of the task to be updated
      */
     public void update(int id, String name, Calendar calendar, boolean fireAlarm) {
-        AlarmController ac = new AlarmController();
+        AlarmManager ac = new AlarmManager();
         long mms = calendar.getTimeInMillis();
         Task task = dataStore.getTask(id);
         if (task.hasAlarms())

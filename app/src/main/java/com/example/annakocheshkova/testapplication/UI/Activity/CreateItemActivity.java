@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.Views;
+package com.example.annakocheshkova.testapplication.UI.Activity;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,8 +13,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import com.example.annakocheshkova.testapplication.Controllers.TaskController;
-import com.example.annakocheshkova.testapplication.Models.Task;
+import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
+import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
+import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 
 import java.util.Calendar;

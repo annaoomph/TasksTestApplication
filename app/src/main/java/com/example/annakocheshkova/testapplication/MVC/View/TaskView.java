@@ -1,6 +1,6 @@
-package com.example.annakocheshkova.testapplication.Views;
+package com.example.annakocheshkova.testapplication.MVC.View;
 
-import com.example.annakocheshkova.testapplication.Models.Task;
+import com.example.annakocheshkova.testapplication.Model.Task;
 
 import java.util.List;
 

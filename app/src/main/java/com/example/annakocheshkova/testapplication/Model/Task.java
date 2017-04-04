@@ -1,5 +1,6 @@
-package com.example.annakocheshkova.testapplication.Models;
+package com.example.annakocheshkova.testapplication.Model;
 
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
