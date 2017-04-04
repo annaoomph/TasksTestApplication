@@ -25,7 +25,7 @@
 
         <receiver
             android:name=".Receiver.AlarmReceiver"
-            android:process=":remote" />
+           />
         <receiver
             android:name=".Receiver.MyBootReceiver"
             android:enabled="true"

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UI.Activity.CreateItemActivity">
 
-    <include layout="@layout/toolbar"
-        android:id="@+id/toolbar"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
 
-    <RelativeLayout
-        android:id="@+id/first_line"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp">
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/name_edittext"
@@ -26,28 +24,29 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/colorPrimaryDark"
             android:ems="10"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="2.0"
             android:hint="@string/name"
             android:textColor="@color/colorPrimaryDark"
             android:textColorHint="@color/colorPrimary" />
-
         <Button
             android:id="@+id/button"
+            android:layout_weight="1.0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:background="@color/colorPrimaryDark"
             android:onClick="OnAddNewTaskClick"
             android:text="@string/ok_string"
             android:textColor="#fff" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/second_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/first_line"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/enable_reminder"
@@ -66,8 +65,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/second_line"
-        android:layout_margin="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
         android:orientation="vertical">
 
         <DatePicker
@@ -84,6 +83,6 @@
             android:alwaysDrawnWithCache="false"
             android:isScrollContainer="false"
             android:timePickerMode="spinner"
-            android:touchscreenBlocksFocus="false"/>
+            android:touchscreenBlocksFocus="false" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
