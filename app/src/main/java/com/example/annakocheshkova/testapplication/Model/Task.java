@@ -15,11 +15,22 @@ public class Task
 {
     @DatabaseField(generatedId = true)
     int id;
+
+    /**
+     * name of the task
+     */
     @DatabaseField
     String name;
+
+    /**
+     * list of subtasks of this task
+     */
     @ForeignCollectionField
     private ForeignCollection<SubTask> subTasks;
 
+    /**
+     * list of the alarms of this task
+     */
     @ForeignCollectionField
     private ForeignCollection<AlarmInfo> alarms;
 
@@ -27,17 +38,30 @@ public class Task
 
     }
 
+    /**
+     * constructor
+     * @param id id of the task
+     * @param name name of the task
+     */
     public Task(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * if the task has alarms scheduled
+     * @return true if it has, false if it has not
+     */
     public boolean hasAlarms() {
         if (alarms.size() > 0)
             return true;
         return false;
     }
 
+    /**
+     * constructor
+     * @param name name of the task
+     */
     public Task(String name) {
         this.name = name;
     }

@@ -14,7 +14,7 @@ public class SubTask {
     /**
      * the main task of the subtask
      */
-    @DatabaseField(columnName = "id_cat", foreign = true)
+    @DatabaseField(columnName = "task_id", foreign = true)
     private Task task;
 
     /**
@@ -31,6 +31,11 @@ public class SubTask {
 
     public SubTask(){}
 
+    /**
+     * constructor
+     * @param name name of the subtask
+     * @param completed if it is finished
+     */
     public SubTask(String name, Boolean completed) {
         this.completed = completed;
         this.name = name;

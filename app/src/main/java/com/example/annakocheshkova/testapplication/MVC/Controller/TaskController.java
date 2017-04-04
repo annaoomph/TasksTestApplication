@@ -14,8 +14,19 @@ import java.util.List;
  */
 public class TaskController {
 
+    /**
+     * datastore to work with data
+     */
     private DataStore dataStore;
+
+    /**
+     * main view
+     */
     private TaskView view;
+
+    /**
+     * list of all the tasks
+     */
     private List<Task> tasksList;
 
     /**
@@ -28,13 +39,17 @@ public class TaskController {
      */
     private List<SubTask> deletedSubtasks;
 
+    /**
+     * constructor
+     * @param view main view
+     */
     public TaskController(TaskView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
-     * onViewLoaded the list of all tasks in the database
+     * event called everytime you need to update the main view list of tasks
      */
     public void onViewLoaded() {
         List<Task> tasks = dataStore.getAllTasks();
@@ -68,7 +83,7 @@ public class TaskController {
     }
 
     /**
-     * onDelete a certain task
+     * delete a certain task
      * @param position position of the chosen task to be deleted
      */
     public void onDelete(int position) {

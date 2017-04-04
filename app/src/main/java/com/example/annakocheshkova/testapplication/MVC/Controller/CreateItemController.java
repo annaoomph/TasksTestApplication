@@ -13,16 +13,27 @@ import java.util.Calendar;
  */
 public class CreateItemController {
 
+    /**
+     * datastore example to work with data
+     */
     private DataStore dataStore;
+
+    /**
+     * main view of this controller
+     */
     private CreateItemView view;
 
+    /**
+     * constructor. creates an example of the datastore
+     * @param view main view
+     */
     public CreateItemController(CreateItemView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
-     * onViewLoaded the task by id
+     * event called everytime you need to update view (show informationj about task)
      * @param id id of the task to be shown
      */
     public void onViewLoaded(int id) {
@@ -31,12 +42,12 @@ public class CreateItemController {
     }
 
     /**
-     * create a new task
+     * event when user creates a new task
      * @param name name of the new task
      * @param calendar calendar contains time of the alarm
      * @param fireAlarm if reminder is needed
      */
-    public void create(String name, Calendar calendar, boolean fireAlarm) {
+    public void onItemCreate(String name, Calendar calendar, boolean fireAlarm) {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         long timeToSchedule = calendar.getTimeInMillis();
         Task task = new Task(name);
@@ -49,13 +60,13 @@ public class CreateItemController {
     }
 
     /**
-     * update a certain task
+     * event when user updates a certain task
      * @param id id of the task to be updated
      * @param name new name of the task to be updated
      * @param calendar calendar contains time of the alarm
      * @param fireAlarm if reminder is needed
      */
-    public void update(int id, String name, Calendar calendar, boolean fireAlarm) {
+    public void onItemUpdate(int id, String name, Calendar calendar, boolean fireAlarm) {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         long timeToSchedule = calendar.getTimeInMillis();
         Task task = dataStore.getTask(id);

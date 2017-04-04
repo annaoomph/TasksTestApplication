@@ -97,10 +97,11 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         calendar.clear();
         calendar.set(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), hour, minute);
 
+        //TODO Don't send parameters (view is not that smart)
         if (id>0) {
-            createItemController.update(id, nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
+            createItemController.onItemUpdate(id, nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
         } else {
-            createItemController.create(nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
+            createItemController.onItemCreate(nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
         }
         startActivity(new Intent(this, MainTasksActivity.class));
     }

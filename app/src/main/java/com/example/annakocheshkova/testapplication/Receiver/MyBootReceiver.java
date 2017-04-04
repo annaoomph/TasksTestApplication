@@ -14,6 +14,12 @@ import java.util.List;
  */
 public class MyBootReceiver extends BroadcastReceiver
 {
+    /**
+     * called when reboot has happened
+     * @param context current context
+     * @param intent current intent
+     */
+    @Override
     public void onReceive(Context context, Intent intent) {
         this.scheduleAlarms(context);
     }

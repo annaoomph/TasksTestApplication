@@ -13,29 +13,39 @@ import com.j256.ormlite.table.TableUtils;
 
 
 /**
- * A class based on Ormlite Sqlite helper, works with database
+ * A class that extends Ormlite Sqlite helper, works with database
  */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
+    /**
+     * name of the database we are working with
+     */
     private static final String DATABASE_NAME = "tasks.db";
-    private static final int DATABASE_VERSION = 5;
 
     /**
-     * Dao for tasks database
+     * current version of the database (change to higher number if structure changes are made)
+     */
+    private static final int DATABASE_VERSION = 7;
+
+    /**
+     * Dao for tasks table
      */
     private RuntimeExceptionDao<Task, Integer> simpleTaskRuntimeDao;
 
     /**
-     * Dao for subtasks database
+     * Dao for subtasks table
      */
     private RuntimeExceptionDao<SubTask, Integer> simpleSubTaskRuntimeDao;
 
     /**
-     * Dao for alarms database
+     * Dao for alarms table
      */
     private RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmRuntimeDao;
 
-    public DatabaseHelper() {
+    /**
+     * constructor that initializes all Daos
+     */
+    DatabaseHelper() {
         super(MyApplication.getAppContext(),DATABASE_NAME, null, DATABASE_VERSION);
         simpleTaskRuntimeDao = null;
         simpleSubTaskRuntimeDao = null;
@@ -66,7 +76,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to onViewLoaded access to alarms dao
+     * a method for datastore to get access to alarms dao
       * @return alarms dao
      */
     RuntimeExceptionDao<AlarmInfo, Integer> getSimpleAlarmInfoDao() {
@@ -77,7 +87,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to onViewLoaded access to tasks dao
+     * a method for datastore to get access to tasks dao
      * @return tasks dao
      */
     RuntimeExceptionDao<Task, Integer> getSimpleTaskDao() {
@@ -88,7 +98,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to onViewLoaded access to subtask dao
+     * a method for datastore to get access to subtask dao
      * @return subtask dao
      */
     RuntimeExceptionDao<SubTask, Integer> getSimpleSubTaskDao() {

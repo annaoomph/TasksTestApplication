@@ -33,14 +33,49 @@ import java.util.List;
  */
 public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
+    /**
+     * adapter for the recycler view
+     */
     TaskAdapter taskAdapter;
+
+    /**
+     * button which toggles the drawer (open/close)
+     */
     ActionBarDrawerToggle drawerToggle;
+
+    /**
+     * menu for the drawer
+     */
     String[] leftDrawerTitles;
+
+    /**
+     * listview for the drawer
+     */
     ListView drawerListView;
+
+    /**
+     * the drawer itself
+     */
     DrawerLayout drawerLayout;
+
+    /**
+     * listview with all the tasks
+     */
     RecyclerView listView;
+
+    /**
+     * main view (needed for snackbar)
+     */
     View view;
+
+    /**
+     * toolbar with menu
+     */
     Toolbar toolbar;
+
+    /**
+     * the main controller
+     */
     TaskController taskController;
 
     @Override
@@ -48,15 +83,13 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
         getViews();
-        getControllers();
         setContent();
     }
 
-    void getControllers() {
-        taskController = new TaskController(this);
-        taskController.onViewLoaded();
-    }
 
+    /**
+     * get all the views to work with later
+     */
     void getViews() {
         leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
         drawerListView = (ListView) findViewById(R.id.left_drawer);
@@ -69,7 +102,12 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         listView.setAdapter(taskAdapter);
     }
 
+    /**
+     * set all the content configuration and listeners
+     */
     void setContent() {
+        taskController = new TaskController(this);
+        taskController.onViewLoaded();
         drawerListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, leftDrawerTitles));
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {

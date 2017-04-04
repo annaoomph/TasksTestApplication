@@ -68,6 +68,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return new ViewHolder(itemLayoutView);
     }
 
+    /**
+     * a method called everytime when the data changes
+     * @param newItems new data
+     */
     public void changeData(List<Task> newItems) {
         taskList = newItems;
         this.notifyDataSetChanged();

@@ -19,6 +19,11 @@ import com.example.annakocheshkova.testapplication.UI.Activity.DetailedTaskActiv
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
+    /**
+     * when the time has come for notification to be fired
+     * @param context current application context
+     * @param intent current intent
+     */
     @Override
     public void onReceive(Context context, Intent intent) {
         runNotification(context, intent.getStringExtra("name"), intent.getIntExtra("id", 0),intent.getIntExtra("alarm_id", 0));
@@ -52,7 +57,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     /**
      * create a new alarm
      * @param newTask task for the alarm
-     * @param timeToSchedule time in which the notification should be run
+     * @param timeToSchedule time in which the notification should be fired
      * @param alarmId id of the alarm in the database
      */
     public static void addAlarm(Task newTask, long timeToSchedule, int alarmId) {

@@ -15,5 +15,9 @@ public interface TaskView {
      */
     void showItems(List<Task> items);
 
+    /**
+     * show toast with information that item is deleted and Cancel button
+     * @param name name of the deleted item to be shown in a Toast
+     */
     void showCancelBar(String name);
 }

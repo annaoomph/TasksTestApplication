@@ -8,25 +8,28 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import java.util.List;
 
 /**
- * a class to connect to our sqlite database with the help of ormLite lib
+ * a class that implements DataStore interface. Gets all the data from sqlite database datastore.
  */
 class DatabaseDataStore implements DataStore {
 
     /**
-     * Dao for alarms database
+     * Dao for AlarmInfo table
      */
     private final RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmDao;
 
     /**
-     * Dao for Tasks database
+     * Dao for Tasks table
      */
     private final RuntimeExceptionDao<Task, Integer> simpleTaskDao;
 
     /**
-     * Dao for subTasks database
+     * Dao for subTasks table
      */
     private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
 
+    /**
+     * simple constructor that gets all the Daos
+     */
     DatabaseDataStore() {
         simpleAlarmDao = new DatabaseHelper().getSimpleAlarmInfoDao();
         simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
@@ -44,8 +47,8 @@ class DatabaseDataStore implements DataStore {
     }
 
     @Override
-    public List<SubTask> getAllSubtasksByTask(Task category) {
-        return simpleSubTaskDao.queryForEq("id_cat", category);
+    public List<SubTask> getAllSubtasksByTask(Task task) {
+        return simpleSubTaskDao.queryForEq("task_id", task);
     }
 
     @Override
@@ -55,7 +58,7 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public List<AlarmInfo> getAllAlarmsByTaskId(int id) {
-        return simpleAlarmDao.queryForEq("id_cat", id);
+        return simpleAlarmDao.queryForEq("task_id", id);
     }
 
     @Override
@@ -133,7 +136,7 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public AlarmInfo getAlarm(int id) {
-        List<AlarmInfo> list = simpleAlarmDao.queryForEq("id_cat", id);
+        List<AlarmInfo> list = simpleAlarmDao.queryForEq("task_id", id);
         return list.get(0);
     }
 }

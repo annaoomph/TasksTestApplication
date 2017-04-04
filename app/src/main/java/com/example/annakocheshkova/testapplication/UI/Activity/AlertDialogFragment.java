@@ -18,12 +18,23 @@ import com.example.annakocheshkova.testapplication.R;
  */
 public class AlertDialogFragment extends DialogFragment implements DialogView {
 
+    /**
+     * controller for this view
+     */
     DialogController dialogController;
+
+    /**
+     * sets listener that responds when item has been edited or created
+     * @param onItemEditedListener listener
+     */
     public void setOnItemEditedListener(OnItemEditedListener onItemEditedListener) {
         dialogController = new DialogController(this);
         dialogController.setOnItemEditedListener(onItemEditedListener);
     }
 
+    /**
+     * main (and only) editText to enter the name of the subtask
+     */
     EditText input;
     @NonNull
     @Override
@@ -61,6 +72,10 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
                         }).create();
     }
 
+    /**
+     * show the item name if it is edited
+     * @param subTaskName name of the editing subtask
+     */
     @Override
     public void showEditingItem(String subTaskName) {
         input.setText(subTaskName);

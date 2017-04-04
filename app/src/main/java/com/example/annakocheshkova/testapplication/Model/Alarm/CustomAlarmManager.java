@@ -7,7 +7,7 @@ import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
 import java.util.List;
 
 /**
- * a controller which handles all the actions connected with alarms
+ * a manager which handles all the actions connected with alarms
  */
 public class CustomAlarmManager {
 
@@ -15,14 +15,21 @@ public class CustomAlarmManager {
      * deleted item to be restored if Cancel button was clicked
      */
     private static AlarmInfo deletedItem;
+
+    /**
+     * datastore example to get all the data
+     */
     private DataStore dataStore;
 
+    /**
+     * constructor. Creates datastore example
+     */
     public CustomAlarmManager() {
         dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
-     * onDelete alarm from the database
+     * delete alarm from the database
      * @param id id of the alarm to be deleted
      */
     public void delete(int id) {
@@ -30,7 +37,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * onViewLoaded all the alarms from the database
+     * get all the alarms from the database
      * @return list of all the alarms
      */
     public List<AlarmInfo> getAll() {
@@ -38,7 +45,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * onViewLoaded a certain alarm from the database
+     * get a certain alarm from the database
      * @param id id of the needed alarm
      * @return alarm
      */
@@ -68,7 +75,7 @@ public class CustomAlarmManager {
     }
 
     /**
-     * onDelete a certain alarm by its task id
+     * delete a certain alarm by its task id
      * @param id task id
      */
     public void deleteByTaskId(int id) {

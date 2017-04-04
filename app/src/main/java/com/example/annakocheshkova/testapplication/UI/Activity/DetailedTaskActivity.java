@@ -30,11 +30,29 @@ import java.util.List;
  */
 public class DetailedTaskActivity extends AppCompatActivity implements SubTaskView {
 
-    List<SubTask> subTasks;
+    /**
+     * adapter for the recycler view
+     */
     SubTaskAdapter subTaskAdapter;
+
+    /**
+     * view with all the subtasks
+     */
     RecyclerView listView;
+
+    /**
+     * main view (needed for snackbar)
+     */
     View view;
+
+    /**
+     * main controller for the view
+     */
     SubTaskController subTaskController;
+
+    /**
+     * toolbar with menu
+     */
     Toolbar toolbar;
 
     @Override
@@ -46,7 +64,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     }
 
     /**
-     * onViewLoaded all view items to work with later
+     * get all view items to work with later
      */
     void getViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -66,7 +84,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
         List<SubTask> items = new ArrayList<>();
         subTaskAdapter = new SubTaskAdapter(items, subTaskController);
         listView.setAdapter(subTaskAdapter);
-        subTaskController.onViewLoaded(true, getIntent().getIntExtra("id", 0));
+        subTaskController.onViewLoaded(getIntent().getIntExtra("id", 0));
         listView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(mLayoutManager);
@@ -130,7 +148,6 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
         alertdFragment.setArguments(bundle);
         alertdFragment.setOnItemEditedListener(subTaskController);
         alertdFragment.show(supportFragmentManager, getString(R.string.alertDialogFragmentTag));
-
     }
 
     @Override

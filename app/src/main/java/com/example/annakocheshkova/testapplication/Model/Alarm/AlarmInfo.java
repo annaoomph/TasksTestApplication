@@ -15,16 +15,21 @@ public class AlarmInfo {
     int id;
     @DatabaseField
     private
-    String _name;
+    String name;
     @DatabaseField
     private
     long time;
-    @DatabaseField(columnName = "id_cat", foreign = true)
+    @DatabaseField(columnName = "task_id", foreign = true)
     private Task task;
 
-    public AlarmInfo(Task cat, long time) {
-        this.task = cat;
-        this._name = cat.getName();
+    /**
+     * constructor
+     * @param task main task of the alarm
+     * @param time time to be fired
+     */
+    public AlarmInfo(Task task, long time) {
+        this.task = task;
+        this.name = task.getName();
         this.time = time;
     }
 
@@ -39,7 +44,7 @@ public class AlarmInfo {
     }
 
     public String getName() {
-        return this._name;
+        return this.name;
     }
 
     public long getTime() {
