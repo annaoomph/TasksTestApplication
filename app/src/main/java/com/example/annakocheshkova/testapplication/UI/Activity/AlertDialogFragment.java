@@ -28,15 +28,15 @@ public class AlertDialogFragment extends DialogFragment {
         final EditText input = new EditText(getActivity());
         boolean edit = false;
 
-        if (id >= 0)
-        {
+        if (id >= 0) {
             edit = true;
             input.setText(name);
         }
+
         return new AlertDialog.Builder(getActivity())
                 .setTitle((edit)?getString(R.string.edit):getString(R.string.enter_new))
                 .setView(input)
-                .setPositiveButton("OK",
+                .setPositiveButton(getString(R.string.ok_string),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
@@ -44,7 +44,7 @@ public class AlertDialogFragment extends DialogFragment {
                                 ((DetailedTaskActivity) getActivity()).itemCreatedCallback(input.getText().toString());
                             }
                         })
-                .setNegativeButton("Cancel",
+                .setNegativeButton(getString(R.string.cancel_btn),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {

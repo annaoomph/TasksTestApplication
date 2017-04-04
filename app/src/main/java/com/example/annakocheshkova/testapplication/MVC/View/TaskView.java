@@ -5,9 +5,13 @@ import com.example.annakocheshkova.testapplication.Model.Task;
 import java.util.List;
 
 /**
- * Created by anna.kocheshkova on 4/3/2017.
+ * an interface for main task activity
  */
-
 public interface TaskView {
+
+    /**
+     * display all the tasks
+     * @param items tasks
+     */
     void showItems(List<Task> items);
 }

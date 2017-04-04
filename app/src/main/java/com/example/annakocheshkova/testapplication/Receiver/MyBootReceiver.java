@@ -1,10 +1,11 @@
 package com.example.annakocheshkova.testapplication.Receiver;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmManager;
+import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import java.util.List;
 
@@ -19,20 +20,19 @@ public class MyBootReceiver extends BroadcastReceiver
 
     /**
      * this method reads all the alarms from the database and reschedules them
-     * @param ctxt application context
+     * @param context application context
      */
-    private void scheduleAlarms(Context ctxt) {
-        AlarmManager ac = new AlarmManager();
-        List<AlarmInfo> alarms = ac.getAll();
-        for (int i=0; i<alarms.size(); i++)
-        {
-            long mms = alarms.get(i).getTime();
+    private void scheduleAlarms(Context context) {
+        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
+        List<AlarmInfo> alarms = customAlarmManager.getAll();
+        for (int i = 0; i < alarms.size(); i++) {
+            long timeToSchedule = alarms.get(i).getTime();
             String name = alarms.get(i).getName();
-            Intent alarmIntent = new Intent(ctxt, AlarmReceiver.class);
+            Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             alarmIntent.putExtra("name", name);
-            PendingIntent mAlarmSender = PendingIntent.getBroadcast(ctxt, 0, alarmIntent, 0);
-            android.app.AlarmManager am = (android.app.AlarmManager)ctxt.getSystemService(Context.ALARM_SERVICE);
-            am.set(android.app.AlarmManager.RTC_WAKEUP, mms, mAlarmSender);
+            PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+            AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeToSchedule, alarmPendingIntent);
         }
     }
 }

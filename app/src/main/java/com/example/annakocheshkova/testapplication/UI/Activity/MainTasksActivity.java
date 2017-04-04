@@ -33,10 +33,10 @@ import java.util.List;
  */
 public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
-    List<Task> taskCategories; //list of all tasks
+    List<Task> taskCategories;
     TaskAdapter taskAdapter;
     ActionBarDrawerToggle drawerToggle;
-    String[] leftDrawerTitles; //left menu list
+    String[] leftDrawerTitles;
     ListView drawerListView;
     DrawerLayout drawerLayout;
     RecyclerView listView;
@@ -58,38 +58,33 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         taskController.getAll();
     }
 
-    void getViews(){
+    void getViews() {
         leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
         drawerListView = (ListView) findViewById(R.id.left_drawer);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (RecyclerView)findViewById(R.id.tasks_view);
         view = findViewById(R.id.main_content);
-
         List<Task> tasks = new ArrayList<>();
         taskAdapter = new TaskAdapter(tasks);
         listView.setAdapter(taskAdapter);
     }
 
-    void setContent(){
+    void setContent() {
         drawerListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, leftDrawerTitles));
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
-                                                  @Override
-                                                  public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
-                                                      drawerLayout.closeDrawer(drawerListView);
-                                                  }
-                                              }
-        );
+            @Override
+            public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
+                drawerLayout.closeDrawer(drawerListView);
+            }
+        });
         setSupportActionBar(toolbar);
-        ActionBar actionBar =getSupportActionBar();
-        if (actionBar!=null)
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
             actionBar.setTitle(R.string.window_title);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.open_navigation_drawer,
-                R.string.close_navigation_drawer) {
-
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_navigation_drawer, R.string.close_navigation_drawer) {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
@@ -135,6 +130,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         itemTouchHelper.attachToRecyclerView(listView);
     }
 
+    @Override
     public void showItems(List<Task> items) {
         taskAdapter.changeData(items);
     }
@@ -142,7 +138,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.my_menu, menu);
+        inflater.inflate(R.menu.custom_menu, menu);
         return true;
     }
 

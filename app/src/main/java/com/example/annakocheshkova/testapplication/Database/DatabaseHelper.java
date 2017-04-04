@@ -12,11 +12,27 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 
+/**
+ * A class based on Ormlite Sqlite helper, works with database
+ */
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+
     private static final String DATABASE_NAME = "tasks.db";
     private static final int DATABASE_VERSION = 4;
+
+    /**
+     * Dao for tasks database
+     */
     private RuntimeExceptionDao<Task, Integer> simpleTaskRuntimeDao;
+
+    /**
+     * Dao for subtasks database
+     */
     private RuntimeExceptionDao<SubTask, Integer> simpleSubTaskRuntimeDao;
+
+    /**
+     * Dao for alarms database
+     */
     private RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmRuntimeDao;
 
     public DatabaseHelper() {
@@ -49,21 +65,33 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public RuntimeExceptionDao<AlarmInfo, Integer> getSimpleAIDao() {
+    /**
+     * a method for datastore to get access to alarms dao
+      * @return alarms dao
+     */
+    RuntimeExceptionDao<AlarmInfo, Integer> getSimpleAlarmInfoDao() {
         if (simpleAlarmRuntimeDao == null) {
             simpleAlarmRuntimeDao = getRuntimeExceptionDao(AlarmInfo.class);
         }
         return simpleAlarmRuntimeDao;
     }
 
-    public RuntimeExceptionDao<Task, Integer> getSimpleTaskDao() {
+    /**
+     * a method for datastore to get access to tasks dao
+     * @return tasks dao
+     */
+    RuntimeExceptionDao<Task, Integer> getSimpleTaskDao() {
         if (simpleTaskRuntimeDao == null) {
             simpleTaskRuntimeDao = getRuntimeExceptionDao(Task.class);
         }
         return simpleTaskRuntimeDao;
     }
 
-    public RuntimeExceptionDao<SubTask, Integer> getSimpleSubTaskDao() {
+    /**
+     * a method for datastore to get access to subtask dao
+     * @return subtask dao
+     */
+    RuntimeExceptionDao<SubTask, Integer> getSimpleSubTaskDao() {
         if (simpleSubTaskRuntimeDao == null) {
             simpleSubTaskRuntimeDao = getRuntimeExceptionDao(SubTask.class);
         }

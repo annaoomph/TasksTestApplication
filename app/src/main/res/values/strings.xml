@@ -20,6 +20,7 @@
     <string name="deleted_string_firstpart">Item</string>
     <string name="deleted_string_secondpart">deleted!</string>
     <string name="alertDialogFragmentTag">Alert Dialog Fragment</string>
+    <string name="attention">Attention</string>
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>

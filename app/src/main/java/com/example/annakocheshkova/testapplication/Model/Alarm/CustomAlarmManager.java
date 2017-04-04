@@ -9,29 +9,23 @@ import java.util.List;
 /**
  * a controller which handles all the actions connected with alarms
  */
-public class AlarmManager {
-
-    private static int alarmId; //id of the last created alarm
-    private static AlarmInfo deletedItem; // deleted item to be restored if Cancel button clicked
-    private DataStore dataStore;
-
-    public AlarmManager(){
-        dataStore = DataStoreFactory.getDataStore();
-    }
+public class CustomAlarmManager {
 
     /**
-     * delete alarm from the database
-     * @param item alarm
+     * deleted item to be restored if Cancel button was clicked
      */
-    private void delete(AlarmInfo item) {
-        dataStore.deleteAlarm(item);
+    private static AlarmInfo deletedItem;
+    private DataStore dataStore;
+
+    public CustomAlarmManager() {
+        dataStore = DataStoreFactory.getDataStore();
     }
 
     /**
      * delete alarm from the database
      * @param id id of the alarm to be deleted
      */
-    public void delete(int id)  {
+    public void delete(int id) {
         dataStore.deleteAlarm(id);
     }
 
@@ -55,40 +49,34 @@ public class AlarmManager {
     /**
      * create an alarm
      * @param item alarm
+     * @return id of the created alarm
      */
-    public void create(AlarmInfo item) {
+    public int create(AlarmInfo item) {
         dataStore.createAlarm(item);
-        alarmId = item.getID();
+        return item.getID();
     }
 
+    /**
+     * restore the alarm which was deleted
+     * @param task restored task (with the new id) which the alarm refers to
+     */
     public void restoreDeleted(Task task) {
         if (deletedItem != null) {
             deletedItem.setTask(task);
             dataStore.createAlarm(deletedItem);
         }
-
     }
+
     /**
      * delete a certain alarm by its task id
      * @param id task id
      */
     public void deleteByTaskId(int id) {
-        List<AlarmInfo> list = dataStore.getAllAlarmsByTaskId(id);
-        for (int i=0; i<list.size(); i++)
-        {
-            deletedItem = list.get(i);
+        List<AlarmInfo> alarmList = dataStore.getAllAlarmsByTaskId(id);
+        for (int i = 0; i < alarmList.size(); i++) {
+            deletedItem = alarmList.get(i);
             AlarmReceiver.removeAlarm(deletedItem.getID());
-            delete(list.get(i));
+            dataStore.deleteAlarm(alarmList.get(i));
         }
-    }
-
-    public int getAlarmId()
-    {
-        return alarmId;
-    }
-
-    public AlarmInfo getDeletedItem()
-    {
-        return deletedItem;
     }
 }

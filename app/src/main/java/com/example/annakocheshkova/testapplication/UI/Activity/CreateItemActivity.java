@@ -15,13 +15,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
-import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * a view of the activity, which allows user to create a new task
@@ -42,24 +40,29 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         setContent();
     }
 
-    void setContent(){
+    /**
+     * set configuration of the window content
+     */
+    void setContent() {
         createItemController = new CreateItemController(this);
         id = getIntent().getIntExtra("id", 0);
-        if (id>0)
+        if (id > 0)
             createItemController.get(id);
         ActionBar actionBar = getSupportActionBar();
-        if (id>0)
-        {
-            if (actionBar!=null)
+        if (id > 0) {
+            if (actionBar != null)
+                actionBar.setTitle(R.string.edit);
+        } else {
+            if (actionBar != null)
                 actionBar.setTitle(R.string.edit);
         }
-        else
-            if (actionBar!=null)
-                actionBar.setTitle(R.string.edit);
-        if (actionBar!=null)
+        if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * get all the views needed to work with
+     */
     void getViews() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         nameText = (EditText)this.findViewById(R.id.name_edittext);
@@ -77,28 +80,28 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
 
     /**
      * method responding on button click when adding the new task
-     * @param v button view
+     * @param view button view
      */
-    public void OnAddNewTaskClick(View v){
+    public void OnAddNewTaskClick(View view) {
         DatePicker dp = (DatePicker)this.findViewById(R.id.date_picker);
         TimePicker tp = (TimePicker)this.findViewById(R.id.time_picker);
-        int Hour, Minute;
-        if(Build.VERSION.SDK_INT < 23){
-            Hour = tp.getCurrentHour();
-            Minute = tp.getCurrentMinute();
+        int hour, minute;
+        if(Build.VERSION.SDK_INT < 23) {
+            hour = tp.getCurrentHour();
+            minute = tp.getCurrentMinute();
         } else {
-            Hour = tp.getHour();
-            Minute = tp.getMinute();
+            hour = tp.getHour();
+            minute = tp.getMinute();
         }
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
-        calendar.set(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), Hour, Minute);
+        calendar.set(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), hour, minute);
 
         if (id>0) {
             createItemController.update(id, nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
-        }
-        else
+        } else {
             createItemController.create(nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
+        }
         startActivity(new Intent(this, MainTasksActivity.class));
     }
 

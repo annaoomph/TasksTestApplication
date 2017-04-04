@@ -1,17 +1,10 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
-
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmManager;
+import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
-import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
-import com.example.annakocheshkova.testapplication.UI.Activity.MainTasksActivity;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,10 +16,18 @@ public class TaskController {
 
     private DataStore dataStore;
     private TaskView view;
+
+    /**
+     * deleted task (to be restored if needed)
+     */
     private Task deletedItem;
+
+    /**
+     * list of deleted with the task subtasks (to be restored, too)
+     */
     private List<SubTask> deletedSubtasks;
 
-    public TaskController(TaskView view){
+    public TaskController(TaskView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }
@@ -34,29 +35,31 @@ public class TaskController {
     /**
      * get the list of all tasks in the database
      */
-    public void getAll(){
-        List<Task> cats = dataStore.getAllTasks();
-        Collections.sort(cats, new Comparator<Task>() {
+    public void getAll() {
+        List<Task> tasks = dataStore.getAllTasks();
+        Collections.sort(tasks, new Comparator<Task>() {
             @Override
-            public int compare(Task lhs, Task rhs) {
-                return lhs.getName().compareTo(rhs.getName());
+            public int compare(Task firstTask, Task secondTask) {
+                return firstTask.getName().compareTo(secondTask.getName());
             }
         });
-        view.showItems(cats);
+        view.showItems(tasks);
     }
 
 
-    public void restoreDeleted()
-    {
-        AlarmManager alarmManager = new AlarmManager();
+    /**
+     * restore deleted task (if cancel button was pressed)
+     */
+    public void restoreDeleted() {
+        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         if (deletedItem != null) {
             Task task = new Task(deletedItem.getName());
             dataStore.createTask(task);
-            for (int i=0; i<deletedSubtasks.size(); i++)
+            for (int i = 0; i < deletedSubtasks.size(); i++)
                 deletedSubtasks.get(i).setTask(task);
             dataStore.createSubTasks(deletedSubtasks);
             if (deletedItem.hasAlarms()) {
-                alarmManager.restoreDeleted(task);
+                customAlarmManager.restoreDeleted(task);
             }
         }
         getAll();
@@ -70,8 +73,8 @@ public class TaskController {
         deletedItem = item;
         deletedSubtasks = dataStore.getAllSubtasksByTask(item);
         dataStore.deleteTask(item);
-        AlarmManager ac = new AlarmManager();
-        ac.deleteByTaskId(item.getID());
+        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
+        customAlarmManager.deleteByTaskId(item.getID());
         getAll();
     }
 

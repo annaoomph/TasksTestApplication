@@ -27,32 +27,30 @@ public class Task
 
     }
 
-    public Task(int id, String name){
+    public Task(int id, String name) {
         this._id = id;
         this._name = name;
     }
 
-    public boolean hasAlarms(){
-        if (alarms.size()>0)
+    public boolean hasAlarms() {
+        if (alarms.size() > 0)
             return true;
         return false;
     }
 
-    public Task(String name){
+    public Task(String name) {
         this._name = name;
     }
 
-    public int getID(){
-return this._id;
-}
-    public void setID(int id){
-this._id = id;
-}
-    public String getName(){
-return this._name;
-}
-    public void setName(String name){
-this._name = name;
-}
+    public int getID() {
+        return this._id;
+    }
 
+    public String getName() {
+        return this._name;
+    }
+
+    public void setName(String name) {
+        this._name = name;
+    }
 }

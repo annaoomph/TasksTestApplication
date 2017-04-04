@@ -19,14 +19,20 @@ import java.util.List;
  * Adapter for Tasks recycle view
  */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
-    static List<Task> dataset;
+
+    /**
+     * list of the tasks to be displayed by the adapter
+     */
+    private static List<Task> taskList;
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
-        TextView mTextView;
-        ImageButton imgBtn;
+        TextView textRow;
+        ImageButton imageAlarmButton;
+
         ViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.row_text);
-            imgBtn = (ImageButton) view.findViewById(R.id.imageButton);
+            textRow = (TextView) view.findViewById(R.id.row_text);
+            imageAlarmButton = (ImageButton) view.findViewById(R.id.imageButton);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -35,44 +41,50 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         public void onClick(View view) {
             //TODO Remove this
             Intent intent = new Intent(view.getContext(), DetailedTaskActivity.class);
-            intent.putExtra("id", dataset.get(getAdapterPosition()).getID());
+            intent.putExtra("id", taskList.get(getAdapterPosition()).getID());
             view.getContext().startActivity(intent);
         }
 
         @Override
         public boolean onLongClick(View view) {
             Intent intent = new Intent(view.getContext(), CreateItemActivity.class);
-            intent.putExtra("id", dataset.get(getAdapterPosition()).getID());
+            intent.putExtra("id", taskList.get(getAdapterPosition()).getID());
             view.getContext().startActivity(intent);
             return true;
         }
     }
 
-    public TaskAdapter(List<Task> myDataset) {
-        dataset = myDataset;
- }
+    /**
+     * constructor
+     * @param taskList list of the tasks to be displayed by adapter
+     */
+    public TaskAdapter(List<Task> taskList) {
+        TaskAdapter.taskList = taskList;
+    }
 
- @Override
- public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-     View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, null);
-     return new ViewHolder(itemLayoutView);
- }
+    @Override
+    public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, null);
+        return new ViewHolder(itemLayoutView);
+    }
 
     public void changeData(List<Task> newItems) {
-        dataset = newItems;
+        taskList = newItems;
         this.notifyDataSetChanged();
     }
- @Override
- public void onBindViewHolder(ViewHolder holder, int position) {
-     holder.mTextView.setText(dataset.get(position).getName());
-     if (dataset.get(position).hasAlarms())
-         holder.imgBtn.setVisibility(View.VISIBLE);
-     else
-         holder.imgBtn.setVisibility(View.GONE);
-}
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.textRow.setText(taskList.get(position).getName());
+        if (taskList.get(position).hasAlarms()) {
+            holder.imageAlarmButton.setVisibility(View.VISIBLE);
+        } else {
+            holder.imageAlarmButton.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return taskList.size();
     }
 }

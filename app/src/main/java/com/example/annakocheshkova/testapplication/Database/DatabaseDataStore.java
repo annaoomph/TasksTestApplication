@@ -1,11 +1,8 @@
 package com.example.annakocheshkova.testapplication.Database;
 
-import android.content.Context;
-
 import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
-import com.example.annakocheshkova.testapplication.MyApplication;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.List;
@@ -15,12 +12,23 @@ import java.util.List;
  */
 class DatabaseDataStore implements DataStore {
 
+    /**
+     * Dao for alarms database
+     */
     private final RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmDao;
+
+    /**
+     * Dao for Tasks database
+     */
     private final RuntimeExceptionDao<Task, Integer> simpleTaskDao;
+
+    /**
+     * Dao for subTasks database
+     */
     private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
 
     DatabaseDataStore() {
-        simpleAlarmDao = new DatabaseHelper().getSimpleAIDao();
+        simpleAlarmDao = new DatabaseHelper().getSimpleAlarmInfoDao();
         simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
         simpleSubTaskDao = new DatabaseHelper().getSimpleSubTaskDao();
     }

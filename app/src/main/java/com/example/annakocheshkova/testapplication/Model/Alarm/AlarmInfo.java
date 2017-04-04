@@ -22,7 +22,7 @@ public class AlarmInfo {
     @DatabaseField(columnName = "id_cat", foreign = true)
     private Task task;
 
-    public AlarmInfo(Task cat, long time){
+    public AlarmInfo(Task cat, long time) {
         this.task = cat;
         this._name = cat.getName();
         this.time = time;
@@ -30,15 +30,19 @@ public class AlarmInfo {
 
     public AlarmInfo(){}
 
-
-    public void setTask(Task task){
+    public void setTask(Task task) {
         this.task = task;
     }
-    public int getID(){return  this._id;}
-    public String getName(){
+
+    public int getID() {
+        return this._id;
+    }
+
+    public String getName() {
         return this._name;
     }
-    public long getTime(){
+
+    public long getTime() {
         return this.time;
     }
 

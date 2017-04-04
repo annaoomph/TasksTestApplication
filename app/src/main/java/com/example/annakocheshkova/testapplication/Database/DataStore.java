@@ -7,7 +7,7 @@ import com.example.annakocheshkova.testapplication.Model.Task;
 import java.util.List;
 
 /**
- * an interface to get all the data
+ * an interface of the datastore to get all the data
  */
 public interface DataStore {
 

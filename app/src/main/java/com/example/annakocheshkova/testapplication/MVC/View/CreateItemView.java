@@ -3,9 +3,12 @@ package com.example.annakocheshkova.testapplication.MVC.View;
 import com.example.annakocheshkova.testapplication.Model.Task;
 
 /**
- * Created by anna.kocheshkova on 4/4/2017.
+ * an interface for create item activity
  */
-
 public interface CreateItemView {
+    /**
+     * shows the item to be edited
+     * @param item item to be edited
+     */
     void showItem(Task item);
 }

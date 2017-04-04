@@ -1,36 +1,47 @@
 package com.example.annakocheshkova.testapplication.UI.Adapter;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.UI.Activity.AlertDialogFragment;
-import com.example.annakocheshkova.testapplication.UI.Activity.DetailedTaskActivity;
-
 import java.util.List;
 
 /**
  * Adapter for subtask recycler view
  */
 public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHolder> {
-    static List<SubTask> dataset;
-    static SubTaskController subTaskController;
+
+    /**
+     * a list of the subtasks to be displayed by the adapter
+     */
+    private static List<SubTask> subTasksList;
+
+    /**
+     * subTasks controller working with the subTaskView
+     */
+    private static SubTaskController subTaskController;
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
-        TextView mTextView;
+
+        /**
+         * textView displays the name of the subtask
+         */
+        TextView textRow;
+
+        /**
+         * this color is used when the subtask is not completed
+         */
         int darkColor;
+
         ViewHolder(View view) {
             super(view);
-            mTextView = (TextView) view.findViewById(R.id.row_text);
+            textRow = (TextView) view.findViewById(R.id.row_text);
             darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -38,24 +49,33 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
 
         @Override
         public void onClick(View view) {
-            SubTask subTask = dataset.get(getAdapterPosition());
+            SubTask subTask = subTasksList.get(getAdapterPosition());
             subTaskController.onStatusChanged(subTask);
         }
 
         @Override
         public boolean onLongClick(View view) {
-            subTaskController.onUpdate(dataset.get(getAdapterPosition()));
+            subTaskController.onUpdate(subTasksList.get(getAdapterPosition()));
             return true;
         }
     }
 
-    public SubTaskAdapter(List<SubTask> myDataset, SubTaskController subTaskController) {
-        this.subTaskController = subTaskController;
-        dataset = myDataset;
+    /**
+     * constructor
+     * @param data list of all the subtasks
+     * @param subTaskController controller of the subtasks view
+     */
+    public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
+        SubTaskAdapter.subTaskController = subTaskController;
+        subTasksList = data;
     }
 
+    /**
+     * a method called everytime when the data changes
+     * @param newItems new data
+     */
     public void changeData(List<SubTask> newItems) {
-        dataset = newItems;
+        subTasksList = newItems;
         this.notifyDataSetChanged();
     }
 
@@ -67,15 +87,16 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(dataset.get(position).getName());
-        if (dataset.get(position).getStatus())
-            holder.mTextView.setTextColor(Color.GRAY);
-        else
-            holder.mTextView.setTextColor(holder.darkColor);
+        holder.textRow.setText(subTasksList.get(position).getName());
+        if (subTasksList.get(position).getStatus()) {
+            holder.textRow.setTextColor(Color.GRAY);
+        } else {
+            holder.textRow.setTextColor(holder.darkColor);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
+        return subTasksList.size();
     }
 }

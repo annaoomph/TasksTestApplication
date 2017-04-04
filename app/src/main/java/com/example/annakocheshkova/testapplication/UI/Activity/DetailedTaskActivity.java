@@ -25,6 +25,9 @@ import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this activity displays list of all the subtasks
+ */
 public class DetailedTaskActivity extends AppCompatActivity implements SubTaskView {
 
     List<SubTask> subTasks;
@@ -32,7 +35,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     RecyclerView listView;
     View view;
     SubTaskController subTaskController;
-    Toolbar myToolbar;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,9 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     /**
      * get all view items to work with later
      */
-    void getViews(){
-        myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+    void getViews() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         listView = (RecyclerView)findViewById(R.id.task_detailed_view);
         view = findViewById(R.id.content);
     }
@@ -55,7 +58,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     /**
      * set all content configuration and click listeners
      */
-    void setContent(){
+    void setContent() {
         subTaskController = new SubTaskController(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
@@ -73,7 +76,8 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
                 int pos = viewHolder.getAdapterPosition();
                 SubTask simple = subTasks.get(pos);
                 subTaskController.delete(simple);
-                Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction("Cancel", new View.OnClickListener() {
+                Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+simple.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
+                        getString(R.string.cancel_btn), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         subTaskController.restoreDeleted();
@@ -94,7 +98,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.my_menu, menu);
+        inflater.inflate(R.menu.custom_menu, menu);
         return true;
     }
 
@@ -109,28 +113,29 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
         return super.onOptionsItemSelected(item);
     }
 
-    public void showItems(List<SubTask> items){
+    @Override
+    public void showItems(List<SubTask> items) {
         subTaskAdapter.changeData(items);
     }
 
     @Override
     public void showTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar!=null)
+        if (actionBar != null)
             actionBar.setTitle(title);
     }
 
     @Override
     public void showDialog(SubTask subTask) {
         AlertDialogFragment alertdFragment = new AlertDialogFragment();
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
         if (subTask != null) {
             Bundle bundle = new Bundle();
             bundle.putInt("id", subTask.getID());
             bundle.putString("name", subTask.getName());
             alertdFragment.setArguments(bundle);
         }
-        alertdFragment.show(fm, getString(R.string.alertDialogFragmentTag));
+        alertdFragment.show(supportFragmentManager, getString(R.string.alertDialogFragmentTag));
     }
 
     /**
