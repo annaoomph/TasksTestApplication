@@ -235,15 +235,17 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     public void showItem(Task item, AlarmInfo alarm) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.setTimeInMillis(alarm.getTime());
-        chosenYear = calendar.get(Calendar.YEAR);
-        chosenMonth = calendar.get(Calendar.MONTH);
-        chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
-        chosenMinute = calendar.get(Calendar.MINUTE);
-        chosenHour = calendar.get(Calendar.HOUR);
-        updateDisplay();
+        if (alarm != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.setTimeInMillis(alarm.getTime());
+            chosenYear = calendar.get(Calendar.YEAR);
+            chosenMonth = calendar.get(Calendar.MONTH);
+            chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
+            chosenMinute = calendar.get(Calendar.MINUTE);
+            chosenHour = calendar.get(Calendar.HOUR);
+            updateDisplay();
+        }
     }
 
     @Override

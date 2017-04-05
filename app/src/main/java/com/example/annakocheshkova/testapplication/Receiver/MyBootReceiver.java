@@ -31,9 +31,9 @@ public class MyBootReceiver extends BroadcastReceiver
     private void scheduleAlarms(Context context) {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         List<AlarmInfo> alarms = customAlarmManager.getAll();
-        for (int i = 0; i < alarms.size(); i++) {
-            long timeToSchedule = alarms.get(i).getTime();
-            String name = alarms.get(i).getName();
+        for (AlarmInfo alarm : alarms) {
+            long timeToSchedule = alarm.getTime();
+            String name = alarm.getName();
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             alarmIntent.putExtra("name", name);
             PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);

@@ -1,4 +1,5 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
+import android.app.AlarmManager;
 import android.os.Build;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -46,10 +47,12 @@ public class CreateItemController {
      * @param id id of the task to be shown (-1 if no need to show)
      */
     public void onViewLoaded(int id) {
+        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         if (id>0) {
             Task task = dataStore.getTask(id);
             editingTask = task;
-            view.showItem(task, dataStore.getAllAlarmsByTaskId(task.getID()).get(0));
+            AlarmInfo alarm = customAlarmManager.getByTaskId(task.getID());
+            view.showItem(task, alarm);
         } else {
             editingTask = null;
         }

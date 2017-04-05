@@ -20,4 +20,16 @@ public interface TaskView {
      * @param name name of the deleted item to be shown in a Toast
      */
     void showCancelBar(String name);
+
+    /**
+     * open list of subtasks from the chosen task
+     * @param id task id
+     */
+    void openTask(int id);
+
+    /**
+     * open task for editing
+     * @param id id of the chosen task
+     */
+    void editTask(int id);
 }

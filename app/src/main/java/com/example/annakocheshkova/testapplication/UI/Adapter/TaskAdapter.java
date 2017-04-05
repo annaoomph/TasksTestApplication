@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
+import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Activity.CreateItemActivity;
@@ -25,6 +27,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      */
     private static List<Task> taskList;
 
+    /**
+     * subTasks controller working with the subTaskView
+     */
+    private static TaskController taskController;
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
         TextView textRow;
         ImageButton imageAlarmButton;
@@ -39,17 +46,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            //TODO Remove this
-            Intent intent = new Intent(view.getContext(), SubTaskActivity.class);
-            intent.putExtra("id", taskList.get(getAdapterPosition()).getID());
-            view.getContext().startActivity(intent);
+            taskController.onItemChosen(taskList.get(getAdapterPosition()).getID());
         }
 
         @Override
         public boolean onLongClick(View view) {
-            Intent intent = new Intent(view.getContext(), CreateItemActivity.class);
-            intent.putExtra("id", taskList.get(getAdapterPosition()).getID());
-            view.getContext().startActivity(intent);
+            taskController.onItemUpdate(taskList.get(getAdapterPosition()).getID());
             return true;
         }
     }
@@ -58,8 +60,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      * constructor
      * @param taskList list of the tasks to be displayed by adapter
      */
-    public TaskAdapter(List<Task> taskList) {
+    public TaskAdapter(List<Task> taskList, TaskController taskController) {
         TaskAdapter.taskList = taskList;
+        TaskAdapter.taskController = taskController;
     }
 
     @Override

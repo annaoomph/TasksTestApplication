@@ -80,10 +80,24 @@ public class CustomAlarmManager {
      */
     public void deleteByTaskId(int id) {
         List<AlarmInfo> alarmList = dataStore.getAllAlarmsByTaskId(id);
-        for (int i = 0; i < alarmList.size(); i++) {
-            deletedItem = alarmList.get(i);
+        for (AlarmInfo alarm : alarmList) {
+            deletedItem = alarm;
             AlarmReceiver.removeAlarm(deletedItem.getID());
-            dataStore.deleteAlarm(alarmList.get(i));
+            dataStore.deleteAlarm(alarm);
+        }
+    }
+
+    /**
+     * get a certain alarm by its task id
+     * @param id id of the main task
+     * @return alarm, if there is, or null
+     */
+    public AlarmInfo getByTaskId(int id) {
+        List<AlarmInfo> alarmList = dataStore.getAllAlarmsByTaskId(id);
+        if (alarmList.size() > 0) {
+            return alarmList.get(0);
+        } else {
+            return null;
         }
     }
 }

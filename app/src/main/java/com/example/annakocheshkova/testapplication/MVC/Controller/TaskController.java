@@ -63,6 +63,21 @@ public class TaskController {
         view.showItems(tasks);
     }
 
+    /**
+     * event when some task is chosen to be edited
+     * @param id id of the chosen task
+     */
+    public void onItemUpdate(int id) {
+        view.editTask(id);
+    }
+
+    /**
+     * event when some task is chosen to be opened
+     * @param id id of the chosen task
+     */
+    public void onItemChosen(int id) {
+        view.openTask(id);
+    }
 
     /**
      * restore deleted task (if cancel button was pressed)
@@ -72,8 +87,8 @@ public class TaskController {
         if (deletedItem != null) {
             Task task = new Task(deletedItem.getName());
             dataStore.createTask(task);
-            for (int i = 0; i < deletedSubtasks.size(); i++)
-                deletedSubtasks.get(i).setTask(task);
+            for (SubTask subTask : deletedSubtasks)
+                subTask.setTask(task);
             dataStore.createSubTasks(deletedSubtasks);
             if (deletedItem.hasAlarms()) {
                 customAlarmManager.restoreDeleted(task);

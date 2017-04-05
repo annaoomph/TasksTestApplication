@@ -96,9 +96,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (RecyclerView)findViewById(R.id.tasks_view);
         view = findViewById(R.id.main_content);
-        List<Task> tasks = new ArrayList<>();
-        taskAdapter = new TaskAdapter(tasks);
-        listView.setAdapter(taskAdapter);
     }
 
     /**
@@ -106,6 +103,9 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
      */
     void setContent() {
         taskController = new TaskController(this);
+        List<Task> tasks = new ArrayList<>();
+        taskAdapter = new TaskAdapter(tasks, taskController);
+        listView.setAdapter(taskAdapter);
         taskController.onViewLoaded();
         drawerListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, leftDrawerTitles));
@@ -199,5 +199,19 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
                 taskController.onRestoreDeleted();
             }
         }).show();
+    }
+
+    @Override
+    public void openTask(int id) {
+        Intent intent = new Intent(view.getContext(), SubTaskActivity.class);
+        intent.putExtra("id", id);
+        view.getContext().startActivity(intent);
+    }
+
+    @Override
+    public void editTask(int id) {
+        Intent intent = new Intent(view.getContext(), CreateItemActivity.class);
+        intent.putExtra("id", id);
+        view.getContext().startActivity(intent);
     }
 }
