@@ -5,7 +5,7 @@ import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
-import com.example.annakocheshkova.testapplication.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
 
 import java.util.Collections;
 import java.util.Comparator;

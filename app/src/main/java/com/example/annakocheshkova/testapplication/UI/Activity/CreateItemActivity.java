@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
@@ -140,17 +141,30 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
             }
         });
 
+        dateDisplay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+
         setTime.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 showDialog(TIME_DIALOG_ID);
             }
         });
 
+        timeDisplay.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(TIME_DIALOG_ID);
+            }
+        });
+
         Calendar c = Calendar.getInstance();
+
         chosenYear = c.get(Calendar.YEAR);
         chosenMonth = c.get(Calendar.MONTH);
         chosenDay = c.get(Calendar.DAY_OF_MONTH);
-        chosenHour = c.get(Calendar.HOUR);
+        chosenHour = c.get(Calendar.HOUR_OF_DAY);
         chosenMinute = c.get(Calendar.MINUTE);
 
         updateDisplay();
@@ -168,11 +182,26 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * update date and time shown in edittext boxes
      */
     private void updateDisplay() {
-        dateDisplay.setText(new StringBuilder().append(chosenMonth + 1).append("-")
-                        .append(chosenDay).append("-")
-                        .append(chosenYear));
-        timeDisplay.setText(new StringBuilder().append(chosenHour).append(":")
-                .append(chosenMinute));
+        String day = String.valueOf(chosenDay);
+        if (day.length() == 1)
+            day = "0" + day;
+        String month = String.valueOf(chosenMonth+1);
+        if (month.length() == 1)
+            month = "0" + month;
+        String year = String.valueOf(chosenYear);
+        if (year.length() == 1)
+            year = "0" + year;
+        String hour = String.valueOf(chosenHour);
+        if (hour.length() == 1)
+            hour = "0" + hour;
+        String minute = String.valueOf(chosenMinute);
+        if (minute.length() == 1)
+            minute = "0" + minute;
+        dateDisplay.setText(new StringBuilder().append(day).append("-")
+                        .append(month).append("-")
+                        .append(year));
+        timeDisplay.setText(new StringBuilder().append(hour).append(":")
+                .append(minute));
     }
 
     /**
@@ -208,7 +237,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
             case DATE_DIALOG_ID:
                 return new DatePickerDialog(this, onDateSetListener, chosenYear, chosenMonth, chosenDay);
             case TIME_DIALOG_ID:
-                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, true);
+                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, false);
         }
         return null;
     }
@@ -243,7 +272,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
             chosenMonth = calendar.get(Calendar.MONTH);
             chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
             chosenMinute = calendar.get(Calendar.MINUTE);
-            chosenHour = calendar.get(Calendar.HOUR);
+            chosenHour = calendar.get(Calendar.HOUR_OF_DAY);
             updateDisplay();
         }
     }

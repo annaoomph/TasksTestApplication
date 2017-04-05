@@ -4,7 +4,7 @@ import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.DialogView;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
-import com.example.annakocheshkova.testapplication.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
 
 /**
  * controller for alert dialog fragment

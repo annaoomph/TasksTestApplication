@@ -3,6 +3,7 @@ package com.example.annakocheshkova.testapplication.Database;
 import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.j256.ormlite.dao.ForeignCollection;
 
 import java.util.List;
 
@@ -58,13 +59,6 @@ public interface DataStore {
     List<SubTask> createSubTask(SubTask item);
 
     /**
-     * create a number of subtasks
-     * @param items subtasks
-     * @return updated list of subtasks
-     */
-    List<SubTask> createSubTasks(List<SubTask> items);
-
-    /**
      * create a new AlarmInfo
      * @param item alarm
      * @return updated list of all the alarms
@@ -91,6 +85,12 @@ public interface DataStore {
      * @return updated list of all the tasks
      */
     List<Task> deleteTask(Task item);
+
+    /**
+     * method deleting all the subtasks of a certain task
+     * @param task main task
+     */
+    void deleteSubTasksByTask(Task task);
 
     /**
      * delete a specific subtask

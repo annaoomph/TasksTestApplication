@@ -1,10 +1,15 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
+import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
+import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -12,7 +17,7 @@ import java.util.List;
 /**
  * a controller which handles all the actions connected with tasks
  */
-public class TaskController {
+public class TaskController implements UndoListener {
 
     /**
      * datastore to work with data
@@ -28,16 +33,6 @@ public class TaskController {
      * list of all the tasks
      */
     private List<Task> tasksList;
-
-    /**
-     * deleted task (to be restored if needed)
-     */
-    private Task deletedItem;
-
-    /**
-     * list of deleted with the task subtasks (to be restored, too)
-     */
-    private List<SubTask> deletedSubtasks;
 
     /**
      * constructor
@@ -79,37 +74,39 @@ public class TaskController {
         view.openTask(id);
     }
 
-    /**
-     * restore deleted task (if cancel button was pressed)
-     */
-    public void onRestoreDeleted() {
+
+    @Override
+    public Task onDelete(int position) {
+
+        Task item = tasksList.get(position);
+        Task deletedItem = new Task(item);
+        view.showCancelBar(item.getName());
+        dataStore.deleteTask(item);
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
+        customAlarmManager.deleteByTaskId(item.getID());
+        dataStore.deleteSubTasksByTask(item);
+        onViewLoaded();
+        return deletedItem;
+    }
+
+    @Override
+    public void onUndo(Object item) {
+        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
+        Task deletedItem = (Task)item;
         if (deletedItem != null) {
+
             Task task = new Task(deletedItem.getName());
             dataStore.createTask(task);
-            for (SubTask subTask : deletedSubtasks)
+            for (SubTask subTask : deletedItem.getSubTasks()) {
                 subTask.setTask(task);
-            dataStore.createSubTasks(deletedSubtasks);
-            if (deletedItem.hasAlarms()) {
-                customAlarmManager.restoreDeleted(task);
+                dataStore.createSubTask(subTask);
+            }
+            for (AlarmInfo alarm : deletedItem.getAlarms()) {
+                alarm.setTask(task);
+                customAlarmManager.create(alarm);
+                AlarmReceiver.addAlarm(deletedItem, alarm.getTime(), alarm.getID());
             }
         }
         onViewLoaded();
     }
-
-    /**
-     * delete a certain task
-     * @param position position of the chosen task (in the list) to be deleted
-     */
-    public void onDelete(int position) {
-        Task item = tasksList.get(position);
-        deletedItem = item;
-        deletedSubtasks = dataStore.getAllSubtasksByTask(item);
-        dataStore.deleteTask(item);
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
-        customAlarmManager.deleteByTaskId(item.getID());
-        onViewLoaded();
-        view.showCancelBar(deletedItem.getName());
-    }
-
 }

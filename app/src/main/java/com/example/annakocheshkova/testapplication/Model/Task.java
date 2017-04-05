@@ -6,6 +6,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.field.ForeignCollectionField;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 @DatabaseTable(tableName = "task")
 
 /**
@@ -26,16 +29,40 @@ public class Task
      * list of subtasks of this task
      */
     @ForeignCollectionField
-    private ForeignCollection<SubTask> subTasks;
+    private Collection<SubTask> subTasks;
 
     /**
      * list of the alarms of this task
      */
     @ForeignCollectionField
-    private ForeignCollection<AlarmInfo> alarms;
+    private Collection<AlarmInfo> alarms;
 
     public Task(){
 
+    }
+
+    /**
+     * if the task has subtasks
+     * @return true if has, false if not
+     */
+    public boolean hasSubTasks() {
+        return subTasks.size() > 0;
+    }
+
+    /**
+     * get all the subtasks of this task
+     * @return subtasks
+     */
+    public Collection<SubTask> getSubTasks() {
+        return subTasks;
+    }
+
+    /**
+     * get all the alarms of this task
+     * @return alarms
+     */
+    public Collection<AlarmInfo> getAlarms() {
+        return alarms;
     }
 
     /**
@@ -53,9 +80,7 @@ public class Task
      * @return true if it has, false if it has not
      */
     public boolean hasAlarms() {
-        if (alarms.size() > 0)
-            return true;
-        return false;
+        return alarms.size() > 0;
     }
 
     /**
@@ -64,6 +89,21 @@ public class Task
      */
     public Task(String name) {
         this.name = name;
+    }
+
+    /**
+     * constructor for copying
+     * @param anotherTask task that needs to be copied before deleting
+     */
+    public Task(Task anotherTask) {
+        this.id = anotherTask.getID();
+        this.name = anotherTask.getName();
+        subTasks = new ArrayList<>();
+        alarms = new ArrayList<>();
+        for (SubTask subTask : anotherTask.getSubTasks())
+            this.subTasks.add(subTask);
+        for (AlarmInfo alarm : anotherTask.getAlarms())
+            this.alarms.add(alarm);
     }
 
     public int getID() {

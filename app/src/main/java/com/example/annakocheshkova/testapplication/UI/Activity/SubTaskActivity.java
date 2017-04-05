@@ -92,6 +92,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
+                //TODO implement undoComponent (maybe)
                 subTaskController.onDelete(pos);
 
             }

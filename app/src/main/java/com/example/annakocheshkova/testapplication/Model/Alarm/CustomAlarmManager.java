@@ -64,17 +64,6 @@ public class CustomAlarmManager {
     }
 
     /**
-     * restore the alarm which was deleted
-     * @param task restored task (with the new id) which the alarm refers to
-     */
-    public void restoreDeleted(Task task) {
-        if (deletedItem != null) {
-            deletedItem.setTask(task);
-            dataStore.createAlarm(deletedItem);
-        }
-    }
-
-    /**
      * delete a certain alarm by its task id
      * @param id task id
      */

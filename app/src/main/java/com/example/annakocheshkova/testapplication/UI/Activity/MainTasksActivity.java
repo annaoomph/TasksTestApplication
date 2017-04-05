@@ -24,6 +24,7 @@ import com.example.annakocheshkova.testapplication.UI.Adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.Utils.Component.UndoComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,11 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
      * the main controller
      */
     TaskController taskController;
+
+    /**
+     * component responsible for cancelling events
+     */
+    UndoComponent<Task> undoComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +151,8 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                taskController.onDelete(pos);
+                undoComponent = new UndoComponent<Task>(pos, taskController);
+                undoComponent.Delete();
             }
 
             @Override
@@ -196,7 +203,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + taskName+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskController.onRestoreDeleted();
+                undoComponent.Cancel();
             }
         }).show();
     }

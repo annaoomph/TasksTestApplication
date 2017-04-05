@@ -3,6 +3,7 @@ package com.example.annakocheshkova.testapplication.Database;
 import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.util.List;
@@ -74,12 +75,6 @@ class DatabaseDataStore implements DataStore {
     }
 
     @Override
-    public List<SubTask> createSubTasks(List<SubTask> items) {
-        simpleSubTaskDao.create(items);
-        return getAllSubTasks();
-    }
-
-    @Override
     public List<AlarmInfo> createAlarm(AlarmInfo item) {
         simpleAlarmDao.create(item);
         return getAllAlarms();
@@ -104,6 +99,12 @@ class DatabaseDataStore implements DataStore {
     }
 
     @Override
+    public void deleteSubTasksByTask(Task task) {
+        List<AlarmInfo> alarms = getAllAlarmsByTaskId(task.getID());
+        simpleAlarmDao.delete(alarms);
+    }
+
+    @Override
     public List<SubTask> deleteSubTask(SubTask item) {
         simpleSubTaskDao.delete(item);
         return getAllSubTasks();
@@ -117,7 +118,7 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public List<AlarmInfo> deleteAlarm(int id) {
-        List<AlarmInfo> list = simpleAlarmDao.queryForEq("id", id);
+        List<AlarmInfo> list = getAllAlarms();
         simpleAlarmDao.delete(list.get(0));
         return getAllAlarms();
     }

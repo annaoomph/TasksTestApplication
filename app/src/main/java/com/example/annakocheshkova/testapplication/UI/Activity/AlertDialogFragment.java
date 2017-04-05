@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.DialogController;
 import com.example.annakocheshkova.testapplication.MVC.View.DialogView;
-import com.example.annakocheshkova.testapplication.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.R;
 
 /**
