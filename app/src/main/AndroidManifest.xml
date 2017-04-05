@@ -21,7 +21,7 @@
         <activity
             android:name=".UI.Activity.CreateItemActivity"
             android:label="@string/title_activity_create_item" />
-        <activity android:name=".UI.Activity.DetailedTaskActivity" />
+        <activity android:name=".UI.Activity.SubTaskActivity" />
 
         <receiver
             android:name=".Receiver.AlarmReceiver"

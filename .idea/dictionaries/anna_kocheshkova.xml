@@ -2,10 +2,13 @@
   <dictionary name="anna.kocheshkova">
     <words>
       <w>alertd</w>
+      <w>daos</w>
       <w>dataset</w>
       <w>datastore</w>
+      <w>datepicker</w>
       <w>edittext</w>
       <w>everytime</w>
+      <w>listview</w>
       <w>ormlite</w>
       <w>snackbar</w>
       <w>sqlite</w>

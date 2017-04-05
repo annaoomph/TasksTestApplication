@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
+import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 
@@ -26,11 +26,25 @@ import java.util.Calendar;
  */
 public class CreateItemActivity extends AppCompatActivity implements CreateItemView {
 
+    /**
+     * controller of the view
+     */
     CreateItemController createItemController;
+
+    /**
+     * toolbar with menu
+     */
     Toolbar toolbar;
-    TextView nameText;
+
+    /**
+     * editText with name of the task
+     */
+    EditText nameText;
+
+    /**
+     * checkbox if fire alarm
+     */
     CheckBox reminderCheckBox;
-    int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +59,8 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      */
     void setContent() {
         createItemController = new CreateItemController(this);
-        id = getIntent().getIntExtra("id", 0);
-        if (id > 0)
-            createItemController.onViewLoaded(id);
+        int id = getIntent().getIntExtra("id", -1);
+        createItemController.onViewLoaded(id);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
             if (actionBar != null)
@@ -74,7 +87,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home)
-            startActivity(new Intent(this, MainTasksActivity.class));
+            finish();
         return super.onOptionsItemSelected(item);
     }
 
@@ -83,55 +96,47 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * @param view button view
      */
     public void OnAddNewTaskClick(View view) {
-        DatePicker dp = (DatePicker)this.findViewById(R.id.date_picker);
-        TimePicker tp = (TimePicker)this.findViewById(R.id.time_picker);
-        int hour, minute;
-        if(Build.VERSION.SDK_INT < 23) {
-            hour = tp.getCurrentHour();
-            minute = tp.getCurrentMinute();
-        } else {
-            hour = tp.getHour();
-            minute = tp.getMinute();
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.set(dp.getYear(), dp.getMonth(), dp.getDayOfMonth(), hour, minute);
-
-        //TODO Don't send parameters (view is not that smart)
-        if (id>0) {
-            createItemController.onItemUpdate(id, nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
-        } else {
-            createItemController.onItemCreate(nameText.getText().toString(), calendar, reminderCheckBox.isChecked());
-        }
+        createItemController.onItemEditingFinished();
         startActivity(new Intent(this, MainTasksActivity.class));
     }
 
+
     @Override
-    public void showItem(Task item) {
+    public void showItem(Task item, AlarmInfo alarm) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
+        DatePicker datePicker = (DatePicker)this.findViewById(R.id.date_picker);
+        TimePicker timePicker = (TimePicker)this.findViewById(R.id.time_picker);
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.setTimeInMillis(alarm.getTime());
+        if(Build.VERSION.SDK_INT < 23){
+            timePicker.setCurrentHour(calendar.get(Calendar.HOUR));
+            timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
+        } else{
+            timePicker.setHour(calendar.get(Calendar.HOUR));
+            timePicker.setMinute(calendar.get(Calendar.MINUTE));
+        }
+        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
 
-        //TODO Get alarm time and  Handle calendar bug
-                /*DatePicker dp = (DatePicker)this.findViewById(R.id.datePicker);
-                TimePicker tp = (TimePicker)this.findViewById(R.id.timePicker);
+    @Override
+    public String getName() {
+        return nameText.getText().toString();
+    }
 
-                Date date = new Date(alarm.getTime());
+    @Override
+    public DatePicker getDate() {
+        return (DatePicker)this.findViewById(R.id.date_picker);
+    }
 
-                if(Build.VERSION.SDK_INT < 23){
-                    tp.setCurrentHour(date.getHours());
-                    tp.setCurrentMinute(date.getMinutes());
-                } else{
-                    tp.setHour(date.getHours());
-                    tp.setMinute(date.getMinutes());
-                }
-                dp.updateDate(date.getYear(), date.getMonth(),date.getDay());
-                Spinner sp = (Spinner)this.findViewById(R.id.spinner);
-                if (alarm.interval == 60 * 1000)
-                    sp.setSelection(1);
-                if (alarm.interval == 60 * 1000*60)
-                    sp.setSelection(2);
-                if (alarm.interval == 60 * 1000*60*24)
-                    sp.setSelection(3);*/
+    @Override
+    public TimePicker getTime() {
+        return (TimePicker)this.findViewById(R.id.time_picker);
+    }
 
+    @Override
+    public boolean ifFireAlarm() {
+        return reminderCheckBox.isChecked();
     }
 }

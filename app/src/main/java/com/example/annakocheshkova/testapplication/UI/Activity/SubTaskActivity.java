@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * this activity displays list of all the subtasks
  */
-public class DetailedTaskActivity extends AppCompatActivity implements SubTaskView {
+public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
     /**
      * adapter for the recycler view
@@ -120,7 +120,7 @@ public class DetailedTaskActivity extends AppCompatActivity implements SubTaskVi
             subTaskController.onCreate();
         }
         if (id == android.R.id.home)
-            startActivity(new Intent(this, MainTasksActivity.class));
+            finish();
         return super.onOptionsItemSelected(item);
     }
 

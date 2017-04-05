@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Activity.CreateItemActivity;
-import com.example.annakocheshkova.testapplication.UI.Activity.DetailedTaskActivity;
+import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         @Override
         public void onClick(View view) {
             //TODO Remove this
-            Intent intent = new Intent(view.getContext(), DetailedTaskActivity.class);
+            Intent intent = new Intent(view.getContext(), SubTaskActivity.class);
             intent.putExtra("id", taskList.get(getAdapterPosition()).getID());
             view.getContext().startActivity(intent);
         }

@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.Database;
 import java.sql.SQLException;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
@@ -11,11 +10,10 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-
 /**
  * A class that extends Ormlite Sqlite helper, works with database
  */
-public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
+class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     /**
      * name of the database we are working with

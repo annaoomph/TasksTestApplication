@@ -3,5 +3,5 @@
     <color name="colorPrimary">#494949</color>
     <color name="colorPrimaryDark">#363636</color>
     <color name="colorAccent">#ffffff</color>
-    <color name="colz">#02c37b</color>
+    <color name="completedColor">#939393</color>
 </resources>

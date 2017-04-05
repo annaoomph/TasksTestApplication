@@ -12,7 +12,7 @@ import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManage
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.UI.Activity.DetailedTaskActivity;
+import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
 
 /**
  * listener responding to scheduled alarms, shows notifications when it is needed, creates or disables them
@@ -39,7 +39,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static void runNotification(Context context, String name, int id, int alarmId) {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         customAlarmManager.delete(alarmId);
-        Intent alarmIntent = new Intent(context, DetailedTaskActivity.class);
+        Intent alarmIntent = new Intent(context, SubTaskActivity.class);
         alarmIntent.putExtra("id", id);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
