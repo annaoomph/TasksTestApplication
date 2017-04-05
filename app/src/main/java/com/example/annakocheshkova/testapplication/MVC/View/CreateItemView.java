@@ -24,20 +24,39 @@ public interface CreateItemView {
     String getName();
 
     /**
-     * get date of the created or updated task
-     * @return datepicker containing chosen date
+     * get year set by user
+     * @return year
      */
-    DatePicker getDate();
+    int getYear();
 
     /**
-     * get time of the created or updated task
-     * @return timepicker containing chosen time
+     * get month set by user
+     * @return month
      */
-    TimePicker getTime();
+    int getMonth();
 
     /**
-     * find out if alarm for newly created item needed
-     * @return true if needed, false if not
+     * get day set by user
+     * @return day
+     */
+    int getDay();
+
+    /**
+     * get hour set by user
+     * @return hour
+     */
+    int getHour();
+
+    /**
+     * get minute set by user
+     * @return minute
+     */
+    int getMinute();
+
+
+    /**
+     * find out if alarm needs to be fired
+     * @return true if needs, false if not
      */
     boolean ifFireAlarm();
 }

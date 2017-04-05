@@ -86,7 +86,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         setContent();
     }
 
-
     /**
      * get all the views to work with later
      */

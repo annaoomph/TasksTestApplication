@@ -12,35 +12,19 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/name_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/name_edittext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:ems="10"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="2.0"
-            android:hint="@string/name"
-            android:textColor="@color/colorPrimaryDark"
-            android:textColorHint="@color/colorPrimary" />
-        <Button
-            android:id="@+id/button"
-            android:layout_weight="1.0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:onClick="OnAddNewTaskClick"
-            android:text="@string/ok_string"
-            android:textColor="#fff" />
-    </LinearLayout>
+        android:backgroundTint="@color/colorPrimary"
+        android:ems="10"
+        android:hint="@string/name"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary" />
 
     <LinearLayout
+        android:id="@+id/checkbox_clickable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -52,37 +36,82 @@
             android:id="@+id/enable_reminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/colorPrimaryDark" />
+            android:buttonTint="@color/colorPrimary" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/set_reminder"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="7.0"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginStart="10dp"
         android:orientation="vertical">
 
-        <DatePicker
-            android:id="@+id/date_picker"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner" />
+            android:orientation="horizontal">
 
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/date_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="10.0" />
+
+            <ImageButton
+                android:id="@+id/set_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1.0"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_menu_my_calendar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:alwaysDrawnWithCache="false"
-            android:isScrollContainer="false"
-            android:timePickerMode="spinner"
-            android:touchscreenBlocksFocus="false" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/time_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="10.0" />
+
+            <ImageButton
+                android:id="@+id/set_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1.0"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/ic_menu_recent_history" />
+        </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_margin="10dp"
+            android:layout_weight="1.0"
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="OnAddNewTaskClick"
+            android:text="@string/ok_string"
+            android:textColor="@color/colorAccent" />
     </LinearLayout>
-</LinearLayout>
+
+

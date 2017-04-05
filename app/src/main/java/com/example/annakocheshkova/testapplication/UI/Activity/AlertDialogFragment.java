@@ -36,6 +36,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
      * main (and only) editText to enter the name of the subtask
      */
     EditText input;
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

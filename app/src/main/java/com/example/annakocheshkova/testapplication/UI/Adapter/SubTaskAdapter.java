@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.UI.Adapter;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,10 +38,16 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
          */
         int darkColor;
 
+        /**
+         * this color is used when the subtask is completed
+         */
+        int lightColor;
+
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
             darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
+            lightColor = ContextCompat.getColor(view.getContext(), R.color.completedColor);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -89,7 +94,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textRow.setText(subTasksList.get(position).getName());
         if (subTasksList.get(position).getStatus()) {
-            holder.textRow.setTextColor(Color.GRAY);
+            holder.textRow.setTextColor(holder.lightColor);
         } else {
             holder.textRow.setTextColor(holder.darkColor);
         }

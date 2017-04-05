@@ -31,6 +31,7 @@ public class CreateItemController {
      * task we are currently editing (null if creating)
      */
     private Task editingTask;
+
     /**
      * constructor. creates an example of the datastore
      * @param view main view
@@ -55,24 +56,20 @@ public class CreateItemController {
     }
 
     /**
-     * event when user updates or creates a certain task
+     * event when user updates or creates a certain task;
+     * method finds out if user was updating the item and creates or updates it depending on the result
      */
     public void onItemEditingFinished() {
         String name = view.getName();
         boolean fireAlarm = view.ifFireAlarm();
-        DatePicker datePicker = view.getDate();
-        TimePicker timePicker = view.getTime();
-        int hour, minute;
-        if(Build.VERSION.SDK_INT < 23) {
-            hour = timePicker.getCurrentHour();
-            minute = timePicker.getCurrentMinute();
-        } else {
-            hour = timePicker.getHour();
-            minute = timePicker.getMinute();
-        }
+        int year = view.getYear();
+        int month = view.getMonth();
+        int day = view.getDay();
+        int hour = view.getHour();
+        int minute = view.getMinute();
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
-        calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), hour, minute);
+        calendar.set(year, month, day, hour, minute);
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         long timeToSchedule = calendar.getTimeInMillis();
         Task task;

@@ -22,7 +22,7 @@ public class DialogController {
     private DataStore dataStore;
 
     /**
-     * current item we are editing
+     * current item we are editing. null if creating
      */
     private SubTask editingItem;
 
@@ -55,6 +55,7 @@ public class DialogController {
 
     /**
      * event when the main dialog window is loaded
+     * shows the editing item name if needed, stores or resets it here if needed
      * @param taskId id of the main task
      * @param id if of the subtask we are editing
      */
@@ -71,6 +72,7 @@ public class DialogController {
 
     /**
      * event when editing ended
+     * creates or updates subtask depending on what was happening and what was stored here
      * @param newName name of the new (or edited) subtask
      */
     public void onEditingEnded(String newName) {

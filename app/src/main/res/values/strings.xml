@@ -6,8 +6,8 @@
     <string name="open_navigation_drawer">Open</string>
     <string name="close_navigation_drawer">Close</string>
     <string name="notification_title">Dont forget!</string>
-    <string name="edit">Edit item:</string>
-    <string name="enter_new">Enter new item:</string>
+    <string name="edit">Edit item</string>
+    <string name="enter_new">Enter new item</string>
     <string name="name">Name</string>
     <string name="ok_string">ОК</string>
     <string name="set_reminder">Set Reminder</string>

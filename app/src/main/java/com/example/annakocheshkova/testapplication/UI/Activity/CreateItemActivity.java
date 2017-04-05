@@ -1,7 +1,9 @@
 package com.example.annakocheshkova.testapplication.UI.Activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
@@ -46,6 +49,51 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      */
     CheckBox reminderCheckBox;
 
+    /**
+     * editText which displays the date chosen by user
+     */
+    private EditText dateDisplay;
+
+    /**
+     * edittext which displays the time chosen by user
+     */
+    private EditText timeDisplay;
+
+    /**
+     * year that's displayed at the moment
+     */
+    private int chosenYear;
+
+    /**
+     * month that's displayed at the moment
+     */
+    private int chosenMonth;
+
+    /**
+     * day that's displayed at the moment
+     */
+    private int chosenDay;
+
+    /**
+     * hour that's displayed at the moment
+     */
+    private int chosenHour;
+
+    /**
+     * minute that's displayed at the moment
+     */
+    private int chosenMinute;
+
+    /**
+     * tag by which date dialog is shown
+     */
+    static final int DATE_DIALOG_ID = 0;
+
+    /**
+     * tag by which time dialog is shown
+     */
+    static final int TIME_DIALOG_ID = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +103,23 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
+     * get all the views needed to work with
+     */
+    void getViews() {
+        dateDisplay = (EditText) findViewById(R.id.date_display);
+        timeDisplay = (EditText) findViewById(R.id.time_display);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        nameText = (EditText)this.findViewById(R.id.name_edittext);
+        reminderCheckBox = (CheckBox)this.findViewById(R.id.enable_reminder);
+        setSupportActionBar(toolbar);
+    }
+
+    /**
      * set configuration of the window content
      */
     void setContent() {
         createItemController = new CreateItemController(this);
         int id = getIntent().getIntExtra("id", -1);
-        createItemController.onViewLoaded(id);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
             if (actionBar != null)
@@ -71,16 +130,87 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         }
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
+
+        ImageButton setDate = (ImageButton)findViewById(R.id.set_date);
+        ImageButton setTime = (ImageButton)findViewById(R.id.set_time);
+
+        setDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(DATE_DIALOG_ID);
+            }
+        });
+
+        setTime.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showDialog(TIME_DIALOG_ID);
+            }
+        });
+
+        Calendar c = Calendar.getInstance();
+        chosenYear = c.get(Calendar.YEAR);
+        chosenMonth = c.get(Calendar.MONTH);
+        chosenDay = c.get(Calendar.DAY_OF_MONTH);
+        chosenHour = c.get(Calendar.HOUR);
+        chosenMinute = c.get(Calendar.MINUTE);
+
+        updateDisplay();
+
+        View checkBoxClickable = findViewById(R.id.checkbox_clickable);
+        checkBoxClickable.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reminderCheckBox.setChecked(!reminderCheckBox.isChecked());
+            }
+        });
+        createItemController.onViewLoaded(id);
     }
 
     /**
-     * onViewLoaded all the views needed to work with
+     * update date and time shown in edittext boxes
      */
-    void getViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        nameText = (EditText)this.findViewById(R.id.name_edittext);
-        reminderCheckBox = (CheckBox)this.findViewById(R.id.enable_reminder);
-        setSupportActionBar(toolbar);
+    private void updateDisplay() {
+        dateDisplay.setText(new StringBuilder().append(chosenMonth + 1).append("-")
+                        .append(chosenDay).append("-")
+                        .append(chosenYear));
+        timeDisplay.setText(new StringBuilder().append(chosenHour).append(":")
+                .append(chosenMinute));
+    }
+
+    /**
+     *the callback received when the user sets the date in the dialog
+     */
+    private DatePickerDialog.OnDateSetListener onDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    chosenYear = year;
+                    chosenMonth = monthOfYear;
+                    chosenDay = dayOfMonth;
+                    updateDisplay();
+                }
+    };
+
+    /**
+     *the callback received when the user sets the time in the dialog
+     */
+    private TimePickerDialog.OnTimeSetListener onTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+
+                public void onTimeSet(TimePicker view, int hour, int minute) {
+                    chosenHour = hour;
+                    chosenMinute = minute;
+                    updateDisplay();
+                }
+            };
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this, onDateSetListener, chosenYear, chosenMonth, chosenDay);
+            case TIME_DIALOG_ID:
+                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, true);
+        }
+        return null;
     }
 
     @Override
@@ -105,19 +235,15 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     public void showItem(Task item, AlarmInfo alarm) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
-        DatePicker datePicker = (DatePicker)this.findViewById(R.id.date_picker);
-        TimePicker timePicker = (TimePicker)this.findViewById(R.id.time_picker);
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.setTimeInMillis(alarm.getTime());
-        if(Build.VERSION.SDK_INT < 23){
-            timePicker.setCurrentHour(calendar.get(Calendar.HOUR));
-            timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
-        } else{
-            timePicker.setHour(calendar.get(Calendar.HOUR));
-            timePicker.setMinute(calendar.get(Calendar.MINUTE));
-        }
-        datePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        chosenYear = calendar.get(Calendar.YEAR);
+        chosenMonth = calendar.get(Calendar.MONTH);
+        chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
+        chosenMinute = calendar.get(Calendar.MINUTE);
+        chosenHour = calendar.get(Calendar.HOUR);
+        updateDisplay();
     }
 
     @Override
@@ -126,13 +252,28 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     @Override
-    public DatePicker getDate() {
-        return (DatePicker)this.findViewById(R.id.date_picker);
+    public int getYear() {
+        return chosenYear;
     }
 
     @Override
-    public TimePicker getTime() {
-        return (TimePicker)this.findViewById(R.id.time_picker);
+    public int getMonth() {
+        return chosenMonth;
+    }
+
+    @Override
+    public int getDay() {
+        return chosenDay;
+    }
+
+    @Override
+    public int getHour() {
+        return chosenHour;
+    }
+
+    @Override
+    public int getMinute() {
+        return chosenMinute;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class SubTaskController implements OnItemEditedListener{
     private SubTaskView view;
 
     /**
-     * current task we are working with
+     * current task we are working with (-1 at first)
      */
     private static int currentTask = -1;
 
@@ -86,7 +86,8 @@ public class SubTaskController implements OnItemEditedListener{
     }
 
     /**
-     * get a list of subtasks by their main task
+     * event called everytime view needs to be updated
+     * gets a list of subtasks by their main task
      * @param task_id id of the main task
      * @return list of subtasks
      */
@@ -116,7 +117,7 @@ public class SubTaskController implements OnItemEditedListener{
 
     /**
      * delete a certain subtask
-     * @param position position of the subtask to be deleted
+     * @param position position of the subtask (in the list) to be deleted
      */
     public void onDelete(int position) {
         SubTask subTask = subTasksList.get(position);

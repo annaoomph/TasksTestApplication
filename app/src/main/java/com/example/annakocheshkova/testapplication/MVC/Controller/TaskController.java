@@ -84,7 +84,7 @@ public class TaskController {
 
     /**
      * delete a certain task
-     * @param position position of the chosen task to be deleted
+     * @param position position of the chosen task (in the list) to be deleted
      */
     public void onDelete(int position) {
         Task item = tasksList.get(position);
