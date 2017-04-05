@@ -7,6 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.field.ForeignCollectionField;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 
 @DatabaseTable(tableName = "task")
@@ -26,6 +27,13 @@ public class Task
     String name;
 
     /**
+     * time when the task expires (don't mess with the notification time!)
+     */
+    @DatabaseField
+    private
+    long time;
+
+    /**
      * list of subtasks of this task
      */
     @ForeignCollectionField
@@ -41,12 +49,30 @@ public class Task
 
     }
 
+    public TaskStatus getStatus() {
+        Calendar calendar = Calendar.getInstance();
+        long currentTime = calendar.getTimeInMillis();
+        boolean completed = this.isCompleted();
+        if (currentTime > this.getTime()) {
+            if (completed) {
+                return TaskStatus.Completed;
+            } else {
+                return TaskStatus.Uncompleted;
+            }
+        } else {
+            return TaskStatus.Pending;
+        }
+    }
+
     /**
-     * if the task has subtasks
-     * @return true if has, false if not
+     * to check if item is completed (checks the status of all the subtasks)
+     * @return true if the task is completed, false if not
      */
-    public boolean hasSubTasks() {
-        return subTasks.size() > 0;
+    private boolean isCompleted() {
+        for (SubTask subTask : subTasks)
+            if (!subTask.getStatus())
+                return false;
+        return true;
     }
 
     /**
@@ -66,16 +92,6 @@ public class Task
     }
 
     /**
-     * constructor
-     * @param id id of the task
-     * @param name name of the task
-     */
-    public Task(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    /**
      * if the task has alarms scheduled
      * @return true if it has, false if it has not
      */
@@ -87,8 +103,9 @@ public class Task
      * constructor
      * @param name name of the task
      */
-    public Task(String name) {
+    public Task(String name, long time) {
         this.name = name;
+        this.time = time;
     }
 
     /**
@@ -98,12 +115,21 @@ public class Task
     public Task(Task anotherTask) {
         this.id = anotherTask.getID();
         this.name = anotherTask.getName();
+        this.time = anotherTask.getTime();
         subTasks = new ArrayList<>();
         alarms = new ArrayList<>();
         for (SubTask subTask : anotherTask.getSubTasks())
             this.subTasks.add(subTask);
         for (AlarmInfo alarm : anotherTask.getAlarms())
             this.alarms.add(alarm);
+    }
+
+    public long getTime() {
+        return this.time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public int getID() {
@@ -116,5 +142,11 @@ public class Task
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public enum TaskStatus {
+        Uncompleted,
+        Pending,
+        Completed
     }
 }

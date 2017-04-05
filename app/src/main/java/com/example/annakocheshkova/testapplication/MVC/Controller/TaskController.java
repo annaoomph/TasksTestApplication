@@ -51,7 +51,17 @@ public class TaskController implements UndoListener {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task firstTask, Task secondTask) {
-                return firstTask.getName().compareTo(secondTask.getName());
+                if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
+                    if (firstTask.getTime() > secondTask.getTime()) {
+                        return 1;
+                    } else if (firstTask.getTime() < secondTask.getTime()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return firstTask.getStatus().compareTo(secondTask.getStatus());
+                }
             }
         });
         tasksList = tasks;
@@ -77,7 +87,6 @@ public class TaskController implements UndoListener {
 
     @Override
     public Task onDelete(int position) {
-
         Task item = tasksList.get(position);
         Task deletedItem = new Task(item);
         view.showCancelBar(item.getName());
@@ -94,8 +103,7 @@ public class TaskController implements UndoListener {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         Task deletedItem = (Task)item;
         if (deletedItem != null) {
-
-            Task task = new Task(deletedItem.getName());
+            Task task = new Task(deletedItem.getName(), deletedItem.getTime());
             dataStore.createTask(task);
             for (SubTask subTask : deletedItem.getSubTasks()) {
                 subTask.setTask(task);

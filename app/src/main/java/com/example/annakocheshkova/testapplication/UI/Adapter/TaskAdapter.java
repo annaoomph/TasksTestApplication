@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.UI.Adapter;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Activity.CreateItemActivity;
 import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -33,13 +35,39 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private static TaskController taskController;
 
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
+
+        /**
+         * text with the name of the subtask
+         */
         TextView textRow;
+
+        /**
+         * image that's shown when the task has alarms scheduled
+         */
         ImageButton imageAlarmButton;
+
+        /**
+         * this color is used when the subtask is not completed
+         */
+        int darkColor;
+
+        /**
+         * this color is used when the subtask is completed
+         */
+        int lightColor;
+
+        /**
+         * this color is used when the task time has expired but it's not completed;
+         */
+        int redColor;
 
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
             imageAlarmButton = (ImageButton) view.findViewById(R.id.imageButton);
+            darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
+            lightColor = ContextCompat.getColor(view.getContext(), R.color.completedColor);
+            redColor = ContextCompat.getColor(view.getContext(), R.color.redColor);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -82,7 +110,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textRow.setText(taskList.get(position).getName());
+        Task item = taskList.get(position);
+        holder.textRow.setText(item.getName());
+        switch (item.getStatus()) {
+            case Completed: holder.textRow.setTextColor(holder.lightColor); break;
+            case Pending: holder.textRow.setTextColor(holder.darkColor); break;
+            case Uncompleted: holder.textRow.setTextColor(holder.redColor); break;
+
+        }
         if (taskList.get(position).hasAlarms()) {
             holder.imageAlarmButton.setVisibility(View.VISIBLE);
         } else {

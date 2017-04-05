@@ -13,12 +13,17 @@ public class AlarmInfo {
     @DatabaseField(generatedId = true)
     private
     int id;
-    @DatabaseField
-    private
-    String name;
+
+    /**
+     * time when the notification should be fired (don't mess with expiration time!)
+     */
     @DatabaseField
     private
     long time;
+
+    /**
+     * task the alarm is referring to
+     */
     @DatabaseField(columnName = "task_id", foreign = true)
     private Task task;
 
@@ -29,11 +34,18 @@ public class AlarmInfo {
      */
     public AlarmInfo(Task task, long time) {
         this.task = task;
-        this.name = task.getName();
         this.time = time;
     }
 
     public AlarmInfo(){}
+
+    /**
+     * get name of the task alarm is referring to
+     * @return title
+     */
+    public String getTaskName() {
+        return task.getName();
+    }
 
     public void setTask(Task task) {
         this.task = task;
@@ -41,10 +53,6 @@ public class AlarmInfo {
 
     public int getID() {
         return this.id;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public long getTime() {

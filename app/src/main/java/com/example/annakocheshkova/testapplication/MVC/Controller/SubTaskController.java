@@ -6,6 +6,7 @@ import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
 import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * a controller which handles all the actions connected with subtasks
  */
-public class SubTaskController implements OnItemEditedListener{
+public class SubTaskController implements OnItemEditedListener, UndoListener<SubTask>{
 
     /**
      * event called when user finished editing a subtask and the main view needs to be updated
@@ -44,11 +45,6 @@ public class SubTaskController implements OnItemEditedListener{
      * current task we are working with (-1 at first)
      */
     private static int currentTask = -1;
-
-    /**
-     * deleted subtask (to be restored if needed)
-     */
-    private SubTask deletedItem;
 
     /**
      * constructor
@@ -115,24 +111,19 @@ public class SubTaskController implements OnItemEditedListener{
         return list;
     }
 
-    /**
-     * delete a certain subtask
-     * @param position position of the subtask (in the list) to be deleted
-     */
-    public void onDelete(int position) {
+    @Override
+    public SubTask onDelete(int position) {
         SubTask subTask = subTasksList.get(position);
-        deletedItem = subTask;
+        view.showCancelBar(subTask.getName());
         dataStore.deleteSubTask(subTask);
         if (currentTask != -1)
             onViewLoaded(currentTask);
-        view.showCancelBar(deletedItem.getName());
+        return subTask;
     }
 
-    /**
-     * restore deleted subtask (if cancel button was pressed)
-     */
-    public void onRestoreDeleted() {
-        dataStore.createSubTask(deletedItem);
+    @Override
+    public void onUndo(SubTask item) {
+        dataStore.createSubTask(item);
         if (currentTask != -1)
             onViewLoaded(currentTask);
     }

@@ -63,6 +63,7 @@ public class CreateItemController {
      * method finds out if user was updating the item and creates or updates it depending on the result
      */
     public void onItemEditingFinished() {
+        //TODO get alarm (before...)
         String name = view.getName();
         boolean fireAlarm = view.ifFireAlarm();
         int year = view.getYear();
@@ -84,9 +85,10 @@ public class CreateItemController {
                 AlarmReceiver.removeAlarm(deletedAlarmId);
             }
             task.setName(name);
+            task.setTime(timeToSchedule);
             dataStore.updateTask(task);
         } else {
-            task = new Task(name);
+            task = new Task(name, timeToSchedule);
             dataStore.createTask(task);
         }
 

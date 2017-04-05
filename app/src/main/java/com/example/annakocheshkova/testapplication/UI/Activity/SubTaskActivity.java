@@ -18,8 +18,10 @@ import android.view.View;
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
+import com.example.annakocheshkova.testapplication.Utils.Component.UndoComponent;
 
 
 import java.util.ArrayList;
@@ -54,6 +56,8 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
      * toolbar with menu
      */
     Toolbar toolbar;
+
+    UndoComponent<SubTask> undoComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +96,8 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                //TODO implement undoComponent (maybe)
-                subTaskController.onDelete(pos);
-
+                undoComponent = new UndoComponent<SubTask>(pos, subTaskController);
+                undoComponent.Delete();
             }
 
             @Override
@@ -157,7 +160,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
                 getString(R.string.cancel_btn), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        subTaskController.onRestoreDeleted();
+                        undoComponent.Cancel();
                     }
                 }).show();
     }

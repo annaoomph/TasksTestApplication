@@ -171,6 +171,12 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        taskAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.custom_menu, menu);

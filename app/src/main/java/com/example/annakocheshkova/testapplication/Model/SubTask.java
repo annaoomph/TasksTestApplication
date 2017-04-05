@@ -49,6 +49,10 @@ public class SubTask {
         return this.id;
     }
 
+    /**
+     * get current subtask status
+     * @return true if the task is completed, false if not
+     */
     public boolean getStatus() {
         return this.completed;
     }

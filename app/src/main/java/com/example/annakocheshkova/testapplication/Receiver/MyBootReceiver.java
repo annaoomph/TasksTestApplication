@@ -33,11 +33,11 @@ public class MyBootReceiver extends BroadcastReceiver
         List<AlarmInfo> alarms = customAlarmManager.getAll();
         for (AlarmInfo alarm : alarms) {
             long timeToSchedule = alarm.getTime();
-            String name = alarm.getName();
+            String name = alarm.getTaskName();
             Intent alarmIntent = new Intent(context, AlarmReceiver.class);
             alarmIntent.putExtra("name", name);
-            PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
-            AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, alarm.getID(), alarmIntent, 0);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, timeToSchedule, alarmPendingIntent);
         }
     }
