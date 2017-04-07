@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Activity.CreateItemActivity;
 import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
@@ -34,6 +35,21 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      */
     private static TaskController taskController;
 
+    /**
+     * this color is used when the subtask is not completed
+     */
+    private final int darkColor;
+
+    /**
+     * this color is used when the subtask is completed
+     */
+    private final int lightColor;
+
+    /**
+     * this color is used when the task time has expired but it's not completed;
+     */
+    private final int redColor;
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
@@ -46,28 +62,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
          */
         ImageButton imageAlarmButton;
 
-        /**
-         * this color is used when the subtask is not completed
-         */
-        int darkColor;
-
-        /**
-         * this color is used when the subtask is completed
-         */
-        int lightColor;
-
-        /**
-         * this color is used when the task time has expired but it's not completed;
-         */
-        int redColor;
-
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
             imageAlarmButton = (ImageButton) view.findViewById(R.id.imageButton);
-            darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
-            lightColor = ContextCompat.getColor(view.getContext(), R.color.completedColor);
-            redColor = ContextCompat.getColor(view.getContext(), R.color.redColor);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -91,6 +89,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     public TaskAdapter(List<Task> taskList, TaskController taskController) {
         TaskAdapter.taskList = taskList;
         TaskAdapter.taskController = taskController;
+        darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.mainTextColor);
+        lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
+        redColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.redColor);
     }
 
     @Override
@@ -113,9 +114,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         Task item = taskList.get(position);
         holder.textRow.setText(item.getName());
         switch (item.getStatus()) {
-            case Completed: holder.textRow.setTextColor(holder.lightColor); break;
-            case Pending: holder.textRow.setTextColor(holder.darkColor); break;
-            case Uncompleted: holder.textRow.setTextColor(holder.redColor); break;
+            case Completed: holder.textRow.setTextColor(lightColor); break;
+            case Pending: holder.textRow.setTextColor(darkColor); break;
+            case Uncompleted: holder.textRow.setTextColor(redColor); break;
 
         }
         if (taskList.get(position).hasAlarms()) {

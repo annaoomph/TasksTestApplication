@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/mainTextColor"
         android:layout_margin="20dp"
         android:textSize="20sp"
         android:id="@+id/row_text"
