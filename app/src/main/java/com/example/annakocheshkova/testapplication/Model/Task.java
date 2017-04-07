@@ -8,20 +8,30 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 
-@DatabaseTable(tableName = "task")
-
 /**
  * Task created by user, should contain a name and time to expire (to be added)
  */
+@DatabaseTable(tableName = "task")
 public class Task
 {
+    /**
+     * enum with available task statuses
+     */
+    private enum TaskStatus {
+        Uncompleted,
+        Pending,
+        Completed
+    }
+
     @DatabaseField(generatedId = true)
+    private
     int id;
 
     /**
      * name of the task
      */
     @DatabaseField
+    private
     String name;
 
     /**
@@ -56,6 +66,34 @@ public class Task
 
     }
 
+    /**
+     * constructor that creates the instance of task by its name and time
+     * @param name name of the task
+     */
+    public Task(String name, long time) {
+        this.name = name;
+        this.time = time;
+    }
+
+    /**
+     * constructor to create an instance of task from another task
+     * @param anotherTask task that needs to be copied
+     */
+    public Task(Task anotherTask) {
+        this.id = anotherTask.getID();
+        this.name = anotherTask.getName();
+        this.time = anotherTask.getTime();
+        this.alarmTime = anotherTask.getAlarmTime();
+        this.notification = anotherTask.hasAlarms();
+        subTasks = new ArrayList<>();
+        for (SubTask subTask : anotherTask.getSubTasks())
+            this.subTasks.add(subTask);
+    }
+
+    /**
+     * calculate current task status depending on the current time
+     * @return status
+     */
     public TaskStatus getStatus() {
         Calendar calendar = Calendar.getInstance();
         long currentTime = calendar.getTimeInMillis();
@@ -124,52 +162,42 @@ public class Task
     }
 
     /**
-     * constructor
-     * @param name name of the task
+     * Gets the value of name and returns it
+     * @return name
      */
-    public Task(String name, long time) {
-        this.name = name;
-        this.time = time;
+    public String getName() {
+        return name;
     }
 
     /**
-     * constructor for copying
-     * @param anotherTask task that needs to be copied before deleting
+     * Gets the value of time and returns it
+     * @return time
      */
-    public Task(Task anotherTask) {
-        this.id = anotherTask.getID();
-        this.name = anotherTask.getName();
-        this.time = anotherTask.getTime();
-        this.alarmTime = anotherTask.getAlarmTime();
-        this.notification = anotherTask.hasAlarms();
-        subTasks = new ArrayList<>();
-        for (SubTask subTask : anotherTask.getSubTasks())
-            this.subTasks.add(subTask);
-    }
-
     public long getTime() {
-        return this.time;
+        return time;
     }
 
-    public void setTime(long time) {
-        this.time = time;
-    }
-
-    public int getID() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
+    /**
+     * Sets the name
+     * @param name new value
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    public enum TaskStatus {
-        Uncompleted,
-        Pending,
-        Completed
+    /**
+     * Sets the time
+     * @param time new value
+     */
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    /**
+     * Gets the value of id and returns it
+     * @return id
+     */
+    public int getID() {
+        return id;
     }
 }
