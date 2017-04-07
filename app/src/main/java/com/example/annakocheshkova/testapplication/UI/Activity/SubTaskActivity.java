@@ -36,7 +36,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     SubTaskAdapter subTaskAdapter;
 
     /**
-     * view with all the subtasks
+     * listview to display subtasks
      */
     RecyclerView listView;
 
@@ -50,11 +50,6 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
      */
     SubTaskController subTaskController;
 
-    /**
-     * toolbar with menu
-     */
-    Toolbar toolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +62,6 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
      * get all view items to work with later
      */
     void getViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         listView = (RecyclerView)findViewById(R.id.task_detailed_view);
         view = findViewById(R.id.content);
     }
@@ -77,6 +70,8 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
      * set all content configuration and click listeners
      */
     void setContent() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         subTaskController = new SubTaskController(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
@@ -151,21 +146,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
     @Override
     public void showCancelBar(SubTask subTask) {
-        final UndoComponent<SubTask> undoComponent = new UndoComponent<>(subTask, subTaskController);
-        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTask.getName() +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG)
-                .setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        undoComponent.onHide();
-                    }
-                })
-                .setAction(
-                getString(R.string.cancel_btn), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        undoComponent.onUndoPressed();
-                    }
-
-                }).show();
+        UndoComponent<SubTask> undoComponent = new UndoComponent<>();
+        undoComponent.make(view, subTask, subTaskController, subTask.getName());
     }
 }

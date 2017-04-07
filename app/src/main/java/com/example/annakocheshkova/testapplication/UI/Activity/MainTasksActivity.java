@@ -60,19 +60,14 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     DrawerLayout drawerLayout;
 
     /**
-     * listview with all the tasks
+     * listview with to display tasks
      */
     RecyclerView listView;
 
     /**
-     * main view (needed for snackbar)
+     * main view with all the contents
      */
     View view;
-
-    /**
-     * toolbar with menu
-     */
-    Toolbar toolbar;
 
     /**
      * the main controller
@@ -94,7 +89,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
         drawerListView = (ListView) findViewById(R.id.left_drawer);
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (RecyclerView)findViewById(R.id.tasks_view);
         view = findViewById(R.id.main_content);
     }
@@ -116,6 +110,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
                 drawerLayout.closeDrawer(drawerListView);
             }
         });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
@@ -201,20 +196,8 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     @Override
     public void showCancelBar(Task task) {
-        final UndoComponent<Task> undoComponent = new UndoComponent<>(task, taskController);
-        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + task.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG)
-                .setCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar snackbar, int event) {
-                        undoComponent.onHide();
-                    }
-                })
-                .setAction(R.string.cancel_btn, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        undoComponent.onUndoPressed();
-                    }
-                }).show();
+        UndoComponent<Task> undoComponent = new UndoComponent<>();
+        undoComponent.make(view, task, taskController, task.getName());
     }
 
     @Override
