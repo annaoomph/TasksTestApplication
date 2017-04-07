@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.UI.Activity;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +19,6 @@ import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 import com.example.annakocheshkova.testapplication.Utils.Component.UndoComponent;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +33,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     SubTaskAdapter subTaskAdapter;
 
     /**
-     * listview to display subtasks
-     */
-    RecyclerView listView;
-
-    /**
-     * main view (needed for snackbar)
+     * main view with all the content
      */
     View view;
 
@@ -54,25 +46,18 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtask);
-        getViews();
         setContent();
-    }
-
-    /**
-     * get all view items to work with later
-     */
-    void getViews() {
-        listView = (RecyclerView)findViewById(R.id.task_detailed_view);
-        view = findViewById(R.id.content);
     }
 
     /**
      * set all content configuration and click listeners
      */
     void setContent() {
+        RecyclerView listView = (RecyclerView)findViewById(R.id.task_detailed_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         subTaskController = new SubTaskController(this);
+        view = findViewById(R.id.content);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
