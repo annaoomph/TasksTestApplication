@@ -24,11 +24,18 @@ public class UndoComponent<T> {
     private T item;
 
     /**
-     * constructor of undoComponent, creates an instance of the component with one particular item
+     * creates an instance of the component
      */
     public UndoComponent() {
     }
 
+    /**
+     * method saves an item to the component and shows toast notifying user what happened to the item
+     * @param view view in which the toast should be shown
+     * @param item item to be saved
+     * @param undoListener listener of undo event
+     * @param name name of the item to be shown in a toast
+     */
     public void make(View view, T item, UndoListener<T> undoListener, String name) {
         this.item = item;
         this.undoListener = undoListener;
@@ -42,7 +49,7 @@ public class UndoComponent<T> {
     }
 
     /**
-     * restore object
+     * event when undo button was pressed
      */
     private void onUndoPressed(){
         undoListener.onUndo(item);

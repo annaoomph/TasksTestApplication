@@ -43,6 +43,9 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
          */
         int lightColor;
 
+        /**
+         * creates new instance of the viewholder for a certain row
+         */
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
@@ -66,8 +69,8 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * constructor
-     * @param data list of all the subtasks
+     * creates new instance of adapter
+     * @param data list of subtasks to be shown
      * @param subTaskController controller of the subtasks view
      */
     public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
@@ -76,7 +79,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * a method called everytime when the data changes
+     * a method called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<SubTask> newItems) {

@@ -61,6 +61,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
          */
         int redColor;
 
+        /**
+         * creates new instance of the viewholder for a certain row
+         */
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
@@ -85,7 +88,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * constructor
+     * creates new instance of the adapter
      * @param taskList list of the tasks to be displayed by adapter
      */
     public TaskAdapter(List<Task> taskList, TaskController taskController) {
@@ -100,7 +103,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * a method called everytime when the data changes
+     * a method called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<Task> newItems) {
@@ -127,7 +130,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     /**
      * get the task by its position in the list of items
-     * @param position of the subtask
+     * @param position of the task
      * @return task
      */
     public Task getItem(int position) {

@@ -8,7 +8,6 @@ public interface UndoListener<T> {
 
     /**
      * called when user clicked cancel or has chosen to undo his actions any other way
-     * restores created item
      * @param item item to restore
      */
     void onUndo(T item);
