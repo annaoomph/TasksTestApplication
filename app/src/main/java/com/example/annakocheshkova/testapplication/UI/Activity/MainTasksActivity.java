@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
-import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.UI.Adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 import com.example.annakocheshkova.testapplication.Model.Task;
@@ -203,12 +202,19 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     @Override
     public void showCancelBar(Task task) {
         final UndoComponent<Task> undoComponent = new UndoComponent<>(task, taskController);
-        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + task.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                undoComponent.Cancel();
-            }
-        }).show();
+        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + task.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        undoComponent.onHide();
+                    }
+                })
+                .setAction(R.string.cancel_btn, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        undoComponent.onUndoPressed();
+                    }
+                }).show();
     }
 
     @Override

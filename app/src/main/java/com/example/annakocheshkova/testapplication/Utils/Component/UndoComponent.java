@@ -9,7 +9,7 @@ import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 public class UndoComponent<T> {
 
     /**
-     * listener of undo and delete actions
+     * listener of undo action
      */
     private UndoListener<T> undoListener;
 
@@ -28,11 +28,16 @@ public class UndoComponent<T> {
     }
 
     /**
-     * cancel deleting object
+     * restore object
      */
-    public void Cancel(){
+    public void onUndoPressed(){
         undoListener.onUndo(item);
     }
 
-
+    /**
+     * called when storing the object is no longer needed
+     */
+    public void onHide() {
+        this.item = null;
+    }
 }

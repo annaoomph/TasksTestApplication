@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.UI.Activity;
 
-import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
@@ -18,7 +17,6 @@ import android.view.View;
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
-import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 import com.example.annakocheshkova.testapplication.Utils.Component.UndoComponent;
@@ -154,11 +152,18 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     @Override
     public void showCancelBar(SubTask subTask) {
         final UndoComponent<SubTask> undoComponent = new UndoComponent<>(subTask, subTaskController);
-        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTask.getName() +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
+        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTask.getName() +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        undoComponent.onHide();
+                    }
+                })
+                .setAction(
                 getString(R.string.cancel_btn), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        undoComponent.Cancel();
+                        undoComponent.onUndoPressed();
                     }
 
                 }).show();
