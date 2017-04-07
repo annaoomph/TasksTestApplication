@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
@@ -42,9 +43,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView textRow;
 
         /**
+         * text with alarm time
+         */
+        TextView timeText;
+
+        /**
          * image that's shown when the task has alarms scheduled
          */
-        ImageButton imageAlarmButton;
+        LinearLayout alarmLayout;
 
         /**
          * this color is used when the subtask is not completed
@@ -64,7 +70,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
-            imageAlarmButton = (ImageButton) view.findViewById(R.id.imageButton);
+            alarmLayout = (LinearLayout) view.findViewById(R.id.alarm_info);
+            timeText = (TextView)view.findViewById(R.id.time_text);
             darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
             lightColor = ContextCompat.getColor(view.getContext(), R.color.completedColor);
             redColor = ContextCompat.getColor(view.getContext(), R.color.redColor);
@@ -116,13 +123,39 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             case Completed: holder.textRow.setTextColor(holder.lightColor); break;
             case Pending: holder.textRow.setTextColor(holder.darkColor); break;
             case Uncompleted: holder.textRow.setTextColor(holder.redColor); break;
-
         }
-        if (taskList.get(position).hasAlarms()) {
-            holder.imageAlarmButton.setVisibility(View.VISIBLE);
+        if (item.hasAlarms()) {
+            holder.timeText.setText(getDateTimeString(item.getAlarmTime()));
+            holder.alarmLayout.setVisibility(View.VISIBLE);
         } else {
-            holder.imageAlarmButton.setVisibility(View.GONE);
+            holder.alarmLayout.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * get date and time of the task in string format
+     * @param time task time
+     * @return date and time in string format
+     */
+    private String getDateTimeString(long time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        if (day.length() == 1)
+            day = "0" + day;
+        String month = String.valueOf(calendar.get(Calendar.MONTH)+1);
+        if (month.length() == 1)
+            month = "0" + month;
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        if (year.length() == 1)
+            year = "0" + year;
+        String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+        if (hour.length() == 1)
+            hour = "0" + hour;
+        String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+        if (minute.length() == 1)
+            minute = "0" + minute;
+        return hour + ":" + minute + " " + day + "-" + month + "-" + year;
     }
 
     @Override
