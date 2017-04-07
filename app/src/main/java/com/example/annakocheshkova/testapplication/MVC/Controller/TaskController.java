@@ -1,15 +1,13 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
+import com.example.annakocheshkova.testapplication.Utils.NotificationAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
 import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -88,11 +86,10 @@ public class TaskController implements UndoListener {
     @Override
     public Task onDelete(int position) {
         Task item = tasksList.get(position);
+        NotificationAlarmManager.removeAlarm(item);
         Task deletedItem = new Task(item);
         view.showCancelBar(item.getName());
         dataStore.deleteTask(item);
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
-        customAlarmManager.deleteByTaskId(item.getID());
         dataStore.deleteSubTasksByTask(item);
         onViewLoaded();
         return deletedItem;
@@ -100,20 +97,14 @@ public class TaskController implements UndoListener {
 
     @Override
     public void onUndo(Object item) {
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         Task deletedItem = (Task)item;
         if (deletedItem != null) {
-            Task task = new Task(deletedItem.getName(), deletedItem.getTime());
-            dataStore.createTask(task);
+            dataStore.createTask(deletedItem);
             for (SubTask subTask : deletedItem.getSubTasks()) {
-                subTask.setTask(task);
+                subTask.setTask(deletedItem);
                 dataStore.createSubTask(subTask);
             }
-            for (AlarmInfo alarm : deletedItem.getAlarms()) {
-                alarm.setTask(task);
-                customAlarmManager.create(alarm);
-                AlarmReceiver.addAlarm(deletedItem, alarm.getTime(), alarm.getID());
-            }
+            NotificationAlarmManager.addAlarm(deletedItem);
         }
         onViewLoaded();
     }

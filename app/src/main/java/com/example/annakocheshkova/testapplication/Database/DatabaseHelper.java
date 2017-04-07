@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.Database;
 import java.sql.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
+
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
@@ -23,7 +23,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     /**
      * current version of the database (change to higher number if structure changes are made)
      */
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 13;
 
     /**
      * Dao for tasks table
@@ -35,10 +35,6 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      */
     private RuntimeExceptionDao<SubTask, Integer> simpleSubTaskRuntimeDao;
 
-    /**
-     * Dao for alarms table
-     */
-    private RuntimeExceptionDao<AlarmInfo, Integer> simpleAlarmRuntimeDao;
 
     /**
      * constructor that initializes all Daos
@@ -47,7 +43,6 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         super(MyApplication.getAppContext(),DATABASE_NAME, null, DATABASE_VERSION);
         simpleTaskRuntimeDao = null;
         simpleSubTaskRuntimeDao = null;
-        simpleAlarmRuntimeDao = null;
     }
 
     @Override
@@ -55,7 +50,6 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(connectionSource, Task.class);
             TableUtils.createTable(connectionSource, SubTask.class);
-            TableUtils.createTable(connectionSource, AlarmInfo.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -66,22 +60,10 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.dropTable(connectionSource, Task.class, true);
             TableUtils.dropTable(connectionSource, SubTask.class, true);
-            TableUtils.dropTable(connectionSource, AlarmInfo.class, true);
             onCreate(db, connectionSource);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * a method for datastore to get access to alarms dao
-      * @return alarms dao
-     */
-    RuntimeExceptionDao<AlarmInfo, Integer> getSimpleAlarmInfoDao() {
-        if (simpleAlarmRuntimeDao == null) {
-            simpleAlarmRuntimeDao = getRuntimeExceptionDao(AlarmInfo.class);
-        }
-        return simpleAlarmRuntimeDao;
     }
 
     /**
@@ -111,6 +93,5 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         super.close();
         simpleTaskRuntimeDao = null;
         simpleSubTaskRuntimeDao = null;
-        simpleAlarmRuntimeDao = null;
     }
 }

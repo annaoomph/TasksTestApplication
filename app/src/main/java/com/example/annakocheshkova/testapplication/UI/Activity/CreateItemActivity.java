@@ -14,12 +14,10 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 
@@ -259,9 +257,8 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         startActivity(new Intent(this, MainTasksActivity.class));
     }
 
-
     @Override
-    public void showItem(Task item, AlarmInfo alarm) {
+    public void showItem(Task item) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
         //TODO if hasAlarms set alarm (before 1 min, 1 hour..)

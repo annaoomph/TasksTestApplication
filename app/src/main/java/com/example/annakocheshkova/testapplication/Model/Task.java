@@ -1,7 +1,5 @@
 package com.example.annakocheshkova.testapplication.Model;
 
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -34,16 +32,25 @@ public class Task
     long time;
 
     /**
+     * if the task has a notification set
+     */
+    @DatabaseField
+    private
+    boolean notification;
+
+    /**
+     * time when the task should notify user
+     */
+    @DatabaseField
+    private
+    long alarmTime;
+
+    /**
      * list of subtasks of this task
      */
     @ForeignCollectionField
     private Collection<SubTask> subTasks;
 
-    /**
-     * list of the alarms of this task
-     */
-    @ForeignCollectionField
-    private Collection<AlarmInfo> alarms;
 
     public Task(){
 
@@ -62,6 +69,23 @@ public class Task
         } else {
             return TaskStatus.Pending;
         }
+    }
+
+    /**
+     * set notification on task
+     * @param time notification time
+     */
+    public void setNotification(long time) {
+        this.alarmTime = time;
+        this.notification = true;
+    }
+
+    /**
+     * remove notification from task
+     */
+    public void onAlarmCancelled() {
+        this.notification = false;
+        this.alarmTime = 0;
     }
 
     /**
@@ -84,19 +108,19 @@ public class Task
     }
 
     /**
-     * get all the alarms of this task
-     * @return alarms
+     * get the time of the alarm
+     * @return time of the alarm
      */
-    public Collection<AlarmInfo> getAlarms() {
-        return alarms;
+    public long getAlarmTime() {
+        return alarmTime;
     }
 
     /**
-     * if the task has alarms scheduled
-     * @return true if it has, false if it has not
+     * if the task should notify user
+     * @return true if it should, false if not
      */
     public boolean hasAlarms() {
-        return alarms.size() > 0;
+        return notification;
     }
 
     /**
@@ -116,12 +140,11 @@ public class Task
         this.id = anotherTask.getID();
         this.name = anotherTask.getName();
         this.time = anotherTask.getTime();
+        this.alarmTime = anotherTask.getAlarmTime();
+        this.notification = anotherTask.hasAlarms();
         subTasks = new ArrayList<>();
-        alarms = new ArrayList<>();
         for (SubTask subTask : anotherTask.getSubTasks())
             this.subTasks.add(subTask);
-        for (AlarmInfo alarm : anotherTask.getAlarms())
-            this.alarms.add(alarm);
     }
 
     public long getTime() {

@@ -1,16 +1,11 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
-import android.app.AlarmManager;
-import android.os.Build;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
+import com.example.annakocheshkova.testapplication.Utils.NotificationAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.Task;
-import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
+
 import java.util.Calendar;
 
 /**
@@ -47,12 +42,10 @@ public class CreateItemController {
      * @param id id of the task to be shown (-1 if no need to show)
      */
     public void onViewLoaded(int id) {
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         if (id>0) {
             Task task = dataStore.getTask(id);
             editingTask = task;
-            AlarmInfo alarm = customAlarmManager.getByTaskId(task.getID());
-            view.showItem(task, alarm);
+            view.showItem(task);
         } else {
             editingTask = null;
         }
@@ -63,7 +56,6 @@ public class CreateItemController {
      * method finds out if user was updating the item and creates or updates it depending on the result
      */
     public void onItemEditingFinished() {
-        //TODO get alarm (before...)
         String name = view.getName();
         boolean fireAlarm = view.ifFireAlarm();
         int year = view.getYear();
@@ -74,28 +66,30 @@ public class CreateItemController {
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.set(year, month, day, hour, minute);
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         long timeToSchedule = calendar.getTimeInMillis();
+        //TODO This is different
+        long timeForAlarm = calendar.getTimeInMillis();
         Task task;
         if (editingTask != null) {
             task = editingTask;
             if (task.hasAlarms()) {
-                int deletedAlarmId = customAlarmManager.get(task.getID()).getID();
-                customAlarmManager.delete(deletedAlarmId);
-                AlarmReceiver.removeAlarm(deletedAlarmId);
+                task.onAlarmCancelled();
+                NotificationAlarmManager.removeAlarm(task);
             }
+            if (fireAlarm)
+                task.setNotification(timeForAlarm);
             task.setName(name);
             task.setTime(timeToSchedule);
             dataStore.updateTask(task);
         } else {
             task = new Task(name, timeToSchedule);
+            if (fireAlarm)
+                task.setNotification(timeForAlarm);
             dataStore.createTask(task);
         }
 
         if (fireAlarm) {
-            AlarmInfo alarm = new AlarmInfo(task, timeToSchedule);
-            int alarmId = customAlarmManager.create(alarm);
-            AlarmReceiver.addAlarm(task,timeToSchedule, alarmId );
+            NotificationAlarmManager.addAlarm(task);
         }
     }
 }
