@@ -125,6 +125,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 
+    /**
+     * get the task by its position in the list of items
+     * @param position of the subtask
+     * @return task
+     */
+    public Task getItem(int position) {
+        return taskList.get(position);
+    }
+
     @Override
     public int getItemCount() {
         return taskList.size();

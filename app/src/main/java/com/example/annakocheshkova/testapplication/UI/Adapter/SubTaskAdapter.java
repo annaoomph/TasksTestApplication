@@ -84,6 +84,15 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
         this.notifyDataSetChanged();
     }
 
+    /**
+     * get the subtask by its position in the list of items
+     * @param position of the subtask
+     * @return subtask
+     */
+    public SubTask getItem(int position) {
+        return subTasksList.get(position);
+    }
+
     @Override
     public SubTaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.subtask_row,  null);

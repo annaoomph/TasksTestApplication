@@ -19,25 +19,12 @@ public class UndoComponent<T> {
     private T item;
 
     /**
-     * position in the array of the item
-     */
-    private int position;
-
-    /**
-     * constructor
-     * @param position of the item to be stored
+     * constructor of undoComponent, creates an instance of the component with one particular item
      * @param undoListener listener (can be controller)
      */
-    public UndoComponent(int position, UndoListener<T> undoListener) {
-        this.position = position;
+    public UndoComponent(T item, UndoListener<T> undoListener) {
+        this.item = item;
         this.undoListener = undoListener;
-    }
-
-    /**
-     * delete object permanently
-     */
-    public void Delete(){
-        item = undoListener.onDelete(position);
     }
 
     /**

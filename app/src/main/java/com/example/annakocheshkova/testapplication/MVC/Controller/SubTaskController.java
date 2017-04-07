@@ -27,11 +27,6 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * list of all the subtasks
-     */
-    private List<SubTask> subTasksList;
-
-    /**
      * datastore example to work with the data
      */
     private DataStore dataStore;
@@ -107,18 +102,18 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
             view.showItems(list);
             view.showTitle(main.getName());
         }
-        subTasksList = list;
         return list;
     }
 
-    @Override
-    public SubTask onDelete(int position) {
-        SubTask subTask = subTasksList.get(position);
-        view.showCancelBar(subTask.getName());
+    /**
+     * called when a subtask needs to be deleted
+     * @param subTask to be deleted
+     */
+    public void onDelete(SubTask subTask) {
+        view.showCancelBar(subTask);
         dataStore.deleteSubTask(subTask);
         if (currentTask != -1)
             onViewLoaded(currentTask);
-        return subTask;
     }
 
     @Override

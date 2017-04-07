@@ -29,7 +29,7 @@ public interface SubTaskView {
 
     /**
      * show toast with information that item is deleted and Cancel button
-     * @param subTaskName name of the deleted item to be shown in a Toast
+     * @param subTask deleted item to be shown in a Toast
      */
-    void showCancelBar(String subTaskName);
+    void showCancelBar(SubTask subTask);
 }

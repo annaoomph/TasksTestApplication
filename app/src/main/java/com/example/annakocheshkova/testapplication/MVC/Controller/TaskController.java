@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * a controller which handles all the actions connected with tasks
  */
-public class TaskController implements UndoListener {
+public class TaskController implements UndoListener<Task> {
 
     /**
      * datastore to work with data
@@ -30,17 +30,32 @@ public class TaskController implements UndoListener {
     private TaskView view;
 
     /**
-     * list of all the tasks
-     */
-    private List<Task> tasksList;
-
-    /**
      * constructor
      * @param view main view
      */
     public TaskController(TaskView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
+    }
+
+    /**
+     * a method to compare two tasks for proper sorting
+     * @param firstTask first task to be compared
+     * @param secondTask second task to be compared
+     * @return 0 if they has equal place, -1 if the first is higher
+     */
+    private int compareTasks(Task firstTask, Task secondTask) {
+        if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
+            if (firstTask.getTime() > secondTask.getTime()) {
+                return 1;
+            } else if (firstTask.getTime() < secondTask.getTime()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else {
+            return firstTask.getStatus().compareTo(secondTask.getStatus());
+        }
     }
 
     /**
@@ -51,20 +66,9 @@ public class TaskController implements UndoListener {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task firstTask, Task secondTask) {
-                if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
-                    if (firstTask.getTime() > secondTask.getTime()) {
-                        return 1;
-                    } else if (firstTask.getTime() < secondTask.getTime()) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                } else {
-                    return firstTask.getStatus().compareTo(secondTask.getStatus());
-                }
+                return compareTasks(firstTask, secondTask);
             }
         });
-        tasksList = tasks;
         view.showItems(tasks);
     }
 
@@ -85,21 +89,21 @@ public class TaskController implements UndoListener {
     }
 
 
-    @Override
-    public Task onDelete(int position) {
-        Task item = tasksList.get(position);
-        Task deletedItem = new Task(item);
-        view.showCancelBar(item.getName());
+    /**
+     * event called when an item needs to be deleted
+     * @param item task to be deleted
+     */
+    public void onDelete(Task item) {
+        view.showCancelBar(item);
         dataStore.deleteTask(item);
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         customAlarmManager.deleteByTaskId(item.getID());
         dataStore.deleteSubTasksByTask(item);
         onViewLoaded();
-        return deletedItem;
     }
 
     @Override
-    public void onUndo(Object item) {
+    public void onUndo(Task item) {
         CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         Task deletedItem = (Task)item;
         if (deletedItem != null) {

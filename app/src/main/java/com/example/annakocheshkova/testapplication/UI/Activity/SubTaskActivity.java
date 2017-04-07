@@ -57,8 +57,6 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
      */
     Toolbar toolbar;
 
-    UndoComponent<SubTask> undoComponent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +94,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                undoComponent = new UndoComponent<SubTask>(pos, subTaskController);
-                undoComponent.Delete();
+                subTaskController.onDelete(subTaskAdapter.getItem(pos));
             }
 
             @Override
@@ -155,13 +152,15 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     }
 
     @Override
-    public void showCancelBar(String subTaskName) {
-        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTaskName +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
+    public void showCancelBar(SubTask subTask) {
+        final UndoComponent<SubTask> undoComponent = new UndoComponent<>(subTask, subTaskController);
+        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTask.getName() +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
                 getString(R.string.cancel_btn), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         undoComponent.Cancel();
                     }
+
                 }).show();
     }
 }

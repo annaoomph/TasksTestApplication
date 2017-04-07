@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.UI.Adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 import com.example.annakocheshkova.testapplication.Model.Task;
@@ -78,11 +79,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
      * the main controller
      */
     TaskController taskController;
-
-    /**
-     * component responsible for cancelling events
-     */
-    UndoComponent<Task> undoComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,8 +147,8 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                undoComponent = new UndoComponent<Task>(pos, taskController);
-                undoComponent.Delete();
+                Task item = taskAdapter.getItem(pos);
+                taskController.onDelete(item);
             }
 
             @Override
@@ -205,8 +201,9 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    public void showCancelBar(String taskName) {
-        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + taskName+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
+    public void showCancelBar(Task task) {
+        final UndoComponent<Task> undoComponent = new UndoComponent<>(task, taskController);
+        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + task.getName()+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 undoComponent.Cancel();
