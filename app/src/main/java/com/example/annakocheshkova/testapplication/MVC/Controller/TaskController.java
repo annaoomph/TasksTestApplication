@@ -87,7 +87,7 @@ public class TaskController implements UndoListener {
     public Task onDelete(int position) {
         Task item = tasksList.get(position);
         NotificationAlarmManager.removeAlarm(item);
-        Task deletedItem = new Task(item);
+        Task deletedItem = new Task(item); // making a copy of the item because ormlite will delete it later
         view.showCancelBar(item.getName());
         dataStore.deleteTask(item);
         dataStore.deleteSubTasksByTask(item);

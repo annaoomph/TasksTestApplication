@@ -17,7 +17,7 @@ public class Task
     /**
      * enum with available task statuses
      */
-    private enum TaskStatus {
+    public enum TaskStatus {
         Uncompleted,
         Pending,
         Completed
