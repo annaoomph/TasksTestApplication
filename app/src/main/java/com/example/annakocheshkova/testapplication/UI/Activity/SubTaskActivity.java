@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
@@ -133,5 +134,11 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     public void showCancelBar(SubTask subTask) {
         UndoComponent<SubTask> undoComponent = new UndoComponent<>();
         undoComponent.make(view, subTask, subTaskController, subTask.getName());
+    }
+
+    @Override
+    public void error(String errorText) {
+        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
+        finish();
     }
 }

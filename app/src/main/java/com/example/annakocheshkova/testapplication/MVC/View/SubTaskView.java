@@ -32,4 +32,10 @@ public interface SubTaskView {
      * @param subTask deleted item to be shown in a Toast
      */
     void showCancelBar(SubTask subTask);
+
+    /**
+     * show error if it has happened during opening the task
+     * @param errorText text to be displayed
+     */
+    void error(String errorText);
 }

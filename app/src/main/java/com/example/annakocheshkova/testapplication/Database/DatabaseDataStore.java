@@ -125,6 +125,8 @@ class DatabaseDataStore implements DataStore {
     @Override
     public Task getTask(int id) {
         List<Task> list = simpleTaskDao.queryForEq("id", id);
+        if (list.size() == 0)
+            return null;
         return list.get(0);
     }
 

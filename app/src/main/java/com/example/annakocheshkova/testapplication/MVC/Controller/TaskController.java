@@ -42,7 +42,7 @@ public class TaskController implements UndoListener<Task> {
      * a method to compare two tasks for proper sorting
      * @param firstTask first task to be compared
      * @param secondTask second task to be compared
-     * @return 0 if they has equal place, -1 if the first is higher
+     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
      */
     private int compareTasks(Task firstTask, Task secondTask) {
         if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
