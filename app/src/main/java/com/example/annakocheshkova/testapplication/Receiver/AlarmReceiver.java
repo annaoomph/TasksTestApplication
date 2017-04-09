@@ -45,6 +45,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationBuilder.setContentText(name);
         notificationBuilder.setContentIntent(pendingIntent);
         notificationBuilder.setVibrate(new long[] {200, 100, 100, 100});
+        notificationBuilder.setAutoCancel(true);
         Notification notification = notificationBuilder.build();
         notificationManager.notify(101, notification);
     }
