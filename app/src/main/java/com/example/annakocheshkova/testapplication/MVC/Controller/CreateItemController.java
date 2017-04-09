@@ -45,7 +45,16 @@ public class CreateItemController {
         if (id>0) {
             Task task = dataStore.getTask(id);
             editingTask = task;
-            view.showItem(task);
+            long timePeriod = task.getTime() - task.getAlarmTime();
+            int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
+            int alarmTime = 0; //position in spinner adapter
+            switch (timePeriodInMinutes) {
+                case 1: alarmTime = 1; break;
+                case 10: alarmTime = 2; break;
+                case 60: alarmTime = 3; break;
+                case 60 * 24: alarmTime = 4; break;
+            }
+            view.showItem(task, alarmTime);
         } else {
             editingTask = null;
         }
@@ -67,8 +76,15 @@ public class CreateItemController {
         calendar.clear();
         calendar.set(year, month, day, hour, minute);
         long timeToSchedule = calendar.getTimeInMillis();
-        //TODO This is different
-        long timeForAlarm = calendar.getTimeInMillis();
+        int alarmTime = view.getReminderTime();
+        long timePeriod = 0;
+        switch (alarmTime) {
+            case 1: timePeriod = 60 * 1000; break;
+            case 2: timePeriod = 60 * 1000 * 10; break;
+            case 3: timePeriod = 60 * 1000 * 60; break;
+            case 4: timePeriod = 60 * 1000 * 60 * 24;  break;
+        }
+        long timeForAlarm = timeToSchedule - timePeriod;
         Task task;
         if (editingTask != null) {
             task = editingTask;

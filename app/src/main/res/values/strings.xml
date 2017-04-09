@@ -21,14 +21,17 @@
     <string name="deleted_string_secondpart">deleted!</string>
     <string name="alertDialogFragmentTag">Alert Dialog Fragment</string>
     <string name="attention">Attention</string>
+    <string name="before">before</string>
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>
         <item>Login</item>
     </string-array>
-    <string-array name="intervals">
-        <item>minute</item>
-        <item>hour</item>
-        <item>day</item>
+    <string-array name="reminder">
+        <item>in time</item>
+        <item>a minute before</item>
+        <item>10 minutes before</item>
+        <item>an hour before</item>
+        <item>a day before</item>
     </string-array>
 </resources>

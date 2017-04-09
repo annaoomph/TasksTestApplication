@@ -9,8 +9,9 @@ public interface CreateItemView {
     /**
      * shows the item to be edited
      * @param item item to be edited
+     * @param alarmTime number of the chosen period
      */
-    void showItem(Task item);
+    void showItem(Task item, int alarmTime);
 
     /**
      * get name of the created item or new name of the updated
@@ -54,4 +55,10 @@ public interface CreateItemView {
      * @return true if needs, false if not
      */
     boolean ifFireAlarm();
+
+    /**
+     * get the time when to fire alarm
+     * @return the number of the chosen period
+     */
+    int getReminderTime();
 }

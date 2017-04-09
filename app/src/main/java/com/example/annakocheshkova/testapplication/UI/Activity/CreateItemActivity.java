@@ -10,10 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
@@ -47,6 +49,11 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * checkbox if fire alarm
      */
     CheckBox reminderCheckBox;
+
+    /**
+     * a spinner to choose when to fire alarm
+     */
+    Spinner spinner;
 
     /**
      * editText which displays the date chosen by user
@@ -110,6 +117,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         nameText = (EditText)this.findViewById(R.id.name_edittext);
         reminderCheckBox = (CheckBox)this.findViewById(R.id.enable_reminder);
+        spinner = (Spinner)findViewById(R.id.reminder_spinner);
         setSupportActionBar(toolbar);
     }
 
@@ -173,6 +181,10 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
                 reminderCheckBox.setChecked(!reminderCheckBox.isChecked());
             }
         });
+        String[] spinnerItems = getResources().getStringArray(R.array.reminder);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
         createItemController.onViewLoaded(id);
     }
 
@@ -258,10 +270,10 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     @Override
-    public void showItem(Task item) {
+    public void showItem(Task item, int alarmTime) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
-        //TODO if hasAlarms set alarm (before 1 min, 1 hour..)
+        spinner.setSelection(alarmTime);
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.setTimeInMillis(item.getTime());
@@ -306,5 +318,10 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     @Override
     public boolean ifFireAlarm() {
         return reminderCheckBox.isChecked();
+    }
+
+    @Override
+    public int getReminderTime() {
+        return spinner.getSelectedItemPosition();
     }
 }

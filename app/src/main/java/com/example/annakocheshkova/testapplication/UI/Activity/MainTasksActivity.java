@@ -173,7 +173,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     @Override
     protected void onResume() {
         super.onResume();
-        taskAdapter.notifyDataSetChanged();
+        taskController.onViewLoaded();
     }
 
     @Override
