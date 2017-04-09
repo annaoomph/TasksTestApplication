@@ -3,6 +3,8 @@ package com.example.annakocheshkova.testapplication.MVC.Controller;
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.Utils.NotificationAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.Task;
 
@@ -72,40 +74,59 @@ public class CreateItemController {
         int day = view.getDay();
         int hour = view.getHour();
         int minute = view.getMinute();
+        int alarmTime = view.getReminderTime();
         Calendar calendar = Calendar.getInstance();
+        long currentTime = calendar.getTimeInMillis();
         calendar.clear();
         calendar.set(year, month, day, hour, minute);
         long timeToSchedule = calendar.getTimeInMillis();
-        int alarmTime = view.getReminderTime();
         long timePeriod = 0;
         switch (alarmTime) {
-            case 1: timePeriod = 60 * 1000; break;
-            case 2: timePeriod = 60 * 1000 * 10; break;
-            case 3: timePeriod = 60 * 1000 * 60; break;
-            case 4: timePeriod = 60 * 1000 * 60 * 24;  break;
+            case 1:
+                timePeriod = 60 * 1000;
+                break;
+            case 2:
+                timePeriod = 60 * 1000 * 10;
+                break;
+            case 3:
+                timePeriod = 60 * 1000 * 60;
+                break;
+            case 4:
+                timePeriod = 60 * 1000 * 60 * 24;
+                break;
         }
         long timeForAlarm = timeToSchedule - timePeriod;
-        Task task;
-        if (editingTask != null) {
-            task = editingTask;
-            if (task.hasAlarms()) {
-                task.onAlarmCancelled();
-                NotificationAlarmManager.removeAlarm(task);
-            }
-            if (fireAlarm)
-                task.setNotification(timeForAlarm);
-            task.setName(name);
-            task.setTime(timeToSchedule);
-            dataStore.updateTask(task);
-        } else {
-            task = new Task(name, timeToSchedule);
-            if (fireAlarm)
-                task.setNotification(timeForAlarm);
-            dataStore.createTask(task);
+        boolean correctTime = timeToSchedule > currentTime;
+        boolean correctAlarmTime = timeForAlarm > currentTime;
+        if (!correctTime) {
+            view.error(MyApplication.getAppContext().getString(R.string.incorrect_time));
         }
+        else if (!correctAlarmTime) {
+            view.error(MyApplication.getAppContext().getString(R.string.incorrect_alarm_time));
+        } else {
+            Task task;
+            if (editingTask != null) {
+                task = editingTask;
+                if (task.hasAlarms()) {
+                    task.onAlarmCancelled();
+                    NotificationAlarmManager.removeAlarm(task);
+                }
+                if (fireAlarm)
+                    task.setNotification(timeForAlarm);
+                task.setName(name);
+                task.setTime(timeToSchedule);
+                dataStore.updateTask(task);
+            } else {
+                task = new Task(name, timeToSchedule);
+                if (fireAlarm)
+                    task.setNotification(timeForAlarm);
+                dataStore.createTask(task);
+            }
 
-        if (fireAlarm) {
-            NotificationAlarmManager.addAlarm(task);
+            if (fireAlarm) {
+                NotificationAlarmManager.addAlarm(task);
+            }
+            view.close();
         }
     }
 }

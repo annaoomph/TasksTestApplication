@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
@@ -228,7 +229,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
                 }
     };
 
-    /**
+     /**
      *the callback received when the user sets the time in the dialog
      */
     private TimePickerDialog.OnTimeSetListener onTimeSetListener =
@@ -266,7 +267,6 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      */
     public void OnAddNewTaskClick(View view) {
         createItemController.onItemEditingFinished();
-        startActivity(new Intent(this, MainTasksActivity.class));
     }
 
     @Override
@@ -283,6 +283,16 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         chosenMinute = calendar.get(Calendar.MINUTE);
         chosenHour = calendar.get(Calendar.HOUR_OF_DAY);
         updateDisplay();
+    }
+
+    @Override
+    public void close() {
+        startActivity(new Intent(this, MainTasksActivity.class));
+    }
+
+    @Override
+    public void error(String errorString) {
+        Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
     }
 
     @Override

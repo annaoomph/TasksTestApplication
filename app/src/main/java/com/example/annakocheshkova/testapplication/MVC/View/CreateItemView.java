@@ -14,6 +14,17 @@ public interface CreateItemView {
     void showItem(Task item, int alarmTime);
 
     /**
+     * close the view if the item was updated/created
+     */
+    void close();
+
+    /**
+     * an error when creating/updating item has occurred
+     * @param errorString string describing the error
+     */
+    void error(String errorString);
+
+    /**
      * get name of the created item or new name of the updated
      * @return name
      */

@@ -22,6 +22,8 @@
     <string name="alertDialogFragmentTag">Alert Dialog Fragment</string>
     <string name="attention">Attention</string>
     <string name="before">before</string>
+    <string name="incorrect_time">You have chosen the time less than the current time! The task was not created.</string>
+    <string name="incorrect_alarm_time">You have chosen the time of the alarm less than the current time! The task was not created.</string>
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>
