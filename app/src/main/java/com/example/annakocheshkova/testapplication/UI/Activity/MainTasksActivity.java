@@ -81,7 +81,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
             public void onItemClick (AdapterView < ? > parent, View view, int position, long id){
                 drawerLayout.closeDrawer(drawerListView);
                 switch (position) {
-                    case 0: {
+                    case 1: {
                         Intent intent = new Intent(view.getContext(), ExportActivity.class);
                         view.getContext().startActivity(intent);
                         break;
