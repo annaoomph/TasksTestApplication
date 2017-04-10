@@ -72,7 +72,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
         SubTaskAdapter.subTaskController = subTaskController;
         subTasksList = data;
-        darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.mainTextColor);
+        darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
         lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
     }
 

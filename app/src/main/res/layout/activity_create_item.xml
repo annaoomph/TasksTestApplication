@@ -16,20 +16,20 @@
         android:id="@+id/name_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/default_margin"
         android:backgroundTint="@color/colorPrimary"
         android:ems="10"
         android:hint="@string/name"
-        android:textColor="@color/mainTextColor"
-        android:textColorHint="@color/mainTextColor" />
+        android:textColor="@color/textColorPrimary"
+        android:textColorHint="@color/textColorHint" />
 
     <LinearLayout
         android:id="@+id/checkbox_clickable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
         android:orientation="horizontal">
 
         <CheckBox
@@ -42,16 +42,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/set_reminder"
-            android:textColor="@color/mainTextColor"
-            android:textSize="18sp" />
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/default_text_size" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -65,7 +65,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/default_margin"
                 android:layout_weight="1.0"
                 android:clickable="false"
                 android:cursorVisible="false"
@@ -76,7 +76,7 @@
                 android:id="@+id/set_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/default_margin"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/ic_menu_my_calendar" />
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/default_margin"
                 android:layout_weight="1.0"
                 android:clickable="false"
                 android:cursorVisible="false"
@@ -102,7 +102,7 @@
                 android:id="@+id/set_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/default_margin"
                 android:background="@android:color/transparent"
                 android:src="@android:drawable/ic_menu_recent_history" />
         </LinearLayout>
@@ -112,9 +112,9 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/default_margin"
         android:background="@color/colorPrimaryDark"
-        android:onClick="OnAddNewTaskClick"
+        android:onClick="onAddNewTaskClick"
         android:text="@string/ok_string"
         android:textColor="@color/colorAccent" />
 </LinearLayout>

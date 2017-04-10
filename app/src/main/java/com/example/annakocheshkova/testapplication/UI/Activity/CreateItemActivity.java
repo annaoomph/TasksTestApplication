@@ -254,7 +254,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * method responding on button click when adding the new task
      * @param view button view
      */
-    public void OnAddNewTaskClick(View view) {
+    public void onAddNewTaskClick(View view) {
         createItemController.onItemEditingFinished();
         startActivity(new Intent(this, MainTasksActivity.class));
     }

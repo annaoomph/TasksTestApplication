@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:textColor="@color/mainTextColor"
-        android:layout_margin="20dp"
-        android:textSize="@dimen/main_text_size"
+        android:textColor="@color/textColorPrimary"
+        android:layout_margin="@dimen/default_margin"
+        android:textSize="@dimen/default_text_size"
         android:id="@+id/row_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
