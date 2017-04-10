@@ -28,13 +28,13 @@ public interface SubTaskView {
     void showDialog(SubTask subTask, int taskId);
 
     /**
-     * show toast with information that item is deleted and Cancel button
+     * shows toast with information that item is deleted and Cancel button
      * @param subTask deleted item to be shown in a Toast
      */
     void showCancelBar(SubTask subTask);
 
     /**
-     * show error if it has happened during opening the task
+     * shows error if it has happened during opening the task
      */
     void showNoSuchTaskError();
 }

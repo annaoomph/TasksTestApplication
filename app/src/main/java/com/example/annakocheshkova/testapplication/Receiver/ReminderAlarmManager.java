@@ -19,12 +19,12 @@ import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
 import java.util.List;
 
 /**
- * listener responding to scheduled alarms, shows notifications when it is needed, creates or disables them
+ * Manager responsible for scheduling alarms, removing them and receiving them
  */
 public class ReminderAlarmManager extends BroadcastReceiver {
 
     /**
-     * when the time has come for notification to be fired
+     * called when the time has come for notification to be fired
      * @param context current application context
      * @param intent current intent
      */
@@ -34,7 +34,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * this method is responsible for showing notification for a certain task
+     * shows notification for a certain task
      * @param context current context
      * @param name name of the task
      * @param id id of the task
@@ -58,7 +58,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * create a new alarm
+     * creates a new alarm
      * @param newTask task for the alarm
      */
     public static void addAlarm(Task newTask) {
@@ -72,7 +72,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * disable a certain alarm
+     * disables a certain alarm
      * @param task task from which the alarm should be deleted
      */
     public static void removeAlarm(Task task) {
@@ -84,7 +84,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * this method reads all the alarms from the database and reschedules them
+     * reads all the alarms from the database and reschedules them
      */
     public static void scheduleAlarms() {
         DataStore dataStore = DataStoreFactory.getDataStore();

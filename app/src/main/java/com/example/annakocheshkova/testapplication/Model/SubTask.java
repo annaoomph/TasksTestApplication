@@ -26,7 +26,7 @@ public class SubTask {
     String name;
 
     /**
-     * if the subtask is completed
+     * aboolean field showing the subtask is completed
      */
     @DatabaseField
     private
@@ -35,7 +35,7 @@ public class SubTask {
     public SubTask(){}
 
     /**
-     * constructor to create new instance of subtask by its name and status
+     * creates new instance of subtask by its name and status
      * @param name name of the subtask
      * @param completed if it is finished
      */
@@ -45,7 +45,7 @@ public class SubTask {
     }
 
     /**
-     * get current subtask status
+     * gets current subtask status
      * @return true if the task is completed, false if not
      */
     public boolean getStatus() {
@@ -53,7 +53,7 @@ public class SubTask {
     }
 
     /**
-     * Gets the value of id and returns it
+     * gets the value of id and returns it
      * @return id
      */
     public int getID() {
@@ -61,7 +61,7 @@ public class SubTask {
     }
 
     /**
-     * Gets the value of task and returns it
+     * gets the value of task and returns it
      * @return task
      */
     public Task getTask() {
@@ -69,7 +69,7 @@ public class SubTask {
     }
 
     /**
-     * Gets the value of name and returns it
+     * gets the value of name and returns it
      * @return name
      */
     public String getName() {
@@ -77,7 +77,7 @@ public class SubTask {
     }
 
     /**
-     * Sets the id
+     * sets the id
      * @param id new value
      */
     public void setId(int id) {
@@ -85,7 +85,7 @@ public class SubTask {
     }
 
     /**
-     * Sets the task
+     * sets the task
      * @param task new value
      */
     public void setTask(Task task) {
@@ -93,7 +93,7 @@ public class SubTask {
     }
 
     /**
-     * Sets the name
+     * sets the name
      * @param name new value
      */
     public void setName(String name) {
@@ -101,7 +101,7 @@ public class SubTask {
     }
 
     /**
-     * Sets the completed
+     * sets the completed
      * @param completed new value
      */
     public void setStatus(Boolean completed) {

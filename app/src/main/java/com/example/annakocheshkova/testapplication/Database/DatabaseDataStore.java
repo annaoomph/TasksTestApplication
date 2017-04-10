@@ -24,7 +24,7 @@ class DatabaseDataStore implements DataStore {
     private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
 
     /**
-     * simple constructor that gets all the Daos
+     * creates new instance of DatabaseDatastore
      */
     DatabaseDataStore() {
         simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();

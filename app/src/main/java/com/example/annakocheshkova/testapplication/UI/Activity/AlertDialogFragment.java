@@ -74,7 +74,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
     }
 
     /**
-     * show the item name if it is edited
+     * shows the item name if it is edited
      * @param subTaskName name of the editing subtask
      */
     @Override

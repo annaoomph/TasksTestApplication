@@ -6,7 +6,7 @@ package com.example.annakocheshkova.testapplication.Database;
 public class DataStoreFactory {
 
     /**
-     * get an example of datastore object
+     * gets an example of datastore object
      * @return datastore object
      */
     public static DataStore getDataStore(){

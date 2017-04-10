@@ -138,7 +138,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
                 actionBar.setTitle(R.string.edit);
         } else {
             if (actionBar != null)
-                actionBar.setTitle(R.string.edit);
+                actionBar.setTitle(R.string.enter_new);
         }
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);

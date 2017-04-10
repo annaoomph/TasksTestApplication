@@ -37,7 +37,7 @@ public class DialogController {
     private OnItemEditedListener onItemEditedListener;
 
     /**
-     * constructor. sets the datastore
+     * creates an instance of DialogController
      * @param dialogView main view
      */
     public DialogController(DialogView dialogView) {
@@ -46,7 +46,7 @@ public class DialogController {
     }
 
     /**
-     * set on item edited listener
+     * sets on item edited listener
      * @param onItemEditedListener listener
      */
     public void setOnItemEditedListener(OnItemEditedListener onItemEditedListener) {
@@ -54,7 +54,7 @@ public class DialogController {
     }
 
     /**
-     * event when the main dialog window is loaded
+     * called when the main dialog window is loaded
      * shows the editing item name if needed, stores or resets it here if needed
      * @param taskId id of the main task
      * @param id if of the subtask we are editing
@@ -71,7 +71,7 @@ public class DialogController {
     }
 
     /**
-     * event when editing ended
+     * called when editing ended
      * creates or updates subtask depending on what was happening and what was stored here
      * @param newName name of the new (or edited) subtask
      */

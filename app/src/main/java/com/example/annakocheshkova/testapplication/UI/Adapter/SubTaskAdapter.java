@@ -28,12 +28,12 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     private static SubTaskController subTaskController;
 
     /**
-     * this color is used when the subtask is not completed
+     * a color used when the subtask is not completed
      */
     private final int darkColor;
 
     /**
-     * this color is used when the subtask is completed
+     * a color used when the subtask is completed
      */
     private final int lightColor;
 
@@ -57,7 +57,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
         TextView textRow;
 
         /**
-         * creates new instance of a viewholder for a certain row
+         * creates new instance of a view holder for a certain row
          * @param view main view
          */
         ViewHolder(View view) {
@@ -81,7 +81,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * a method called everytime when data changes
+     * called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<SubTask> newItems) {
@@ -90,7 +90,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * get the subtask by its position in the list of items
+     * gets the subtask by its position in the list of items
      * @param position of the subtask
      * @return subtask
      */

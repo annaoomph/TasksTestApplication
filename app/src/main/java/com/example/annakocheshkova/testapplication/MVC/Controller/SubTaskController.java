@@ -5,8 +5,6 @@ import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
@@ -20,7 +18,7 @@ import java.util.List;
 public class SubTaskController implements OnItemEditedListener, UndoListener<SubTask>{
 
     /**
-     * event called when user finished editing a subtask and the main view needs to be updated
+     * called when user finished editing a subtask and the main view needs to be updated
      */
     @Override
     public void onItemEdited() {
@@ -29,7 +27,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * datastore example to work with the data
+     * datastore instance to work with the data
      */
     private DataStore dataStore;
 
@@ -44,7 +42,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     private static int currentTask = -1;
 
     /**
-     * constructor
+     * creates an instance of subTaskController
      * @param view main view
      */
     public SubTaskController(SubTaskView view) {
@@ -53,7 +51,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * User started updating subtask (Event)
+     * Called when user started updating subtask (Event)
      * @param subTask subtask to be updated
      */
     public void onUpdate(SubTask subTask) {
@@ -61,14 +59,14 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * user started creating a new subtask
+     * called when user started creating a new subtask
      */
     public void onCreate() {
         view.showDialog(null, currentTask);
     }
 
     /**
-     * user changed status of the subTask
+     * called when user changed status of the subTask
      * @param subTask subtask which status needs to be toggled
      */
     public void onStatusChanged(SubTask subTask) {
@@ -79,7 +77,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * event called everytime view needs to be updated
+     * called everytime view needs to be updated
      * gets a list of subtasks by their main task
      * @param task_id id of the main task
      */
@@ -130,9 +128,9 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * a method to compare two subtasks for proper sorting
+     * compares two subtasks for proper sorting
      * @param firstSubTask first subtask to be compared
-     * @param secondSubTask secont subtask to be compared
+     * @param secondSubTask second subtask to be compared
      * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
      */
     private int compareSubTasks (SubTask firstSubTask, SubTask secondSubTask) {

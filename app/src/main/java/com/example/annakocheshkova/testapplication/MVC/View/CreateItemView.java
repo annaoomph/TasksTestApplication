@@ -64,7 +64,6 @@ public interface CreateItemView {
      */
     int getMinute();
 
-
     /**
      * finds out if alarm needs to be fired
      * @return true if needs, false if not

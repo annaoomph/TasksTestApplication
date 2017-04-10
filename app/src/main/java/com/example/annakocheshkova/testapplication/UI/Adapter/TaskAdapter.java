@@ -133,7 +133,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * get the task by its position in the list of items
+     * gets the task by its position in the list of items
      * @param position of the task
      * @return task
      */
@@ -142,15 +142,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * get date and time of the task in string format
+     * gets date and time of the task in string format
      * @param time task time
      * @return date and time in string format
      */
     private String getDateTimeString(long time) {
         SimpleDateFormat format = new SimpleDateFormat();
         Date date = new Date(time);
-        String dateString = format.format(date);
-        return dateString;
+        return format.format(date);
     }
 
     @Override

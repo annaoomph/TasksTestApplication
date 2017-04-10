@@ -42,7 +42,7 @@ public class Task
     long time;
 
     /**
-     * if the task has a notification set
+     * boolean showing if the task has a notification set
      */
     @DatabaseField
     private
@@ -61,13 +61,15 @@ public class Task
     @ForeignCollectionField
     private Collection<SubTask> subTasks;
 
-
+    /**
+     *  creates the instance of the task
+     */
     public Task(){
 
     }
 
     /**
-     * constructor that creates the instance of task by its name and time
+     * creates the instance of the task by its name and time
      * @param name name of the task
      */
     public Task(String name, long time) {
@@ -76,7 +78,7 @@ public class Task
     }
 
     /**
-     * constructor to create an instance of task from another task
+     * creates an instance of task from another task
      * @param anotherTask task that needs to be copied
      */
     public Task(Task anotherTask) {
@@ -91,7 +93,7 @@ public class Task
     }
 
     /**
-     * calculate current task status depending on the current time
+     * calculates current task status depending on the current time
      * @return status
      */
     public TaskStatus getStatus() {
@@ -110,7 +112,7 @@ public class Task
     }
 
     /**
-     * set notification on task
+     * sets notification on task
      * @param show if to shown notification
      */
     public void setNotification(boolean show) {
@@ -128,7 +130,7 @@ public class Task
     }
 
     /**
-     * to check if item is completed (checks the status of all the subtasks)
+     * checks the status of all the subtasks
      * @return true if the task is completed, false if not
      */
     private boolean isCompleted() {
@@ -140,7 +142,7 @@ public class Task
 
 
     /**
-     * get all the subtasks of this task
+     * gets all the subtasks of this task
      * @return subtasks
      */
     public Collection<SubTask> getSubTasks() {
@@ -148,7 +150,7 @@ public class Task
     }
 
     /**
-     * get the time of the alarm
+     * gets the time of the alarm
      * @return time of the alarm
      */
     public long getAlarmTime() {
@@ -156,7 +158,7 @@ public class Task
     }
 
     /**
-     * if the task should notify user
+     * says if the task should notify user
      * @return true if it should, false if not
      */
     public boolean hasAlarms() {
@@ -164,7 +166,7 @@ public class Task
     }
 
     /**
-     * Gets the value of name and returns it
+     * gets the value of name and returns it
      * @return name
      */
     public String getName() {
@@ -172,7 +174,7 @@ public class Task
     }
 
     /**
-     * Gets the value of time and returns it
+     * gets the value of time and returns it
      * @return time
      */
     public long getTime() {
@@ -180,7 +182,7 @@ public class Task
     }
 
     /**
-     * Sets the name
+     * sets the name
      * @param name new value
      */
     public void setName(String name) {
@@ -188,7 +190,7 @@ public class Task
     }
 
     /**
-     * Sets the time
+     * sets the time
      * @param time new value
      */
     public void setTime(long time) {
@@ -196,7 +198,7 @@ public class Task
     }
 
     /**
-     * Gets the value of id and returns it
+     * gets the value of id and returns it
      * @return id
      */
     public int getID() {

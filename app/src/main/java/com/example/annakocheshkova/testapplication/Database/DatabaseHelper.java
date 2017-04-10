@@ -23,7 +23,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     /**
      * current version of the database (change to higher number if structure changes are made)
      */
-    private static final int DATABASE_VERSION = 26;
+    private static final int DATABASE_VERSION = 29;
 
     /**
      * Dao for tasks table
@@ -35,9 +35,8 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      */
     private RuntimeExceptionDao<SubTask, Integer> simpleSubTaskRuntimeDao;
 
-
     /**
-     * constructor that initializes all Daos
+     * creates new instance of database helper. Initializes all Daos
      */
     DatabaseHelper() {
         super(MyApplication.getAppContext(),DATABASE_NAME, null, DATABASE_VERSION);
@@ -67,7 +66,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to get access to tasks dao
+     * gets access to tasks dao
      * @return tasks dao
      */
     RuntimeExceptionDao<Task, Integer> getSimpleTaskDao() {
@@ -78,7 +77,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * a method for datastore to get access to subtask dao
+     * gets access to subtask dao
      * @return subtask dao
      */
     RuntimeExceptionDao<SubTask, Integer> getSimpleSubTaskDao() {

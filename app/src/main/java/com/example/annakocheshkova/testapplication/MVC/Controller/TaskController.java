@@ -27,7 +27,7 @@ public class TaskController implements UndoListener<Task> {
     private TaskView view;
 
     /**
-     * constructor
+     * creates an instance of task controller
      * @param view main view
      */
     public TaskController(TaskView view) {
@@ -36,7 +36,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * event called everytime you need to update the main view list of tasks
+     * called everytime you need to update the main view list of tasks
      */
     public void onViewLoaded() {
         List<Task> tasks = dataStore.getAllTasks();
@@ -45,7 +45,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * event when some task is chosen to be edited
+     * called when some task is chosen to be edited
      * @param id id of the chosen task
      */
     public void onItemUpdate(int id) {
@@ -62,7 +62,7 @@ public class TaskController implements UndoListener<Task> {
 
 
     /**
-     * event called when an item needs to be deleted
+     * called when an item needs to be deleted
      * @param item task to be deleted
      */
     public void onDelete(Task item) {
@@ -87,7 +87,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * a method to compare two tasks for proper sorting
+     * compares two tasks for proper sorting
      * @param firstTask first task to be compared
      * @param secondTask second task to be compared
      * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
