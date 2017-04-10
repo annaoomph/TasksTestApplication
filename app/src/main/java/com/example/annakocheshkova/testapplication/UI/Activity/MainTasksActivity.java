@@ -2,7 +2,6 @@ package com.example.annakocheshkova.testapplication.UI.Activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -45,69 +44,31 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     ActionBarDrawerToggle drawerToggle;
 
     /**
-     * menu for the drawer
-     */
-    String[] leftDrawerTitles;
-
-    /**
-     * listview for the drawer
-     */
-    ListView drawerListView;
-
-    /**
-     * the drawer itself
-     */
-    DrawerLayout drawerLayout;
-
-    /**
-     * listview with all the tasks
-     */
-    RecyclerView listView;
-
-    /**
-     * main view (needed for snackbar)
+     * main view with all the contents
      */
     View view;
-
-    /**
-     * toolbar with menu
-     */
-    Toolbar toolbar;
 
     /**
      * the main controller
      */
     TaskController taskController;
 
-    /**
-     * component responsible for cancelling events
-     */
-    UndoComponent<Task> undoComponent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
-        getViews();
         setContent();
-    }
-
-    /**
-     * get all the views to work with later
-     */
-    void getViews() {
-        leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
-        drawerListView = (ListView) findViewById(R.id.left_drawer);
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        listView = (RecyclerView)findViewById(R.id.tasks_view);
-        view = findViewById(R.id.main_content);
     }
 
     /**
      * set all the content configuration and listeners
      */
     void setContent() {
+        String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
+        final ListView drawerListView = (ListView) findViewById(R.id.left_drawer);
+        RecyclerView listView = (RecyclerView)findViewById(R.id.tasks_view);
+        final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        view = findViewById(R.id.main_content);
         taskController = new TaskController(this);
         List<Task> tasks = new ArrayList<>();
         taskAdapter = new TaskAdapter(tasks, taskController);
@@ -121,6 +82,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
                 drawerLayout.closeDrawer(drawerListView);
             }
         });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
@@ -151,8 +113,8 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                undoComponent = new UndoComponent<Task>(pos, taskController);
-                undoComponent.Delete();
+                Task item = taskAdapter.getItem(pos);
+                taskController.onDelete(item);
             }
 
             @Override
@@ -205,13 +167,9 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    public void showCancelBar(String taskName) {
-        Snackbar.make(view,  getString(R.string.deleted_string_firstpart)+" " + taskName+" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(R.string.cancel_btn, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                undoComponent.Cancel();
-            }
-        }).show();
+    public void showCancelBar(Task task) {
+        UndoComponent<Task> undoComponent = new UndoComponent<>();
+        undoComponent.make(view, task, taskController, task.getName());
     }
 
     @Override

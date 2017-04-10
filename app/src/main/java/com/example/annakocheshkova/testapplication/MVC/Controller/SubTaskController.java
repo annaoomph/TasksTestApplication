@@ -5,6 +5,8 @@ import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
@@ -25,11 +27,6 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
         if (currentTask != -1)
             onViewLoaded(currentTask);
     }
-
-    /**
-     * list of all the subtasks
-     */
-    private List<SubTask> subTasksList;
 
     /**
      * datastore example to work with the data
@@ -85,40 +82,31 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
      * event called everytime view needs to be updated
      * gets a list of subtasks by their main task
      * @param task_id id of the main task
-     * @return list of subtasks
      */
-    public List<SubTask> onViewLoaded(int task_id) {
+    public void onViewLoaded(int task_id) {
         Task main = dataStore.getTask(task_id);
-        currentTask = task_id;
-        List<SubTask> list = dataStore.getAllSubtasksByTask(main);
-        Collections.sort(list, new Comparator<SubTask>() {
-            @Override
-            public int compare(SubTask firstSubTask, SubTask secondSubTask) {
-                if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
-                    return -1;
-                }
-                if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
-                    return 1;
-                }
-                return firstSubTask.getName().compareTo(secondSubTask.getName());
+        if (main == null) {
+            view.showNoSuchTaskError();
+        } else {
+            currentTask = task_id;
+            List<SubTask> list = dataStore.getAllSubtasksByTask(main);
+            sort(list);
+            if (currentTask != -1) {
+                view.showItems(list);
+                view.showTitle(main.getName());
             }
-        });
-        if (currentTask != -1) {
-            view.showItems(list);
-            view.showTitle(main.getName());
         }
-        subTasksList = list;
-        return list;
     }
 
-    @Override
-    public SubTask onDelete(int position) {
-        SubTask subTask = subTasksList.get(position);
-        view.showCancelBar(subTask.getName());
+    /**
+     * called when a subtask needs to be deleted
+     * @param subTask to be deleted
+     */
+    public void onDelete(SubTask subTask) {
+        view.showCancelBar(subTask);
         dataStore.deleteSubTask(subTask);
         if (currentTask != -1)
             onViewLoaded(currentTask);
-        return subTask;
     }
 
     @Override
@@ -127,4 +115,34 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
         if (currentTask != -1)
             onViewLoaded(currentTask);
     }
+
+    /**
+     * sorts the given list of subtasks
+     * @param list of subtask
+     */
+    private void sort (List<SubTask> list) {
+        Collections.sort(list, new Comparator<SubTask>() {
+            @Override
+            public int compare(SubTask firstSubTask, SubTask secondSubTask) {
+                return compareSubTasks(firstSubTask, secondSubTask);
+            }
+        });
+    }
+
+    /**
+     * a method to compare two subtasks for proper sorting
+     * @param firstSubTask first subtask to be compared
+     * @param secondSubTask secont subtask to be compared
+     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
+     */
+    private int compareSubTasks (SubTask firstSubTask, SubTask secondSubTask) {
+        if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
+            return -1;
+        }
+        if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
+            return 1;
+        }
+        return firstSubTask.getName().compareTo(secondSubTask.getName());
+    }
+
 }

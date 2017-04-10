@@ -1,7 +1,5 @@
 package com.example.annakocheshkova.testapplication.UI.Activity;
 
-import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,16 +12,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
-import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 import com.example.annakocheshkova.testapplication.Utils.Component.UndoComponent;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,50 +35,31 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     SubTaskAdapter subTaskAdapter;
 
     /**
-     * view with all the subtasks
+     * main view with all the content
      */
-    RecyclerView listView;
-
-    /**
-     * main view (needed for snackbar)
-     */
-    View view;
+    View mainView;
 
     /**
      * main controller for the view
      */
     SubTaskController subTaskController;
 
-    /**
-     * toolbar with menu
-     */
-    Toolbar toolbar;
-
-    UndoComponent<SubTask> undoComponent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtask);
-        getViews();
         setContent();
     }
 
     /**
-     * get all view items to work with later
-     */
-    void getViews() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        listView = (RecyclerView)findViewById(R.id.task_detailed_view);
-        view = findViewById(R.id.content);
-    }
-
-    /**
-     * set all content configuration and click listeners
+     * sets all content configuration and click listeners
      */
     void setContent() {
+        RecyclerView listView = (RecyclerView)findViewById(R.id.task_detailed_view);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         subTaskController = new SubTaskController(this);
+        mainView = findViewById(R.id.content);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -96,8 +74,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int pos = viewHolder.getAdapterPosition();
-                undoComponent = new UndoComponent<SubTask>(pos, subTaskController);
-                undoComponent.Delete();
+                subTaskController.onDelete(subTaskAdapter.getItem(pos));
             }
 
             @Override
@@ -155,13 +132,14 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     }
 
     @Override
-    public void showCancelBar(String subTaskName) {
-        Snackbar.make(view, getString(R.string.deleted_string_firstpart)+" "+ subTaskName +" "+getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG).setAction(
-                getString(R.string.cancel_btn), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        undoComponent.Cancel();
-                    }
-                }).show();
+    public void showCancelBar(SubTask subTask) {
+        UndoComponent<SubTask> undoComponent = new UndoComponent<>();
+        undoComponent.make(mainView, subTask, subTaskController, subTask.getName());
+    }
+
+    @Override
+    public void showNoSuchTaskError() {
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task), Toast.LENGTH_LONG).show();
+        finish();
     }
 }

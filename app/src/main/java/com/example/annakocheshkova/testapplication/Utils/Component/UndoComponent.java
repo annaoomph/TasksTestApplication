@@ -1,5 +1,11 @@
 package com.example.annakocheshkova.testapplication.Utils.Component;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
 /**
@@ -9,7 +15,7 @@ import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 public class UndoComponent<T> {
 
     /**
-     * listener of undo and delete actions
+     * listener of undo action
      */
     private UndoListener<T> undoListener;
 
@@ -19,33 +25,29 @@ public class UndoComponent<T> {
     private T item;
 
     /**
-     * position in the array of the item
+     * saves an item to the component and shows toast notifying user what happened to the item
+     * @param view view in which the toast should be shown
+     * @param item item to be saved
+     * @param undoListener listener of undo event
+     * @param name name of the item to be shown in a toast
      */
-    private int position;
-
-    /**
-     * constructor
-     * @param position of the item to be stored
-     * @param undoListener listener (can be controller)
-     */
-    public UndoComponent(int position, UndoListener<T> undoListener) {
-        this.position = position;
+    public void make(@NonNull View view, T item, @NonNull UndoListener<T> undoListener, String name) {
+        this.item = item;
         this.undoListener = undoListener;
+        Snackbar.make(view, MyApplication.getAppContext().getString(R.string.deleted_string_firstpart) + " " + name + " " + MyApplication.getAppContext().getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG)
+                .setAction(R.string.cancel_btn, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onUndoPressed();
+                    }
+                }).show();
     }
 
     /**
-     * delete object permanently
+     * called when undo button was pressed
      */
-    public void Delete(){
-        item = undoListener.onDelete(position);
-    }
-
-    /**
-     * cancel deleting object
-     */
-    public void Cancel(){
+    private void onUndoPressed(){
         undoListener.onUndo(item);
     }
-
 
 }

@@ -100,7 +100,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * a method called everytime when the data changes
+     * a method called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<Task> newItems) {
@@ -123,6 +123,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         } else {
             holder.imageAlarmButton.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * get the task by its position in the list of items
+     * @param position of the task
+     * @return task
+     */
+    public Task getItem(int position) {
+        return taskList.get(position);
     }
 
     @Override

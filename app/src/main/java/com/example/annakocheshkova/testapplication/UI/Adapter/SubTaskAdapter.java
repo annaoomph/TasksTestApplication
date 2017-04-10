@@ -37,6 +37,18 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
      */
     private final int lightColor;
 
+    /**
+     * creates new instance of adapter
+     * @param data list of subtasks to be shown
+     * @param subTaskController controller of the subtasks view
+     */
+    public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
+        SubTaskAdapter.subTaskController = subTaskController;
+        subTasksList = data;
+        darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
+        lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
@@ -44,6 +56,9 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
          */
         TextView textRow;
 
+        /**
+         * creates new instance of the viewholder for a certain row
+         */
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
@@ -65,24 +80,21 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * constructor
-     * @param data list of all the subtasks
-     * @param subTaskController controller of the subtasks view
-     */
-    public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
-        SubTaskAdapter.subTaskController = subTaskController;
-        subTasksList = data;
-        darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
-        lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
-    }
-
-    /**
-     * a method called everytime when the data changes
+     * a method called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<SubTask> newItems) {
         subTasksList = newItems;
         this.notifyDataSetChanged();
+    }
+
+    /**
+     * get the subtask by its position in the list of items
+     * @param position of the subtask
+     * @return subtask
+     */
+    public SubTask getItem(int position) {
+        return subTasksList.get(position);
     }
 
     @Override
