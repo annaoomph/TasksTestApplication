@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import java.util.List;
 
@@ -26,6 +27,16 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
      */
     private static SubTaskController subTaskController;
 
+    /**
+     * this color is used when the subtask is not completed
+     */
+    private final int darkColor;
+
+    /**
+     * this color is used when the subtask is completed
+     */
+    private final int lightColor;
+
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
@@ -33,21 +44,9 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
          */
         TextView textRow;
 
-        /**
-         * this color is used when the subtask is not completed
-         */
-        int darkColor;
-
-        /**
-         * this color is used when the subtask is completed
-         */
-        int lightColor;
-
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
-            darkColor = ContextCompat.getColor(view.getContext(), R.color.colorPrimaryDark);
-            lightColor = ContextCompat.getColor(view.getContext(), R.color.completedColor);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -73,6 +72,8 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
         SubTaskAdapter.subTaskController = subTaskController;
         subTasksList = data;
+        darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
+        lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
     }
 
     /**
@@ -94,9 +95,9 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.textRow.setText(subTasksList.get(position).getName());
         if (subTasksList.get(position).getStatus()) {
-            holder.textRow.setTextColor(holder.lightColor);
+            holder.textRow.setTextColor(lightColor);
         } else {
-            holder.textRow.setTextColor(holder.darkColor);
+            holder.textRow.setTextColor(darkColor);
         }
     }
 
