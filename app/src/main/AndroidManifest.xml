@@ -24,7 +24,7 @@
         <activity android:name=".UI.Activity.SubTaskActivity" />
 
         <receiver
-            android:name=".Receiver.AlarmReceiver"
+            android:name=".Receiver.ReminderAlarmManager"
            />
         <receiver
             android:name=".Receiver.MyBootReceiver"

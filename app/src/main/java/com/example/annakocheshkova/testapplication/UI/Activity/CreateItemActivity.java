@@ -10,20 +10,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * a view of the activity, which allows user to create a new task
@@ -49,6 +54,11 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * checkbox if fire alarm
      */
     CheckBox reminderCheckBox;
+
+    /**
+     * a spinner to choose when to fire alarm
+     */
+    Spinner spinner;
 
     /**
      * editText which displays the date chosen by user
@@ -86,12 +96,12 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     private int chosenMinute;
 
     /**
-     * tag by which date dialog is shown
+     * a tag by which date dialog is shown
      */
     static final int DATE_DIALOG_ID = 0;
 
     /**
-     * tag by which time dialog is shown
+     * a tag by which time dialog is shown
      */
     static final int TIME_DIALOG_ID = 1;
 
@@ -104,7 +114,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * get all the views needed to work with
+     * gets all the views needed to work with
      */
     void getViews() {
         dateDisplay = (EditText) findViewById(R.id.date_display);
@@ -112,11 +122,12 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         nameText = (EditText)this.findViewById(R.id.name_edittext);
         reminderCheckBox = (CheckBox)this.findViewById(R.id.enable_reminder);
+        spinner = (Spinner)findViewById(R.id.reminder_spinner);
         setSupportActionBar(toolbar);
     }
 
     /**
-     * set configuration of the window content
+     * sets configuration of the window content
      */
     void setContent() {
         createItemController = new CreateItemController(this);
@@ -175,33 +186,24 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
                 reminderCheckBox.setChecked(!reminderCheckBox.isChecked());
             }
         });
+        String[] spinnerItems = getResources().getStringArray(R.array.reminder);
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerAdapter);
         createItemController.onViewLoaded(id);
     }
 
     /**
-     * update date and time shown in edittext boxes
+     * updates date and time shown in edittext boxes
      */
     private void updateDisplay() {
-        String day = String.valueOf(chosenDay);
-        if (day.length() == 1)
-            day = "0" + day;
-        String month = String.valueOf(chosenMonth+1);
-        if (month.length() == 1)
-            month = "0" + month;
-        String year = String.valueOf(chosenYear);
-        if (year.length() == 1)
-            year = "0" + year;
-        String hour = String.valueOf(chosenHour);
-        if (hour.length() == 1)
-            hour = "0" + hour;
-        String minute = String.valueOf(chosenMinute);
-        if (minute.length() == 1)
-            minute = "0" + minute;
-        dateDisplay.setText(new StringBuilder().append(day).append("-")
-                        .append(month).append("-")
-                        .append(year));
-        timeDisplay.setText(new StringBuilder().append(hour).append(":")
-                .append(minute));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(chosenYear, chosenMonth, chosenDay, chosenHour, chosenMinute);
+        SimpleDateFormat format = new SimpleDateFormat();
+        Date date = new Date(calendar.getTimeInMillis());
+        String dateString = format.format(date);
+        dateDisplay.setText(dateString.split(" ")[0]);
+        timeDisplay.setText(dateString.split(" ")[1]);
     }
 
     /**
@@ -218,7 +220,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
                 }
     };
 
-    /**
+     /**
      *the callback received when the user sets the time in the dialog
      */
     private TimePickerDialog.OnTimeSetListener onTimeSetListener =
@@ -251,20 +253,26 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * method responding on button click when adding the new task
+     * responds to confirmation button click
      * @param view button view
      */
     public void onAddNewTaskClick(View view) {
         createItemController.onItemEditingFinished();
-        startActivity(new Intent(this, MainTasksActivity.class));
     }
 
-
     @Override
-    public void showItem(Task item, AlarmInfo alarm) {
+    public void showItem(Task item, long timePeriod) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
-        //TODO if hasAlarms set alarm (before 1 min, 1 hour..)
+        int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
+        int alarmPosition = 0; //position in spinner adapter
+        switch (timePeriodInMinutes) {
+            case 1: alarmPosition = 1; break;
+            case 10: alarmPosition = 2; break;
+            case 60: alarmPosition = 3; break;
+            case 60 * 24: alarmPosition = 4; break;
+        }
+        spinner.setSelection(alarmPosition);
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.setTimeInMillis(item.getTime());
@@ -274,6 +282,22 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         chosenMinute = calendar.get(Calendar.MINUTE);
         chosenHour = calendar.get(Calendar.HOUR_OF_DAY);
         updateDisplay();
+
+    }
+
+    @Override
+    public void close() {
+        startActivity(new Intent(this, MainTasksActivity.class));
+    }
+
+    @Override
+    public void showWrongTimeError() {
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showWrongAlarmTimeError() {
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -309,5 +333,26 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     @Override
     public boolean ifFireAlarm() {
         return reminderCheckBox.isChecked();
+    }
+
+    @Override
+    public long getReminderTime() {
+        int alarmTime = spinner.getSelectedItemPosition();
+        long timePeriod = 0;
+        switch (alarmTime) {
+            case 1:
+                timePeriod = 60 * 1000;
+                break;
+            case 2:
+                timePeriod = 60 * 1000 * 10;
+                break;
+            case 3:
+                timePeriod = 60 * 1000 * 60;
+                break;
+            case 4:
+                timePeriod = 60 * 1000 * 60 * 24;
+                break;
+        }
+        return timePeriod;
     }
 }

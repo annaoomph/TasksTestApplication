@@ -52,12 +52,13 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
-         * textView displays the name of the subtask
+         * a textView that displays the name of the subtask
          */
         TextView textRow;
 
         /**
-         * creates new instance of the viewholder for a certain row
+         * creates new instance of a viewholder for a certain row
+         * @param view main view
          */
         ViewHolder(View view) {
             super(view);

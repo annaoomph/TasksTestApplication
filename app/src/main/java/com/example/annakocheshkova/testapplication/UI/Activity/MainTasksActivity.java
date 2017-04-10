@@ -135,7 +135,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     @Override
     protected void onResume() {
         super.onResume();
-        taskAdapter.notifyDataSetChanged();
+        taskController.onViewLoaded();
     }
 
     @Override
@@ -169,7 +169,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     @Override
     public void showCancelBar(Task task) {
         UndoComponent<Task> undoComponent = new UndoComponent<>();
-        undoComponent.make(view, task, taskController, task.getName());
+        undoComponent.make(view, new Task(task), taskController, task.getName()); //make sure we are making the copy of the task to be deleted
     }
 
     @Override

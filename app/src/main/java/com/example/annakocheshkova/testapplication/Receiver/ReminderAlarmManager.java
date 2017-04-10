@@ -8,16 +8,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
+
+import com.example.annakocheshkova.testapplication.Database.DataStore;
+import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
 
+import java.util.List;
+
 /**
  * listener responding to scheduled alarms, shows notifications when it is needed, creates or disables them
  */
-public class AlarmReceiver extends BroadcastReceiver {
+public class ReminderAlarmManager extends BroadcastReceiver {
 
     /**
      * when the time has come for notification to be fired
@@ -26,7 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        runNotification(context, intent.getStringExtra("name"), intent.getIntExtra("id", 0),intent.getIntExtra("alarm_id", 0));
+        showNotification(context, intent.getStringExtra("name"), intent.getIntExtra("id", 0));
     }
 
     /**
@@ -34,11 +38,9 @@ public class AlarmReceiver extends BroadcastReceiver {
      * @param context current context
      * @param name name of the task
      * @param id id of the task
-     * @param alarmId id of the alarm
      */
-    public static void runNotification(Context context, String name, int id, int alarmId) {
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
-        customAlarmManager.delete(alarmId);
+    public static void showNotification(Context context, String name, int id) {
+        onAlarmFired(id);
         Intent alarmIntent = new Intent(context, SubTaskActivity.class);
         alarmIntent.putExtra("id", id);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -50,6 +52,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationBuilder.setContentText(name);
         notificationBuilder.setContentIntent(pendingIntent);
         notificationBuilder.setVibrate(new long[] {200, 100, 100, 100});
+        notificationBuilder.setAutoCancel(true);
         Notification notification = notificationBuilder.build();
         notificationManager.notify(101, notification);
     }
@@ -57,29 +60,48 @@ public class AlarmReceiver extends BroadcastReceiver {
     /**
      * create a new alarm
      * @param newTask task for the alarm
-     * @param timeToSchedule time in which the notification should be fired
-     * @param alarmId id of the alarm in the database
      */
-    public static void addAlarm(Task newTask, long timeToSchedule, int alarmId) {
+    public static void addAlarm(Task newTask) {
         Context context = MyApplication.getAppContext();
-        Intent alarmIntent = new Intent(context, AlarmReceiver.class);
+        Intent alarmIntent = new Intent(context, ReminderAlarmManager.class);
         alarmIntent.putExtra("name", newTask.getName());
         alarmIntent.putExtra("id", newTask.getID());
-        alarmIntent.putExtra("alarm_id", alarmId);
-        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, alarmId, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, newTask.getID(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, timeToSchedule, alarmPendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,  newTask.getAlarmTime(), alarmPendingIntent);
     }
 
     /**
      * disable a certain alarm
-     * @param id id of the alarm
+     * @param task task from which the alarm should be deleted
      */
-    public static void removeAlarm(int id) {
+    public static void removeAlarm(Task task) {
         Context context = MyApplication.getAppContext();
-        Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, id, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent alarmIntent = new Intent(context, ReminderAlarmManager.class);
+        PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, task.getID(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(alarmPendingIntent);
+    }
+
+    /**
+     * this method reads all the alarms from the database and reschedules them
+     */
+    public static void scheduleAlarms() {
+        DataStore dataStore = DataStoreFactory.getDataStore();
+        List<Task> tasksWithAlarms = dataStore.getAllTasksWithAlarms();
+        for (Task task : tasksWithAlarms) {
+            addAlarm(task);
+        }
+    }
+
+    /**
+     * called when the notification was shown
+     * @param id id of the task which notification was shown
+     */
+    public static void onAlarmFired(int id) {
+        DataStore dataStore = DataStoreFactory.getDataStore();
+        Task task = dataStore.getTask(id);
+        task.setNotification(false);
+        dataStore.updateTask(task);
     }
 }

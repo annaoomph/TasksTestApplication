@@ -1,16 +1,13 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
-import android.app.AlarmManager;
-import android.os.Build;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
-import com.example.annakocheshkova.testapplication.Model.Alarm.CustomAlarmManager;
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.Model.Task;
-import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
+import com.example.annakocheshkova.testapplication.Receiver.ReminderAlarmManager;
+
 import java.util.Calendar;
 
 /**
@@ -34,7 +31,7 @@ public class CreateItemController {
     private Task editingTask;
 
     /**
-     * constructor. creates an example of the datastore
+     * creates an example of the datastore
      * @param view main view
      */
     public CreateItemController(CreateItemView view) {
@@ -43,27 +40,25 @@ public class CreateItemController {
     }
 
     /**
-     * event called everytime you need to update view (show information about task)
+     * called everytime you need to update view (show information about task)
      * @param id id of the task to be shown (-1 if no need to show)
      */
     public void onViewLoaded(int id) {
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         if (id>0) {
             Task task = dataStore.getTask(id);
             editingTask = task;
-            AlarmInfo alarm = customAlarmManager.getByTaskId(task.getID());
-            view.showItem(task, alarm);
+            long timePeriod = task.getTime() - task.getAlarmTime();
+            view.showItem(task, timePeriod);
         } else {
             editingTask = null;
         }
     }
 
     /**
-     * event when user updates or creates a certain task;
-     * method finds out if user was updating the item and creates or updates it depending on the result
+     * updates or creates a certain task;
+     * finds out if user was updating the item and creates or updates it depending on the result
      */
     public void onItemEditingFinished() {
-        //TODO get alarm (before...)
         String name = view.getName();
         boolean fireAlarm = view.ifFireAlarm();
         int year = view.getYear();
@@ -71,31 +66,48 @@ public class CreateItemController {
         int day = view.getDay();
         int hour = view.getHour();
         int minute = view.getMinute();
+        long timePeriod = view.getReminderTime();
         Calendar calendar = Calendar.getInstance();
+        long currentTime = calendar.getTimeInMillis();
         calendar.clear();
         calendar.set(year, month, day, hour, minute);
-        CustomAlarmManager customAlarmManager = new CustomAlarmManager();
         long timeToSchedule = calendar.getTimeInMillis();
-        Task task;
-        if (editingTask != null) {
-            task = editingTask;
-            if (task.hasAlarms()) {
-                int deletedAlarmId = customAlarmManager.get(task.getID()).getID();
-                customAlarmManager.delete(deletedAlarmId);
-                AlarmReceiver.removeAlarm(deletedAlarmId);
-            }
-            task.setName(name);
-            task.setTime(timeToSchedule);
-            dataStore.updateTask(task);
-        } else {
-            task = new Task(name, timeToSchedule);
-            dataStore.createTask(task);
+        long timeForAlarm = timeToSchedule - timePeriod;
+        boolean correctTime = timeToSchedule > currentTime;
+        boolean correctAlarmTime = timeForAlarm > currentTime;
+        if (!correctTime) {
+            view.showWrongTimeError();
         }
+        else if (!correctAlarmTime) {
+            view.showWrongAlarmTimeError();
+        } else {
+            Task task;
+            if (editingTask != null) {
+                task = editingTask;
+                if (task.hasAlarms()) {
+                    task.setNotification(false);
+                    ReminderAlarmManager.removeAlarm(task);
+                }
+                if (fireAlarm) {
+                    task.setNotification(true);
+                    task.setNotificationTime(timeForAlarm);
+                }
+                task.setName(name);
+                task.setTime(timeToSchedule);
+                dataStore.updateTask(task);
+            } else {
+                task = new Task(name, timeToSchedule);
+                if (fireAlarm) {
+                    task.setNotification(true);
+                    task.setNotificationTime(timeForAlarm);
+                }
+                dataStore.createTask(task);
+            }
 
-        if (fireAlarm) {
-            AlarmInfo alarm = new AlarmInfo(task, timeToSchedule);
-            int alarmId = customAlarmManager.create(alarm);
-            AlarmReceiver.addAlarm(task,timeToSchedule, alarmId );
+            if (fireAlarm) {
+                ReminderAlarmManager.addAlarm(task);
+            }
+            view.close();
         }
     }
 }

@@ -9,6 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class SubTask {
 
     @DatabaseField(generatedId = true)
+    private
     int id;
 
     /**
@@ -21,32 +22,26 @@ public class SubTask {
      * name of the subtask
      */
     @DatabaseField
+    private
     String name;
 
     /**
      * if the subtask is completed
      */
     @DatabaseField
+    private
     Boolean completed;
 
     public SubTask(){}
 
     /**
-     * constructor
+     * constructor to create new instance of subtask by its name and status
      * @param name name of the subtask
      * @param completed if it is finished
      */
     public SubTask(String name, Boolean completed) {
         this.completed = completed;
         this.name = name;
-    }
-
-    public int getTaskId() {
-        return this.task.getID();
-    }
-
-    public int getID() {
-        return this.id;
     }
 
     /**
@@ -57,19 +52,59 @@ public class SubTask {
         return this.completed;
     }
 
-    public void setStatus(boolean s) {
-        this.completed = s;
+    /**
+     * Gets the value of id and returns it
+     * @return id
+     */
+    public int getID() {
+        return id;
     }
 
+    /**
+     * Gets the value of task and returns it
+     * @return task
+     */
+    public Task getTask() {
+        return task;
+    }
+
+    /**
+     * Gets the value of name and returns it
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the id
+     * @param id new value
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Sets the task
+     * @param task new value
+     */
     public void setTask(Task task) {
         this.task = task;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
+    /**
+     * Sets the name
+     * @param name new value
+     */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Sets the completed
+     * @param completed new value
+     */
+    public void setStatus(Boolean completed) {
+        this.completed = completed;
     }
 }

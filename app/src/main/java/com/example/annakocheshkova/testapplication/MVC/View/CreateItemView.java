@@ -1,9 +1,5 @@
 package com.example.annakocheshkova.testapplication.MVC.View;
 
-import android.widget.DatePicker;
-import android.widget.TimePicker;
-
-import com.example.annakocheshkova.testapplication.Model.Alarm.AlarmInfo;
 import com.example.annakocheshkova.testapplication.Model.Task;
 
 /**
@@ -13,50 +9,71 @@ public interface CreateItemView {
     /**
      * shows the item to be edited
      * @param item item to be edited
-     * @param alarm alarm of the task to be edited
+     * @param alarmTime the chosen period
      */
-    void showItem(Task item, AlarmInfo alarm);
+    void showItem(Task item, long alarmTime);
 
     /**
-     * get name of the created item or new name of the updated
+     * closes the view if the item was updated/created
+     */
+    void close();
+
+    /**
+     * shows an error when the wrong time is set
+     */
+    void showWrongTimeError();
+
+    /**
+     * shows an error when the wrong alarm time is set
+     */
+    void showWrongAlarmTimeError();
+
+    /**
+     * gets name of the created item or new name of the updated
      * @return name
      */
     String getName();
 
     /**
-     * get year set by user
+     * gets year set by user
      * @return year
      */
     int getYear();
 
     /**
-     * get month set by user
+     * gets month set by user
      * @return month
      */
     int getMonth();
 
     /**
-     * get day set by user
+     * gets day set by user
      * @return day
      */
     int getDay();
 
     /**
-     * get hour set by user
+     * gets hour set by user
      * @return hour
      */
     int getHour();
 
     /**
-     * get minute set by user
+     * gets minute set by user
      * @return minute
      */
     int getMinute();
 
 
     /**
-     * find out if alarm needs to be fired
+     * finds out if alarm needs to be fired
      * @return true if needs, false if not
      */
     boolean ifFireAlarm();
+
+    /**
+     * gets the time when to fire alarm
+     * @return the chosen period
+     */
+    long getReminderTime();
 }

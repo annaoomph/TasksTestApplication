@@ -5,14 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -65,9 +66,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView textRow;
 
         /**
-         * an image that's shown when the task has alarms scheduled
+         * text with alarm time
          */
-        ImageButton imageAlarmButton;
+        TextView timeText;
+
+        /**
+         * layout that's shown when the task has alarms scheduled
+         */
+        LinearLayout alarmLayout;
 
         /**
          * creates new instance of a viewholder
@@ -76,7 +82,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         ViewHolder(View view) {
             super(view);
             textRow = (TextView) view.findViewById(R.id.row_text);
-            imageAlarmButton = (ImageButton) view.findViewById(R.id.imageButton);
+            alarmLayout = (LinearLayout) view.findViewById(R.id.alarm_info);
+            timeText = (TextView)view.findViewById(R.id.time_text);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -115,13 +122,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         switch (item.getStatus()) {
             case Completed: holder.textRow.setTextColor(lightColor); break;
             case Pending: holder.textRow.setTextColor(darkColor); break;
-            case Uncompleted: holder.textRow.setTextColor(redColor); break;
-
+            case Expired: holder.textRow.setTextColor(redColor); break;
         }
-        if (taskList.get(position).hasAlarms()) {
-            holder.imageAlarmButton.setVisibility(View.VISIBLE);
+        if (item.hasAlarms()) {
+            holder.timeText.setText(getDateTimeString(item.getAlarmTime()));
+            holder.alarmLayout.setVisibility(View.VISIBLE);
         } else {
-            holder.imageAlarmButton.setVisibility(View.GONE);
+            holder.alarmLayout.setVisibility(View.GONE);
         }
     }
 
@@ -132,6 +139,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      */
     public Task getItem(int position) {
         return taskList.get(position);
+    }
+
+    /**
+     * get date and time of the task in string format
+     * @param time task time
+     * @return date and time in string format
+     */
+    private String getDateTimeString(long time) {
+        SimpleDateFormat format = new SimpleDateFormat();
+        Date date = new Date(time);
+        String dateString = format.format(date);
+        return dateString;
     }
 
     @Override
