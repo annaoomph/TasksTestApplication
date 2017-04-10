@@ -7,37 +7,37 @@ import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedListener;
 
 /**
- * controller for alert dialog fragment
+ * A controller for alert dialog fragment
  */
 public class DialogController {
 
     /**
-     * main view of the controller
+     * Main view of the controller
      */
     private DialogView view;
 
     /**
-     * datastore to work with data
+     * Datastore to work with data
      */
     private DataStore dataStore;
 
     /**
-     * current item we are editing. null if creating
+     * Current item we are editing. null if creating
      */
     private SubTask editingItem;
 
     /**
-     * id of the main task of the subtask we are editing
+     * Id of the main task of the subtask we are editing
      */
     private int mainTaskId;
 
     /**
-     * listener responding to the event when user finished editing or creating.
+     * A listener responding to the event when user finished editing or creating.
      */
     private OnItemEditedListener onItemEditedListener;
 
     /**
-     * creates an instance of DialogController
+     * Creates an instance of DialogController
      * @param dialogView main view
      */
     public DialogController(DialogView dialogView) {
@@ -46,7 +46,7 @@ public class DialogController {
     }
 
     /**
-     * sets on item edited listener
+     * Sets on item edited listener
      * @param onItemEditedListener listener
      */
     public void setOnItemEditedListener(OnItemEditedListener onItemEditedListener) {
@@ -54,7 +54,7 @@ public class DialogController {
     }
 
     /**
-     * called when the main dialog window is loaded
+     * Called when the main dialog window is loaded;
      * shows the editing item name if needed, stores or resets it here if needed
      * @param taskId id of the main task
      * @param id if of the subtask we are editing
@@ -71,7 +71,7 @@ public class DialogController {
     }
 
     /**
-     * called when editing ended
+     * Called when editing ended;
      * creates or updates subtask depending on what was happening and what was stored here
      * @param newName name of the new (or edited) subtask
      */

@@ -29,27 +29,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * a view of the main activity with list of all the tasks
+ * A view of the main activity with list of all the tasks
  */
 public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     /**
-     * adapter for the recycler view
+     * Adapter for the recycler view
      */
     TaskAdapter taskAdapter;
 
     /**
-     * button which toggles the drawer (open/close)
+     * Button which toggles the drawer (open/close)
      */
     ActionBarDrawerToggle drawerToggle;
 
     /**
-     * main view with all the contents
+     * Main view with all the contents
      */
     View view;
 
     /**
-     * the main controller
+     * The main controller
      */
     TaskController taskController;
 
@@ -61,7 +61,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     /**
-     * set all the content configuration and listeners
+     * Set all the content configuration and listeners
      */
     void setContent() {
         String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);

@@ -16,12 +16,12 @@ import com.j256.ormlite.table.TableUtils;
 class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     /**
-     * name of the database we are working with
+     * Name of the database we are working with
      */
     private static final String DATABASE_NAME = "tasks.db";
 
     /**
-     * current version of the database (change to higher number if structure changes are made)
+     * Current version of the database (change to higher number if structure changes are made)
      */
     private static final int DATABASE_VERSION = 29;
 
@@ -36,7 +36,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private RuntimeExceptionDao<SubTask, Integer> simpleSubTaskRuntimeDao;
 
     /**
-     * creates new instance of database helper. Initializes all Daos
+     * Creates new instance of database helper. Initializes all Daos
      */
     DatabaseHelper() {
         super(MyApplication.getAppContext(),DATABASE_NAME, null, DATABASE_VERSION);
@@ -66,7 +66,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * gets access to tasks dao
+     * Gts access to tasks dao
      * @return tasks dao
      */
     RuntimeExceptionDao<Task, Integer> getSimpleTaskDao() {
@@ -77,7 +77,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     /**
-     * gets access to subtask dao
+     * Gets access to subtask dao
      * @return subtask dao
      */
     RuntimeExceptionDao<SubTask, Integer> getSimpleSubTaskDao() {

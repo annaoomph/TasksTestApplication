@@ -2,14 +2,11 @@ package com.example.annakocheshkova.testapplication.Database;
 
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
-import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
-
-import java.sql.SQLException;
 import java.util.List;
 
 /**
- * a class that implements DataStore interface. Gets all the data from sqlite database datastore.
+ * A class that implements DataStore interface. Gets all the data from sqlite database datastore.
  */
 class DatabaseDataStore implements DataStore {
 
@@ -24,7 +21,7 @@ class DatabaseDataStore implements DataStore {
     private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
 
     /**
-     * creates new instance of DatabaseDatastore
+     * Creates new instance of DatabaseDatastore
      */
     DatabaseDataStore() {
         simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
@@ -34,11 +31,6 @@ class DatabaseDataStore implements DataStore {
     @Override
     public List<Task> getAllTasks(){
         return simpleTaskDao.queryForAll();
-    }
-
-    @Override
-    public List<SubTask> getAllSubTasks(){
-        return simpleSubTaskDao.queryForAll();
     }
 
     @Override

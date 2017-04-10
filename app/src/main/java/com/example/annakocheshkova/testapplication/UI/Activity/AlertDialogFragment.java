@@ -14,17 +14,17 @@ import com.example.annakocheshkova.testapplication.Utils.Listener.OnItemEditedLi
 import com.example.annakocheshkova.testapplication.R;
 
 /**
- * a view of the fragment, which allows user to add new subtask
+ * A view of the fragment, which allows user to add new subtask
  */
 public class AlertDialogFragment extends DialogFragment implements DialogView {
 
     /**
-     * controller for this view
+     * Controller for this view
      */
     DialogController dialogController;
 
     /**
-     * sets listener that responds when item has been edited or created
+     * Sets listener that responds when item has been edited or created
      * @param onItemEditedListener listener
      */
     public void setOnItemEditedListener(OnItemEditedListener onItemEditedListener) {
@@ -33,7 +33,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
     }
 
     /**
-     * main (and only) editText to enter the name of the subtask
+     * Main (and only) input to enter the name of the subtask
      */
     EditText input;
 
@@ -74,7 +74,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
     }
 
     /**
-     * shows the item name if it is edited
+     * Shows the item name if it is edited
      * @param subTaskName name of the editing subtask
      */
     @Override

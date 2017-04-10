@@ -15,7 +15,7 @@ import java.util.Collection;
 public class Task
 {
     /**
-     * enum with available task statuses
+     * Enum with available task statuses
      */
     public enum TaskStatus {
         Expired,
@@ -28,48 +28,48 @@ public class Task
     int id;
 
     /**
-     * name of the task
+     * Name of the task
      */
     @DatabaseField
     private
     String name;
 
     /**
-     * time when the task expires (don't mess with the notification time!)
+     * The time when the task expires (don't mess with the notification time!)
      */
     @DatabaseField
     private
     long time;
 
     /**
-     * boolean showing if the task has a notification set
+     * A boolean showing if the task has a notification set
      */
     @DatabaseField
     private
     boolean notification;
 
     /**
-     * time when the task should notify user
+     * The time when the task should notify user
      */
     @DatabaseField
     private
     long alarmTime;
 
     /**
-     * list of subtasks of this task
+     * List of subtasks of this task
      */
     @ForeignCollectionField
     private Collection<SubTask> subTasks;
 
     /**
-     *  creates the instance of the task
+     *  Creates the instance of the task
      */
     public Task(){
 
     }
 
     /**
-     * creates the instance of the task by its name and time
+     * Creates the instance of the task by its name and time
      * @param name name of the task
      */
     public Task(String name, long time) {
@@ -78,7 +78,7 @@ public class Task
     }
 
     /**
-     * creates an instance of task from another task
+     * Creates an instance of task from another task
      * @param anotherTask task that needs to be copied
      */
     public Task(Task anotherTask) {
@@ -93,7 +93,7 @@ public class Task
     }
 
     /**
-     * calculates current task status depending on the current time
+     * Calculates current task status depending on the current time
      * @return status
      */
     public TaskStatus getStatus() {
@@ -112,7 +112,7 @@ public class Task
     }
 
     /**
-     * sets notification on task
+     * Sets notification on task
      * @param show if to shown notification
      */
     public void setNotification(boolean show) {
@@ -122,7 +122,7 @@ public class Task
     }
 
     /**
-     * sets the time of the notification
+     * Sets the time of the notification
      * @param time to be set
      */
     public void setNotificationTime(long time) {
@@ -130,7 +130,7 @@ public class Task
     }
 
     /**
-     * checks the status of all the subtasks
+     * Checks the status of all the subtasks
      * @return true if the task is completed, false if not
      */
     private boolean isCompleted() {
@@ -142,7 +142,7 @@ public class Task
 
 
     /**
-     * gets all the subtasks of this task
+     * Gets all the subtasks of this task
      * @return subtasks
      */
     public Collection<SubTask> getSubTasks() {
@@ -150,7 +150,7 @@ public class Task
     }
 
     /**
-     * gets the time of the alarm
+     * Gets the time of the alarm
      * @return time of the alarm
      */
     public long getAlarmTime() {
@@ -158,7 +158,7 @@ public class Task
     }
 
     /**
-     * says if the task should notify user
+     * Says if the task should notify user
      * @return true if it should, false if not
      */
     public boolean hasAlarms() {
@@ -166,7 +166,7 @@ public class Task
     }
 
     /**
-     * gets the value of name and returns it
+     * Gets the value of name and returns it
      * @return name
      */
     public String getName() {
@@ -174,7 +174,7 @@ public class Task
     }
 
     /**
-     * gets the value of time and returns it
+     * Gets the value of time and returns it
      * @return time
      */
     public long getTime() {
@@ -182,7 +182,7 @@ public class Task
     }
 
     /**
-     * sets the name
+     * Sets the name
      * @param name new value
      */
     public void setName(String name) {
@@ -190,7 +190,7 @@ public class Task
     }
 
     /**
-     * sets the time
+     * Sets the time
      * @param time new value
      */
     public void setTime(long time) {
@@ -198,7 +198,7 @@ public class Task
     }
 
     /**
-     * gets the value of id and returns it
+     * Gets the value of id and returns it
      * @return id
      */
     public int getID() {

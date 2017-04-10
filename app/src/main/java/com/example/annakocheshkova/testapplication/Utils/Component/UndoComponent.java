@@ -9,23 +9,23 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
 /**
- * this class handles all undo actions, responsible for storing objects
+ * A class that handles all undo actions, responsible for storing objects
  * @param <T> Type of the object this component works with
  */
 public class UndoComponent<T> {
 
     /**
-     * listener of undo action
+     * Listener of undo action
      */
     private UndoListener<T> undoListener;
 
     /**
-     * item we are storing right now
+     * An item we are storing right now
      */
     private T item;
 
     /**
-     * saves an item to the component and shows toast notifying user what happened to the item
+     * Saves an item to the component and shows toast notifying user what happened to the item
      * @param view view in which the toast should be shown
      * @param item item to be saved
      * @param undoListener listener of undo event
@@ -44,7 +44,7 @@ public class UndoComponent<T> {
     }
 
     /**
-     * called when undo button was pressed
+     * Called when undo button was pressed
      */
     private void onUndoPressed(){
         undoListener.onUndo(item);

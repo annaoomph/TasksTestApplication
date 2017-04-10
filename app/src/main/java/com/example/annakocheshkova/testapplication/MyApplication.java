@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 /**
- * a class for getting the context with static method
+ * A class for getting the context with static method
  */
 public class MyApplication extends Application {
 

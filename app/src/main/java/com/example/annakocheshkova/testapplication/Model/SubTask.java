@@ -13,29 +13,32 @@ public class SubTask {
     int id;
 
     /**
-     * the main task of the subtask
+     * The main task of the subtask
      */
     @DatabaseField(columnName = "task_id", foreign = true)
     private Task task;
 
     /**
-     * name of the subtask
+     * Name of the subtask
      */
     @DatabaseField
     private
     String name;
 
     /**
-     * aboolean field showing the subtask is completed
+     * A boolean field showing the subtask is completed
      */
     @DatabaseField
     private
     Boolean completed;
 
+    /**
+     * Creates new instance of subtask
+     */
     public SubTask(){}
 
     /**
-     * creates new instance of subtask by its name and status
+     * Creates new instance of subtask by its name and status
      * @param name name of the subtask
      * @param completed if it is finished
      */
@@ -45,7 +48,7 @@ public class SubTask {
     }
 
     /**
-     * gets current subtask status
+     * Gets current subtask status
      * @return true if the task is completed, false if not
      */
     public boolean getStatus() {
@@ -53,7 +56,7 @@ public class SubTask {
     }
 
     /**
-     * gets the value of id and returns it
+     * Gets the value of id and returns it
      * @return id
      */
     public int getID() {
@@ -61,7 +64,7 @@ public class SubTask {
     }
 
     /**
-     * gets the value of task and returns it
+     * Gets the value of task and returns it
      * @return task
      */
     public Task getTask() {
@@ -69,7 +72,7 @@ public class SubTask {
     }
 
     /**
-     * gets the value of name and returns it
+     * Gets the value of name and returns it
      * @return name
      */
     public String getName() {
@@ -77,7 +80,7 @@ public class SubTask {
     }
 
     /**
-     * sets the id
+     * Sets the id
      * @param id new value
      */
     public void setId(int id) {
@@ -85,7 +88,7 @@ public class SubTask {
     }
 
     /**
-     * sets the task
+     * Sets the task
      * @param task new value
      */
     public void setTask(Task task) {
@@ -93,7 +96,7 @@ public class SubTask {
     }
 
     /**
-     * sets the name
+     * Sets the name
      * @param name new value
      */
     public void setName(String name) {
@@ -101,7 +104,7 @@ public class SubTask {
     }
 
     /**
-     * sets the completed
+     * Sets the completed
      * @param completed new value
      */
     public void setStatus(Boolean completed) {

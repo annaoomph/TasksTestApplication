@@ -6,7 +6,7 @@ package com.example.annakocheshkova.testapplication.MVC.View;
 public interface DialogView {
 
     /**
-     * displays the editing name if needed
+     * Displays the editing name if needed
      * @param subTaskName name of the editing subtask
      */
     void showEditingItem(String subTaskName);

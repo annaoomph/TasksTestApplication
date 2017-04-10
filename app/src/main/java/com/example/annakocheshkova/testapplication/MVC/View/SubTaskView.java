@@ -9,32 +9,32 @@ import java.util.List;
  */
 public interface SubTaskView {
     /**
-     * shows all the subtasks
+     * Shows all the subtasks
      * @param items subtasks
      */
     void showItems(List<SubTask> items);
 
     /**
-     * displays the title with the current task name
+     * Displays the title with the current task name
      * @param title task name
      */
     void showTitle(String title);
 
     /**
-     * shows alert dialog fragment to create or update subtask
+     * Shows alert dialog fragment to create or update subtask
      * @param subTask subtask to be updated (if there is no such subtask, then it is null)
      * @param taskId id of the main task
      */
     void showDialog(SubTask subTask, int taskId);
 
     /**
-     * shows toast with information that item is deleted and Cancel button
+     * Shows toast with information that item is deleted and Cancel button
      * @param subTask deleted item to be shown in a Toast
      */
     void showCancelBar(SubTask subTask);
 
     /**
-     * shows error if it has happened during opening the task
+     * Shows error if it has happened during opening the task
      */
     void showNoSuchTaskError();
 }

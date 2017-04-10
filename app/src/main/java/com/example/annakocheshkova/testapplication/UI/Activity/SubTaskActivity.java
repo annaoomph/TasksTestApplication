@@ -25,22 +25,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * this activity displays list of all the subtasks
+ * An activity that displays list of all the subtasks
  */
 public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
     /**
-     * adapter for the recycler view
+     * Adapter for the recycler view
      */
     SubTaskAdapter subTaskAdapter;
 
     /**
-     * main view with all the content
+     * Main view with all the content
      */
     View mainView;
 
     /**
-     * main controller for the view
+     * mMain controller for the view
      */
     SubTaskController subTaskController;
 
@@ -52,7 +52,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     }
 
     /**
-     * sets all content configuration and click listeners
+     * Sets all content configuration and click listeners
      */
     void setContent() {
         RecyclerView listView = (RecyclerView)findViewById(R.id.task_detailed_view);

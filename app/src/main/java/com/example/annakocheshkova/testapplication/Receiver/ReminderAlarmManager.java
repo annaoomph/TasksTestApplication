@@ -24,7 +24,7 @@ import java.util.List;
 public class ReminderAlarmManager extends BroadcastReceiver {
 
     /**
-     * called when the time has come for notification to be fired
+     * Called when the time has come for notification to be fired
      * @param context current application context
      * @param intent current intent
      */
@@ -34,7 +34,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * shows notification for a certain task
+     * Shows notification for a certain task
      * @param context current context
      * @param name name of the task
      * @param id id of the task
@@ -58,7 +58,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * creates a new alarm
+     * Creates a new alarm
      * @param newTask task for the alarm
      */
     public static void addAlarm(Task newTask) {
@@ -72,7 +72,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * disables a certain alarm
+     * Disables a certain alarm
      * @param task task from which the alarm should be deleted
      */
     public static void removeAlarm(Task task) {
@@ -84,7 +84,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * reads all the alarms from the database and reschedules them
+     * Reads all the alarms from the database and reschedules them
      */
     public static void scheduleAlarms() {
         DataStore dataStore = DataStoreFactory.getDataStore();
@@ -95,7 +95,7 @@ public class ReminderAlarmManager extends BroadcastReceiver {
     }
 
     /**
-     * called when the notification was shown
+     * Called when the notification was shown
      * @param id id of the task which notification was shown
      */
     public static void onAlarmFired(int id) {

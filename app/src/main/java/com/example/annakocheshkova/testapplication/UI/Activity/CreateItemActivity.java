@@ -31,77 +31,77 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * a view of the activity, which allows user to create a new task
+ * A view of the activity, which allows user to create a new task
  */
 public class CreateItemActivity extends AppCompatActivity implements CreateItemView {
 
     /**
-     * controller of the view
+     * Controller of the view
      */
     CreateItemController createItemController;
 
     /**
-     * toolbar with menu
+     * A toolbar with menu
      */
     Toolbar toolbar;
 
     /**
-     * editText with name of the task
+     * An input with name of the task
      */
     EditText nameText;
 
     /**
-     * checkbox if fire alarm
+     * Checkbox if fire alarm
      */
     CheckBox reminderCheckBox;
 
     /**
-     * a spinner to choose when to fire alarm
+     * A spinner to choose when to fire alarm
      */
     Spinner spinner;
 
     /**
-     * editText which displays the date chosen by user
+     * An input which displays the date chosen by user
      */
     private EditText dateDisplay;
 
     /**
-     * edittext which displays the time chosen by user
+     * An input which displays the time chosen by user
      */
     private EditText timeDisplay;
 
     /**
-     * year that's displayed at the moment
+     * Year that's displayed at the moment
      */
     private int chosenYear;
 
     /**
-     * month that's displayed at the moment
+     * Month that's displayed at the moment
      */
     private int chosenMonth;
 
     /**
-     * day that's displayed at the moment
+     * Day that's displayed at the moment
      */
     private int chosenDay;
 
     /**
-     * hour that's displayed at the moment
+     * Hour that's displayed at the moment
      */
     private int chosenHour;
 
     /**
-     * minute that's displayed at the moment
+     * Minute that's displayed at the moment
      */
     private int chosenMinute;
 
     /**
-     * a tag by which date dialog is shown
+     * A tag by which date dialog is shown
      */
     static final int DATE_DIALOG_ID = 0;
 
     /**
-     * a tag by which time dialog is shown
+     * A tag by which time dialog is shown
      */
     static final int TIME_DIALOG_ID = 1;
 
@@ -114,7 +114,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * gets all the views needed to work with
+     * Gets all the views needed to work with
      */
     void getViews() {
         dateDisplay = (EditText) findViewById(R.id.date_display);
@@ -127,7 +127,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * sets configuration of the window content
+     * Sets configuration of the window content
      */
     void setContent() {
         createItemController = new CreateItemController(this);
@@ -194,20 +194,22 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * updates date and time shown in edittext boxes
+     * Updates date and time shown in edittext boxes
      */
     private void updateDisplay() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(chosenYear, chosenMonth, chosenDay, chosenHour, chosenMinute);
-        SimpleDateFormat format = new SimpleDateFormat();
+        DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+        DateFormat timeFormat = SimpleDateFormat.getTimeInstance();
         Date date = new Date(calendar.getTimeInMillis());
-        String dateString = format.format(date);
-        dateDisplay.setText(dateString.split(" ")[0]);
-        timeDisplay.setText(dateString.split(" ")[1]);
+        String dateString = dateFormat.format(date);
+        String timeString = timeFormat.format(date);
+        dateDisplay.setText(dateString);
+        timeDisplay.setText(timeString);
     }
 
     /**
-     *the callback received when the user sets the date in the dialog
+     * The callback received when the user sets the date in the dialog
      */
     private DatePickerDialog.OnDateSetListener onDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
@@ -221,7 +223,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     };
 
      /**
-     *the callback received when the user sets the time in the dialog
+     * The callback received when the user sets the time in the dialog
      */
     private TimePickerDialog.OnTimeSetListener onTimeSetListener =
             new TimePickerDialog.OnTimeSetListener() {
@@ -253,7 +255,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * responds to confirmation button click
+     * Responds to confirmation button click
      * @param view button view
      */
     public void onAddNewTaskClick(View view) {

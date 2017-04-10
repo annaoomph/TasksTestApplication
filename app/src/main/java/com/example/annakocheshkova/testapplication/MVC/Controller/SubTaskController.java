@@ -13,12 +13,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * a controller which handles all the actions connected with subtasks
+ * A controller which handles all the actions connected with subtasks
  */
 public class SubTaskController implements OnItemEditedListener, UndoListener<SubTask>{
 
     /**
-     * called when user finished editing a subtask and the main view needs to be updated
+     * Called when user finished editing a subtask and the main view needs to be updated
      */
     @Override
     public void onItemEdited() {
@@ -27,22 +27,22 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * datastore instance to work with the data
+     * Datastore instance to work with the data
      */
     private DataStore dataStore;
 
     /**
-     * main controller view
+     * Main controller view
      */
     private SubTaskView view;
 
     /**
-     * current task we are working with (-1 at first)
+     * Current task we are working with (-1 at first)
      */
     private static int currentTask = -1;
 
     /**
-     * creates an instance of subTaskController
+     * Creates an instance of subTaskController
      * @param view main view
      */
     public SubTaskController(SubTaskView view) {
@@ -59,14 +59,14 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * called when user started creating a new subtask
+     * Called when user started creating a new subtask
      */
     public void onCreate() {
         view.showDialog(null, currentTask);
     }
 
     /**
-     * called when user changed status of the subTask
+     * Called when user changed status of the subTask
      * @param subTask subtask which status needs to be toggled
      */
     public void onStatusChanged(SubTask subTask) {
@@ -77,7 +77,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * called everytime view needs to be updated
+     * Called everytime view needs to be updated;
      * gets a list of subtasks by their main task
      * @param task_id id of the main task
      */
@@ -97,7 +97,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * called when a subtask needs to be deleted
+     * Called when a subtask needs to be deleted
      * @param subTask to be deleted
      */
     public void onDelete(SubTask subTask) {
@@ -115,7 +115,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * sorts the given list of subtasks
+     * Sorts the given list of subtasks
      * @param list of subtask
      */
     private void sort (List<SubTask> list) {
@@ -128,7 +128,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * compares two subtasks for proper sorting
+     * Compares two subtasks for proper sorting
      * @param firstSubTask first subtask to be compared
      * @param secondSubTask second subtask to be compared
      * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)

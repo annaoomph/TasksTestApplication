@@ -10,7 +10,7 @@ import android.content.Intent;
 public class MyBootReceiver extends BroadcastReceiver
 {
     /**
-     * called when reboot has happened
+     * Called when reboot has happened
      * @param context current context
      * @param intent current intent
      */

@@ -12,6 +12,8 @@ import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
+
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,22 +24,22 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     /**
-     * list of the tasks to be displayed by the adapter
+     * List of the tasks to be displayed by the adapter
      */
     private static List<Task> taskList;
 
     /**
-     * subTasks controller working with the subTaskView
+     * SubTasks controller working with the subTaskView
      */
     private static TaskController taskController;
 
     /**
-     * a color to draw a task that is not completed
+     * A color to draw a task that is not completed
      */
     private final int darkColor;
 
     /**
-     * a color to draw a task that is completed
+     * A color to draw a task that is completed
      */
     private final int lightColor;
 
@@ -47,7 +49,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private final int redColor;
 
     /**
-     * creates new instance of the adapter
+     * Creates new instance of the adapter
      * @param taskList list of the tasks to be displayed by adapter
      */
     public TaskAdapter(List<Task> taskList, TaskController taskController) {
@@ -61,22 +63,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
-         * a text with the name of the subtask
+         * A text with the name of the subtask
          */
         TextView textRow;
 
         /**
-         * text with alarm time
+         * A text with alarm time
          */
         TextView timeText;
 
         /**
-         * layout that's shown when the task has alarms scheduled
+         * Layout that's shown when the task has alarms scheduled
          */
         LinearLayout alarmLayout;
 
         /**
-         * creates new instance of a viewholder
+         * Creates new instance of a view holder
          * @param view main view
          */
         ViewHolder(View view) {
@@ -107,7 +109,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * a method called everytime when data changes
+     * A method called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<Task> newItems) {
@@ -133,7 +135,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * gets the task by its position in the list of items
+     * Gets the task by its position in the list of items
      * @param position of the task
      * @return task
      */
@@ -142,12 +144,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     /**
-     * gets date and time of the task in string format
+     * Gets date and time of the task in string format
      * @param time task time
      * @return date and time in string format
      */
     private String getDateTimeString(long time) {
-        SimpleDateFormat format = new SimpleDateFormat();
+        DateFormat format = SimpleDateFormat.getDateTimeInstance();
         Date date = new Date(time);
         return format.format(date);
     }

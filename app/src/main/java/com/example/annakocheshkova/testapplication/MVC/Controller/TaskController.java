@@ -12,22 +12,22 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * a controller which handles all the actions connected with tasks
+ * A controller which handles all the actions connected with tasks
  */
 public class TaskController implements UndoListener<Task> {
 
     /**
-     * datastore to work with data
+     * Datastore to work with data
      */
     private DataStore dataStore;
 
     /**
-     * main view
+     * Main view
      */
     private TaskView view;
 
     /**
-     * creates an instance of task controller
+     * Creates an instance of task controller
      * @param view main view
      */
     public TaskController(TaskView view) {
@@ -36,7 +36,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * called everytime you need to update the main view list of tasks
+     * Called everytime you need to update the main view list of tasks
      */
     public void onViewLoaded() {
         List<Task> tasks = dataStore.getAllTasks();
@@ -45,7 +45,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * called when some task is chosen to be edited
+     * Called when some task is chosen to be edited
      * @param id id of the chosen task
      */
     public void onItemUpdate(int id) {
@@ -53,7 +53,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * event when some task is chosen to be opened
+     * Called when some task is chosen to be opened
      * @param id id of the chosen task
      */
     public void onItemChosen(int id) {
@@ -62,7 +62,7 @@ public class TaskController implements UndoListener<Task> {
 
 
     /**
-     * called when an item needs to be deleted
+     * Called when an item needs to be deleted
      * @param item task to be deleted
      */
     public void onDelete(Task item) {
@@ -87,7 +87,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * compares two tasks for proper sorting
+     * Compares two tasks for proper sorting
      * @param firstTask first task to be compared
      * @param secondTask second task to be compared
      * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
@@ -107,7 +107,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * sorts the given list of tasks
+     * Sorts the given list of tasks
      * @param tasks list
      */
     private void sort (List<Task> tasks) {

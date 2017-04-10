@@ -18,27 +18,27 @@ import java.util.List;
 public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHolder> {
 
     /**
-     * a list of the subtasks to be displayed by the adapter
+     * A list of the subtasks to be displayed by the adapter
      */
     private static List<SubTask> subTasksList;
 
     /**
-     * subTasks controller working with the subTaskView
+     * SubTasks controller working with the subTaskView
      */
     private static SubTaskController subTaskController;
 
     /**
-     * a color used when the subtask is not completed
+     * A color used when the subtask is not completed
      */
     private final int darkColor;
 
     /**
-     * a color used when the subtask is completed
+     * A color used when the subtask is completed
      */
     private final int lightColor;
 
     /**
-     * creates new instance of adapter
+     * Creates new instance of adapter
      * @param data list of subtasks to be shown
      * @param subTaskController controller of the subtasks view
      */
@@ -52,12 +52,12 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
-         * a textView that displays the name of the subtask
+         * A textView that displays the name of the subtask
          */
         TextView textRow;
 
         /**
-         * creates new instance of a view holder for a certain row
+         * Creates new instance of a view holder for a certain row
          * @param view main view
          */
         ViewHolder(View view) {
@@ -81,7 +81,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * called everytime when data changes
+     * Called everytime when data changes
      * @param newItems new data
      */
     public void changeData(List<SubTask> newItems) {
@@ -90,7 +90,7 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     /**
-     * gets the subtask by its position in the list of items
+     * Gets the subtask by its position in the list of items
      * @param position of the subtask
      * @return subtask
      */
