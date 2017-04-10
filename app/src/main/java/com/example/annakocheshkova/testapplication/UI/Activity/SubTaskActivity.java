@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.SubTaskView;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 import com.example.annakocheshkova.testapplication.Utils.Component.UndoComponent;
@@ -36,7 +37,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     /**
      * main view with all the content
      */
-    View view;
+    View mainView;
 
     /**
      * main controller for the view
@@ -51,14 +52,14 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     }
 
     /**
-     * set all content configuration and click listeners
+     * sets all content configuration and click listeners
      */
     void setContent() {
         RecyclerView listView = (RecyclerView)findViewById(R.id.task_detailed_view);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         subTaskController = new SubTaskController(this);
-        view = findViewById(R.id.content);
+        mainView = findViewById(R.id.content);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -133,12 +134,12 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     @Override
     public void showCancelBar(SubTask subTask) {
         UndoComponent<SubTask> undoComponent = new UndoComponent<>();
-        undoComponent.make(view, subTask, subTaskController, subTask.getName());
+        undoComponent.make(mainView, subTask, subTaskController, subTask.getName());
     }
 
     @Override
-    public void error(String errorText) {
-        Toast.makeText(this, errorText, Toast.LENGTH_LONG).show();
+    public void showNoSuchTaskError() {
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task), Toast.LENGTH_LONG).show();
         finish();
     }
 }

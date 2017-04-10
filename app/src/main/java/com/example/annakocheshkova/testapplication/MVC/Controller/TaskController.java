@@ -39,36 +39,11 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * a method to compare two tasks for proper sorting
-     * @param firstTask first task to be compared
-     * @param secondTask second task to be compared
-     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
-     */
-    private int compareTasks(Task firstTask, Task secondTask) {
-        if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
-            if (firstTask.getTime() > secondTask.getTime()) {
-                return 1;
-            } else if (firstTask.getTime() < secondTask.getTime()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } else {
-            return firstTask.getStatus().compareTo(secondTask.getStatus());
-        }
-    }
-
-    /**
      * event called everytime you need to update the main view list of tasks
      */
     public void onViewLoaded() {
         List<Task> tasks = dataStore.getAllTasks();
-        Collections.sort(tasks, new Comparator<Task>() {
-            @Override
-            public int compare(Task firstTask, Task secondTask) {
-                return compareTasks(firstTask, secondTask);
-            }
-        });
+        sort(tasks);
         view.showItems(tasks);
     }
 
@@ -120,5 +95,38 @@ public class TaskController implements UndoListener<Task> {
             }
         }
         onViewLoaded();
+    }
+
+    /**
+     * a method to compare two tasks for proper sorting
+     * @param firstTask first task to be compared
+     * @param secondTask second task to be compared
+     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
+     */
+    private int compareTasks(Task firstTask, Task secondTask) {
+        if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
+            if (firstTask.getTime() > secondTask.getTime()) {
+                return 1;
+            } else if (firstTask.getTime() < secondTask.getTime()) {
+                return -1;
+            } else {
+                return 0;
+            }
+        } else {
+            return firstTask.getStatus().compareTo(secondTask.getStatus());
+        }
+    }
+
+    /**
+     * sorts the given list of tasks
+     * @param tasks list
+     */
+    private void sort (List<Task> tasks) {
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task firstTask, Task secondTask) {
+                return compareTasks(firstTask, secondTask);
+            }
+        });
     }
 }

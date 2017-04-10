@@ -79,22 +79,6 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * a method to compare two subtasks for proper sorting
-     * @param firstSubTask first subtask to be compared
-     * @param secondSubTask secont subtask to be compared
-     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
-     */
-    private int compareSubTasks (SubTask firstSubTask, SubTask secondSubTask) {
-        if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
-            return -1;
-        }
-        if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
-            return 1;
-        }
-        return firstSubTask.getName().compareTo(secondSubTask.getName());
-    }
-
-    /**
      * event called everytime view needs to be updated
      * gets a list of subtasks by their main task
      * @param task_id id of the main task
@@ -102,16 +86,11 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     public void onViewLoaded(int task_id) {
         Task main = dataStore.getTask(task_id);
         if (main == null) {
-            view.error(MyApplication.getAppContext().getString(R.string.no_such_task));
+            view.showNoSuchTaskError();
         } else {
             currentTask = task_id;
             List<SubTask> list = dataStore.getAllSubtasksByTask(main);
-            Collections.sort(list, new Comparator<SubTask>() {
-                @Override
-                public int compare(SubTask firstSubTask, SubTask secondSubTask) {
-                    return compareSubTasks(firstSubTask, secondSubTask);
-                }
-            });
+            sort(list);
             if (currentTask != -1) {
                 view.showItems(list);
                 view.showTitle(main.getName());
@@ -136,4 +115,34 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
         if (currentTask != -1)
             onViewLoaded(currentTask);
     }
+
+    /**
+     * sorts the given list of subtasks
+     * @param list of subtask
+     */
+    private void sort (List<SubTask> list) {
+        Collections.sort(list, new Comparator<SubTask>() {
+            @Override
+            public int compare(SubTask firstSubTask, SubTask secondSubTask) {
+                return compareSubTasks(firstSubTask, secondSubTask);
+            }
+        });
+    }
+
+    /**
+     * a method to compare two subtasks for proper sorting
+     * @param firstSubTask first subtask to be compared
+     * @param secondSubTask secont subtask to be compared
+     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
+     */
+    private int compareSubTasks (SubTask firstSubTask, SubTask secondSubTask) {
+        if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
+            return -1;
+        }
+        if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
+            return 1;
+        }
+        return firstSubTask.getName().compareTo(secondSubTask.getName());
+    }
+
 }

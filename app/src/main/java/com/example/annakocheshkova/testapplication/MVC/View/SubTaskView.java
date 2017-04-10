@@ -35,7 +35,6 @@ public interface SubTaskView {
 
     /**
      * show error if it has happened during opening the task
-     * @param errorText text to be displayed
      */
-    void error(String errorText);
+    void showNoSuchTaskError();
 }
