@@ -4,10 +4,10 @@
     android:id="@+id/drawer_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/activatedBackgroundIndicator"
+    android:background="@color/colorPrimaryDark"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:paddingLeft="@dimen/default_margin"
     android:paddingRight="@dimen/default_margin"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:textColor="@color/colorAccent" />
+    android:textColor="@color/textColorLight" />
