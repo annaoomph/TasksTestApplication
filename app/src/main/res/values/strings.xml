@@ -24,6 +24,11 @@
     <string name="no_such_task">Sorry, there\'s no such task. Check if it was already deleted.</string>
     <string name="incorrect_time">You have chosen the time less than the current time! The task was not created.</string>
     <string name="incorrect_alarm_time">You have chosen the time of the alarm less than the current time! The task was not created.</string>
+    <string name="local">Local</string>
+    <string name="remote">Remote</string>
+    <string name="filename">Name of the file</string>
+    <string name="path_to_server">Path to server</string>
+    <string name="export">Export</string>
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>

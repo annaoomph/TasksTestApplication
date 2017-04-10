@@ -61,7 +61,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         subTaskController = new SubTaskController(this);
         mainView = findViewById(R.id.content);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar!=null)
+        if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
         List<SubTask> items = new ArrayList<>();
         subTaskAdapter = new SubTaskAdapter(items, subTaskController);
