@@ -287,7 +287,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
 
     @Override
     public void close() {
-        startActivity(new Intent(this, MainTasksActivity.class));
+        finish();
     }
 
     @Override
