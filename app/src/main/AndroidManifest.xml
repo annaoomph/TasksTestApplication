@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".UI.Activity.MainTasksActivity">
+        <activity android:name=".ui.activity.MainTasksActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,15 +19,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UI.Activity.CreateItemActivity"
+            android:name=".ui.activity.CreateItemActivity"
             android:label="@string/title_activity_create_item" />
-        <activity android:name=".UI.Activity.SubTaskActivity" />
+        <activity android:name=".ui.activity.SubTaskActivity" />
 
         <receiver
-            android:name=".Receiver.ReminderAlarmManager"
+            android:name=".receiver.ReminderAlarmManager"
            />
         <receiver
-            android:name=".Receiver.MyBootReceiver"
+            android:name=".receiver.MyBootReceiver"
             android:enabled="true"
             android:exported="false"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
