@@ -9,9 +9,9 @@ public interface CreateItemView {
     /**
      * shows the item to be edited
      * @param item item to be edited
-     * @param alarmTime number of the chosen period
+     * @param alarmTime the chosen period
      */
-    void showItem(Task item, int alarmTime);
+    void showItem(Task item, long alarmTime);
 
     /**
      * close the view if the item was updated/created
@@ -19,10 +19,14 @@ public interface CreateItemView {
     void close();
 
     /**
-     * an error when creating/updating item has occurred
-     * @param errorString string describing the error
+     * shows an error when the wrong time is set
      */
-    void error(String errorString);
+    void showWrongTimeError();
+
+    /**
+     * shows an error when the wrong alarm time is set
+     */
+    void showWrongAlarmTimeError();
 
     /**
      * get name of the created item or new name of the updated
@@ -69,7 +73,7 @@ public interface CreateItemView {
 
     /**
      * get the time when to fire alarm
-     * @return the number of the chosen period
+     * @return the chosen period
      */
-    int getReminderTime();
+    long getReminderTime();
 }

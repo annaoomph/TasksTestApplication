@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 
 import java.util.Calendar;
@@ -270,9 +271,17 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     @Override
-    public void showItem(Task item, int alarmTime) {
+    public void showItem(Task item, long timePeriod) {
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
+        int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
+        int alarmTime = 0; //position in spinner adapter
+        switch (timePeriodInMinutes) {
+            case 1: alarmTime = 1; break;
+            case 10: alarmTime = 2; break;
+            case 60: alarmTime = 3; break;
+            case 60 * 24: alarmTime = 4; break;
+        }
         spinner.setSelection(alarmTime);
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
@@ -283,6 +292,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         chosenMinute = calendar.get(Calendar.MINUTE);
         chosenHour = calendar.get(Calendar.HOUR_OF_DAY);
         updateDisplay();
+
     }
 
     @Override
@@ -291,8 +301,13 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     @Override
-    public void error(String errorString) {
-        Toast.makeText(this, errorString, Toast.LENGTH_LONG).show();
+    public void showWrongTimeError() {
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showWrongAlarmTimeError() {
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -331,7 +346,23 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     @Override
-    public int getReminderTime() {
-        return spinner.getSelectedItemPosition();
+    public long getReminderTime() {
+        int alarmTime = spinner.getSelectedItemPosition();
+        long timePeriod = 0;
+        switch (alarmTime) {
+            case 1:
+                timePeriod = 60 * 1000;
+                break;
+            case 2:
+                timePeriod = 60 * 1000 * 10;
+                break;
+            case 3:
+                timePeriod = 60 * 1000 * 60;
+                break;
+            case 4:
+                timePeriod = 60 * 1000 * 60 * 24;
+                break;
+        }
+        return timePeriod;
     }
 }

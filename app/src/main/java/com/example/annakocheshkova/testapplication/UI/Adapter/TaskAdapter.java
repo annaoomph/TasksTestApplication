@@ -1,21 +1,16 @@
 package com.example.annakocheshkova.testapplication.UI.Adapter;
 
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.UI.Activity.CreateItemActivity;
-import com.example.annakocheshkova.testapplication.UI.Activity.SubTaskActivity;
 
 import java.util.Calendar;
 import java.util.List;
@@ -122,7 +117,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         switch (item.getStatus()) {
             case Completed: holder.textRow.setTextColor(holder.lightColor); break;
             case Pending: holder.textRow.setTextColor(holder.darkColor); break;
-            case Uncompleted: holder.textRow.setTextColor(holder.redColor); break;
+            case Expired: holder.textRow.setTextColor(holder.redColor); break;
         }
         if (item.hasAlarms()) {
             holder.timeText.setText(getDateTimeString(item.getAlarmTime()));

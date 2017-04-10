@@ -18,7 +18,7 @@ public class Task
      * enum with available task statuses
      */
     public enum TaskStatus {
-        Uncompleted,
+        Expired,
         Pending,
         Completed
     }
@@ -102,7 +102,7 @@ public class Task
             if (completed) {
                 return TaskStatus.Completed;
             } else {
-                return TaskStatus.Uncompleted;
+                return TaskStatus.Expired;
             }
         } else {
             return TaskStatus.Pending;
@@ -111,19 +111,20 @@ public class Task
 
     /**
      * set notification on task
-     * @param time notification time
+     * @param show if to shown notification
      */
-    public void setNotification(long time) {
-        this.alarmTime = time;
-        this.notification = true;
+    public void setNotification(boolean show) {
+        this.notification = show;
+        if (!show)
+            alarmTime = 0;
     }
 
     /**
-     * remove notification from task
+     * sets the time of the notification
+     * @param time to be set
      */
-    public void onAlarmCancelled() {
-        this.notification = false;
-        this.alarmTime = 0;
+    public void setNotificationTime(long time) {
+        this.alarmTime = time;
     }
 
     /**

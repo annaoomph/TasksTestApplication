@@ -5,8 +5,8 @@ import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.Utils.NotificationAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.Receiver.ReminderAlarmManager;
 
 import java.util.Calendar;
 
@@ -48,15 +48,7 @@ public class CreateItemController {
             Task task = dataStore.getTask(id);
             editingTask = task;
             long timePeriod = task.getTime() - task.getAlarmTime();
-            int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
-            int alarmTime = 0; //position in spinner adapter
-            switch (timePeriodInMinutes) {
-                case 1: alarmTime = 1; break;
-                case 10: alarmTime = 2; break;
-                case 60: alarmTime = 3; break;
-                case 60 * 24: alarmTime = 4; break;
-            }
-            view.showItem(task, alarmTime);
+            view.showItem(task, timePeriod);
         } else {
             editingTask = null;
         }
@@ -74,57 +66,46 @@ public class CreateItemController {
         int day = view.getDay();
         int hour = view.getHour();
         int minute = view.getMinute();
-        int alarmTime = view.getReminderTime();
+        long timePeriod = view.getReminderTime();
         Calendar calendar = Calendar.getInstance();
         long currentTime = calendar.getTimeInMillis();
         calendar.clear();
         calendar.set(year, month, day, hour, minute);
         long timeToSchedule = calendar.getTimeInMillis();
-        long timePeriod = 0;
-        switch (alarmTime) {
-            case 1:
-                timePeriod = 60 * 1000;
-                break;
-            case 2:
-                timePeriod = 60 * 1000 * 10;
-                break;
-            case 3:
-                timePeriod = 60 * 1000 * 60;
-                break;
-            case 4:
-                timePeriod = 60 * 1000 * 60 * 24;
-                break;
-        }
         long timeForAlarm = timeToSchedule - timePeriod;
         boolean correctTime = timeToSchedule > currentTime;
         boolean correctAlarmTime = timeForAlarm > currentTime;
         if (!correctTime) {
-            view.error(MyApplication.getAppContext().getString(R.string.incorrect_time));
+            view.showWrongTimeError();
         }
         else if (!correctAlarmTime) {
-            view.error(MyApplication.getAppContext().getString(R.string.incorrect_alarm_time));
+            view.showWrongAlarmTimeError();
         } else {
             Task task;
             if (editingTask != null) {
                 task = editingTask;
                 if (task.hasAlarms()) {
-                    task.onAlarmCancelled();
-                    NotificationAlarmManager.removeAlarm(task);
+                    task.setNotification(false);
+                    ReminderAlarmManager.removeAlarm(task);
                 }
-                if (fireAlarm)
-                    task.setNotification(timeForAlarm);
+                if (fireAlarm) {
+                    task.setNotification(true);
+                    task.setNotificationTime(timeForAlarm);
+                }
                 task.setName(name);
                 task.setTime(timeToSchedule);
                 dataStore.updateTask(task);
             } else {
                 task = new Task(name, timeToSchedule);
-                if (fireAlarm)
-                    task.setNotification(timeForAlarm);
+                if (fireAlarm) {
+                    task.setNotification(true);
+                    task.setNotificationTime(timeForAlarm);
+                }
                 dataStore.createTask(task);
             }
 
             if (fireAlarm) {
-                NotificationAlarmManager.addAlarm(task);
+                ReminderAlarmManager.addAlarm(task);
             }
             view.close();
         }

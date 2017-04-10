@@ -2,8 +2,10 @@ package com.example.annakocheshkova.testapplication.Database;
 
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -30,12 +32,12 @@ class DatabaseDataStore implements DataStore {
     }
 
     @Override
-    public List<Task> getAllTasks() {
+    public List<Task> getAllTasks(){
         return simpleTaskDao.queryForAll();
     }
 
     @Override
-    public List<SubTask> getAllSubTasks() {
+    public List<SubTask> getAllSubTasks(){
         return simpleSubTaskDao.queryForAll();
     }
 
@@ -76,14 +78,12 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public Task getTask(int id) {
-        List<Task> list = simpleTaskDao.queryForEq("id", id);
-        return list.get(0);
+        return simpleTaskDao.queryForId(id);
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        List<SubTask> list = simpleSubTaskDao.queryForEq("id", id);
-        return list.get(0);
+        return simpleSubTaskDao.queryForId(id);
     }
 
     @Override

@@ -1,11 +1,10 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Utils.NotificationAlarmManager;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
-import com.example.annakocheshkova.testapplication.Receiver.AlarmReceiver;
+import com.example.annakocheshkova.testapplication.Receiver.ReminderAlarmManager;
 import com.example.annakocheshkova.testapplication.Utils.Listener.UndoListener;
 
 import java.util.Collections;
@@ -86,7 +85,7 @@ public class TaskController implements UndoListener {
     @Override
     public Task onDelete(int position) {
         Task item = tasksList.get(position);
-        NotificationAlarmManager.removeAlarm(item);
+        ReminderAlarmManager.removeAlarm(item);
         Task deletedItem = new Task(item); // making a copy of the item because ormlite will delete it later
         view.showCancelBar(item.getName());
         dataStore.deleteTask(item);
@@ -104,7 +103,7 @@ public class TaskController implements UndoListener {
                 subTask.setTask(deletedItem);
                 dataStore.createSubTask(subTask);
             }
-            NotificationAlarmManager.addAlarm(deletedItem);
+            ReminderAlarmManager.addAlarm(deletedItem);
         }
         onViewLoaded();
     }

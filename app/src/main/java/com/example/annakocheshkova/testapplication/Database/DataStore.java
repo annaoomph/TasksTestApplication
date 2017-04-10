@@ -3,6 +3,7 @@ package com.example.annakocheshkova.testapplication.Database;
 import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
