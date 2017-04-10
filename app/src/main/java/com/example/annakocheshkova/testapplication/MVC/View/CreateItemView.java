@@ -14,7 +14,7 @@ public interface CreateItemView {
     void showItem(Task item, long alarmTime);
 
     /**
-     * close the view if the item was updated/created
+     * closes the view if the item was updated/created
      */
     void close();
 
@@ -29,50 +29,50 @@ public interface CreateItemView {
     void showWrongAlarmTimeError();
 
     /**
-     * get name of the created item or new name of the updated
+     * gets name of the created item or new name of the updated
      * @return name
      */
     String getName();
 
     /**
-     * get year set by user
+     * gets year set by user
      * @return year
      */
     int getYear();
 
     /**
-     * get month set by user
+     * gets month set by user
      * @return month
      */
     int getMonth();
 
     /**
-     * get day set by user
+     * gets day set by user
      * @return day
      */
     int getDay();
 
     /**
-     * get hour set by user
+     * gets hour set by user
      * @return hour
      */
     int getHour();
 
     /**
-     * get minute set by user
+     * gets minute set by user
      * @return minute
      */
     int getMinute();
 
 
     /**
-     * find out if alarm needs to be fired
+     * finds out if alarm needs to be fired
      * @return true if needs, false if not
      */
     boolean ifFireAlarm();
 
     /**
-     * get the time when to fire alarm
+     * gets the time when to fire alarm
      * @return the chosen period
      */
     long getReminderTime();

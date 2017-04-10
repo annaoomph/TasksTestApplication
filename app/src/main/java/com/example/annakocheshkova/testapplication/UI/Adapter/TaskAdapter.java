@@ -12,7 +12,9 @@ import com.example.annakocheshkova.testapplication.MVC.Controller.TaskController
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,24 +135,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      * @return date and time in string format
      */
     private String getDateTimeString(long time) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time);
-        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-        if (day.length() == 1)
-            day = "0" + day;
-        String month = String.valueOf(calendar.get(Calendar.MONTH)+1);
-        if (month.length() == 1)
-            month = "0" + month;
-        String year = String.valueOf(calendar.get(Calendar.YEAR));
-        if (year.length() == 1)
-            year = "0" + year;
-        String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
-        if (hour.length() == 1)
-            hour = "0" + hour;
-        String minute = String.valueOf(calendar.get(Calendar.MINUTE));
-        if (minute.length() == 1)
-            minute = "0" + minute;
-        return hour + ":" + minute + " " + day + "-" + month + "-" + year;
+        SimpleDateFormat format = new SimpleDateFormat();
+        Date date = new Date(time);
+        String dateString = format.format(date);
+        return dateString;
     }
 
     @Override

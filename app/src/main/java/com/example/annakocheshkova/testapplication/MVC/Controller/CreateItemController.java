@@ -31,7 +31,7 @@ public class CreateItemController {
     private Task editingTask;
 
     /**
-     * constructor. creates an example of the datastore
+     * creates an example of the datastore
      * @param view main view
      */
     public CreateItemController(CreateItemView view) {
@@ -40,7 +40,7 @@ public class CreateItemController {
     }
 
     /**
-     * event called everytime you need to update view (show information about task)
+     * called everytime you need to update view (show information about task)
      * @param id id of the task to be shown (-1 if no need to show)
      */
     public void onViewLoaded(int id) {
@@ -55,8 +55,8 @@ public class CreateItemController {
     }
 
     /**
-     * event when user updates or creates a certain task;
-     * method finds out if user was updating the item and creates or updates it depending on the result
+     * updates or creates a certain task;
+     * finds out if user was updating the item and creates or updates it depending on the result
      */
     public void onItemEditingFinished() {
         String name = view.getName();

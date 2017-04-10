@@ -29,17 +29,17 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
-         * textView displays the name of the subtask
+         * a textView that displays the name of the subtask
          */
         TextView textRow;
 
         /**
-         * this color is used when the subtask is not completed
+         * a color that is used when the subtask is not completed
          */
         int darkColor;
 
         /**
-         * this color is used when the subtask is completed
+         * a color that is used when the subtask is completed
          */
         int lightColor;
 

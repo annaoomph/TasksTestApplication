@@ -25,7 +25,10 @@ import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * a view of the activity, which allows user to create a new task
@@ -93,12 +96,12 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     private int chosenMinute;
 
     /**
-     * tag by which date dialog is shown
+     * a tag by which date dialog is shown
      */
     static final int DATE_DIALOG_ID = 0;
 
     /**
-     * tag by which time dialog is shown
+     * a tag by which time dialog is shown
      */
     static final int TIME_DIALOG_ID = 1;
 
@@ -111,7 +114,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * get all the views needed to work with
+     * gets all the views needed to work with
      */
     void getViews() {
         dateDisplay = (EditText) findViewById(R.id.date_display);
@@ -124,7 +127,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * set configuration of the window content
+     * sets configuration of the window content
      */
     void setContent() {
         createItemController = new CreateItemController(this);
@@ -191,29 +194,16 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * update date and time shown in edittext boxes
+     * updates date and time shown in edittext boxes
      */
     private void updateDisplay() {
-        String day = String.valueOf(chosenDay);
-        if (day.length() == 1)
-            day = "0" + day;
-        String month = String.valueOf(chosenMonth+1);
-        if (month.length() == 1)
-            month = "0" + month;
-        String year = String.valueOf(chosenYear);
-        if (year.length() == 1)
-            year = "0" + year;
-        String hour = String.valueOf(chosenHour);
-        if (hour.length() == 1)
-            hour = "0" + hour;
-        String minute = String.valueOf(chosenMinute);
-        if (minute.length() == 1)
-            minute = "0" + minute;
-        dateDisplay.setText(new StringBuilder().append(day).append("-")
-                        .append(month).append("-")
-                        .append(year));
-        timeDisplay.setText(new StringBuilder().append(hour).append(":")
-                .append(minute));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(chosenYear, chosenMonth, chosenDay, chosenHour, chosenMinute);
+        SimpleDateFormat format = new SimpleDateFormat();
+        Date date = new Date(calendar.getTimeInMillis());
+        String dateString = format.format(date);
+        dateDisplay.setText(dateString.split(" ")[0]);
+        timeDisplay.setText(dateString.split(" ")[1]);
     }
 
     /**
@@ -263,7 +253,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     }
 
     /**
-     * method responding on button click when adding the new task
+     * responds to confirmation button click
      * @param view button view
      */
     public void OnAddNewTaskClick(View view) {
@@ -275,14 +265,14 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         nameText.setText(item.getName());
         reminderCheckBox.setChecked(item.hasAlarms());
         int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
-        int alarmTime = 0; //position in spinner adapter
+        int alarmPosition = 0; //position in spinner adapter
         switch (timePeriodInMinutes) {
-            case 1: alarmTime = 1; break;
-            case 10: alarmTime = 2; break;
-            case 60: alarmTime = 3; break;
-            case 60 * 24: alarmTime = 4; break;
+            case 1: alarmPosition = 1; break;
+            case 10: alarmPosition = 2; break;
+            case 60: alarmPosition = 3; break;
+            case 60 * 24: alarmPosition = 4; break;
         }
-        spinner.setSelection(alarmTime);
+        spinner.setSelection(alarmPosition);
         Calendar calendar = Calendar.getInstance();
         calendar.clear();
         calendar.setTimeInMillis(item.getTime());
