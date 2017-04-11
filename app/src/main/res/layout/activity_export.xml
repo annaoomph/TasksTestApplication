@@ -12,33 +12,43 @@
         layout="@layout/toolbar" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0">
+        android:layout_weight="1.0"
+        android:orientation="vertical">
 
         <RadioGroup
             android:id="@+id/radio_button_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:orientation="horizontal"
-            android:checkedButton="@+id/local_button">
+            android:checkedButton="@+id/local_button"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/local_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:text="@string/local"
-                android:buttonTint="@color/colorPrimary"/>
+                android:buttonTint="@color/colorPrimary"
+                android:text="@string/local" />
 
             <RadioButton
                 android:id="@+id/remote_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/remote"
-                android:buttonTint="@color/colorPrimary"/>
+                android:buttonTint="@color/colorPrimary"
+                android:text="@string/remote" />
+
+            <TextView
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:id="@+id/login_link_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remote_not_enabled"/>
         </RadioGroup>
 
         <EditText
@@ -48,8 +58,8 @@
             android:layout_marginBottom="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:hint="@string/filename"
             android:backgroundTint="@color/colorPrimary"
+            android:hint="@string/filename"
             android:textColor="@color/textColorPrimary"
             android:textColorHint="@color/textColorHint" />
 
@@ -59,10 +69,32 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:hint="@string/path_to_server"
+            android:layout_marginBottom="@dimen/small_margin"
             android:backgroundTint="@color/colorPrimary"
+            android:hint="@string/path_to_server"
             android:textColor="@color/textColorPrimary"
             android:textColorHint="@color/textColorHint" />
+
+        <LinearLayout
+            android:id="@+id/open_folder_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/open_folder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="@dimen/default_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@+id/open_folder"
+                android:text="@string/open_folder" />
+        </LinearLayout>
     </LinearLayout>
 
     <Button

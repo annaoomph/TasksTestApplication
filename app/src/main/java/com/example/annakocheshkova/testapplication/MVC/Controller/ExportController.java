@@ -6,6 +6,7 @@ import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.ExportView;
 import com.example.annakocheshkova.testapplication.Model.Task;
+import com.example.annakocheshkova.testapplication.R;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -62,23 +63,31 @@ public class ExportController {
      * @param tasksList list of tasks to be exported
      */
     private void exportLocal(String name, List<Task> tasksList) {
+        File folder = new File(mainView.getFolder());
+        boolean success = false;
+        if (!folder.exists()) {
+            success = folder.mkdirs();
+        }
+        if (!success)
+            mainView.showWrongFilePathError();
         Gson gson = new Gson();
         String tasks = gson.toJson(tasksList);
-        File file = new File(Environment.getExternalStorageDirectory() + File.separator + name);
+        File file = new File(name);
         try {
             file.createNewFile();
             if(file.exists()) {
-                OutputStream fo = null;
+                OutputStream outputStream;
                 try {
-                    fo = new FileOutputStream(file);
-                    fo.write(tasks.getBytes());
-                    fo.close();
+                    outputStream = new FileOutputStream(file);
+                    outputStream.write(tasks.getBytes());
+                    outputStream.close();
+                    mainView.close();
                 } catch (FileNotFoundException e) {
                     mainView.showWrongFilePathError();
                 }
             }
         } catch (IOException e) {
-            mainView.showWrongFilePathError();
+            mainView.showIOError();
         }
     }
 

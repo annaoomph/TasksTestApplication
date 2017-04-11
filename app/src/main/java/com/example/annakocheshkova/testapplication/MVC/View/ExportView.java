@@ -31,4 +31,15 @@ public interface ExportView {
      * Shows the error if the path to file is incorrect
      */
     void showWrongFilePathError();
+
+    /**
+     * Shows the error if IO error has occured
+     */
+    void showIOError();
+
+    /**
+     * Gets the current folder for file
+     * @return folder string
+     */
+    String getFolder();
 }

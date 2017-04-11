@@ -1,5 +1,8 @@
 package com.example.annakocheshkova.testapplication.UI.Activity;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +11,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.ExportController;
@@ -23,6 +32,7 @@ import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,23 +80,36 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         fileNameText = (EditText)findViewById(R.id.file_name);
         serverText = (EditText)findViewById(R.id.server_path);
         serverText.setVisibility(View.GONE);
+        final LinearLayout openFolderLayout = (LinearLayout)findViewById(R.id.open_folder_layout);
         radioGroup = (RadioGroup)findViewById(R.id.radio_button_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.local_button) {
                     fileNameText.setVisibility(View.VISIBLE);
+                    openFolderLayout.setVisibility(View.VISIBLE);
                     serverText.setVisibility(View.GONE);
                 } else {
                     serverText.setVisibility(View.VISIBLE);
+                    openFolderLayout.setVisibility(View.GONE);
                     fileNameText.setVisibility(View.GONE);
                 }
             }
         });
         RadioButton serverButton = (RadioButton)findViewById(R.id.remote_button);
-        //TODO If (!islogged)
-        //serverButton.setEnabled(false);
-        //serverButton.setText(R.string.remote_not_enabled);
+        TextView loginLink = (TextView)findViewById(R.id.login_link_view);
+        loginLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLogin();
+            }
+        });
+        //TODO set isLogged
+        boolean isLogged = false;
+        if (!isLogged) {
+            serverButton.setEnabled(false);
+            loginLink.setVisibility(View.VISIBLE);
+        }
         Button exportButton = (Button)findViewById(R.id.button);
         exportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,20 +119,40 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         });
     }
 
+    private void openLogin() {
+        //TODO open login from...
+    }
+
     @Override
     public boolean isLocal() {
         return radioGroup.getCheckedRadioButtonId() == R.id.local_button;
     }
 
     @Override
+    public String getFolder() {
+        return Environment.getExternalStorageDirectory() + "/" + getString(R.string.folder_name) + "/";
+    }
+
+    @Override
     public String getNameOrPath() {
-        if (radioGroup.getCheckedRadioButtonId() == R.id.local_button)
-            return fileNameText.getText().toString();
+        if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
+            return getFolder() + File.separator + fileNameText.getText().toString();
+        }
         else return serverText.getText().toString();
     }
 
     @Override
     public void close() {
+        CheckBox openFolderCheckBox = (CheckBox)findViewById(R.id.open_folder);
+        boolean openFolder = openFolderCheckBox.isChecked();
+        if (openFolder) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/" + getString(R.string.folder_name) + "/");
+            intent.setDataAndType(uri,"*/*");
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+        }
         finish();
     }
 
@@ -124,5 +167,9 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     }
 
+    @Override
+    public void showIOError() {
+        Toast.makeText(this, R.string.io_error , Toast.LENGTH_LONG).show();
+    }
 
 }

@@ -30,8 +30,12 @@
     <string name="path_to_server">Path to server</string>
     <string name="export">Export</string>
     <string name="no_connection">There\'s no connection to server. Please make sure that you have turned on internet on your phone.</string>
-    <string name="remote_not_enabled">Remote (log in to enable this option!)</string>
+    <string name="remote_not_enabled"><u>Log in to enable this option</u></string>
     <string name="wrong_path">The path to file is wrong!</string>
+    <string name="io_error">An error has occured during writing to file. Please try again later.</string>
+    <string name="file_created">The file was created in:</string>
+    <string name="folder_name">Tasks</string>
+    <string name="open_folder">Open folder after creation</string>
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>
