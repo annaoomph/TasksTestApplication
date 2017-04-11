@@ -91,6 +91,11 @@ class DatabaseDataStore implements DataStore {
     }
 
     @Override
+    public int getVersion() {
+        return new DatabaseHelper().getDatabaseVersion();
+    }
+
+    @Override
     public void deleteSubTasksByTask(Task task) {
         List<SubTask> alarms = getAllSubtasksByTask(task);
         simpleSubTaskDao.delete(alarms);

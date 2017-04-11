@@ -45,6 +45,14 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         simpleSubTaskRuntimeDao = null;
     }
 
+    /**
+     * Gets current database version
+     * @return version
+     */
+    int getDatabaseVersion() {
+        return DATABASE_VERSION;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
         try {

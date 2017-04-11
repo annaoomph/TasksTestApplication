@@ -128,7 +128,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         bundle.putInt("taskId",  taskId);
         alertdFragment.setArguments(bundle);
         alertdFragment.setOnItemEditedListener(subTaskController);
-        alertdFragment.show(supportFragmentManager, getString(R.string.alertDialogFragmentTag));
+        alertdFragment.show(supportFragmentManager, getString(R.string.alert_dialog_fragment_tag));
     }
 
     @Override
@@ -139,7 +139,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
     @Override
     public void showNoSuchTaskError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task_error), Toast.LENGTH_LONG).show();
         finish();
     }
 }

@@ -7,13 +7,7 @@ import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,16 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MVC.Controller.ExportController;
-import com.example.annakocheshkova.testapplication.MVC.Controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.ExportView;
-import com.example.annakocheshkova.testapplication.Model.SubTask;
-import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.UI.Adapter.SubTaskAdapter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ExportActivity extends AppCompatActivity implements ExportView {
 
@@ -75,7 +63,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(R.string.export);
+            actionBar.setTitle(R.string.export_title);
         }
         fileNameText = (EditText)findViewById(R.id.file_name);
         serverText = (EditText)findViewById(R.id.server_path);
@@ -158,12 +146,12 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void showNoConnectionError() {
-        Toast.makeText(this, R.string.no_connection , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.no_connection_error, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showWrongFilePathError() {
-        Toast.makeText(this, R.string.wrong_path , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.wrong_path_error, Toast.LENGTH_LONG).show();
 
     }
 

@@ -34,7 +34,7 @@ public class UndoComponent<T> {
     public void make(@NonNull View view, T item, @NonNull UndoListener<T> undoListener, String name) {
         this.item = item;
         this.undoListener = undoListener;
-        Snackbar.make(view, MyApplication.getAppContext().getString(R.string.deleted_string_firstpart) + " " + name + " " + MyApplication.getAppContext().getString(R.string.deleted_string_secondpart), Snackbar.LENGTH_LONG)
+        Snackbar.make(view, MyApplication.getAppContext().getString(R.string.deleted_string_first_part) + " " + name + " " + MyApplication.getAppContext().getString(R.string.deleted_string_second_part), Snackbar.LENGTH_LONG)
                 .setAction(R.string.cancel_btn, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

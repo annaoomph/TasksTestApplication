@@ -56,7 +56,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
         }
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle((edit)?getString(R.string.edit):getString(R.string.enter_new))
+                .setTitle((edit)?getString(R.string.edit_item_title):getString(R.string.enter_new_title))
                 .setView(input)
                 .setPositiveButton(getString(R.string.ok_string),
                         new DialogInterface.OnClickListener() {

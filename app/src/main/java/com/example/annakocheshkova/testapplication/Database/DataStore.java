@@ -91,4 +91,10 @@ public interface DataStore {
      * @return list of all the needed tasks
      */
     List<Task> getAllTasksWithAlarms();
+
+    /**
+     * Gets current datastore version (it can be database version, f.e.)
+     * @return version
+     */
+    int getVersion();
 }

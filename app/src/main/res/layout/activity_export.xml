@@ -31,14 +31,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/small_margin"
                 android:buttonTint="@color/colorPrimary"
-                android:text="@string/local" />
+                android:text="@string/local_export_label" />
 
             <RadioButton
                 android:id="@+id/remote_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorPrimary"
-                android:text="@string/remote" />
+                android:text="@string/remote_export_label" />
 
             <TextView
                 android:layout_marginStart="@dimen/small_margin"
@@ -59,7 +59,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:backgroundTint="@color/colorPrimary"
-            android:hint="@string/filename"
+            android:hint="@string/filename_hint"
             android:textColor="@color/textColorPrimary"
             android:textColorHint="@color/textColorHint" />
 
@@ -71,7 +71,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginBottom="@dimen/small_margin"
             android:backgroundTint="@color/colorPrimary"
-            android:hint="@string/path_to_server"
+            android:hint="@string/path_to_server_hint"
             android:textColor="@color/textColorPrimary"
             android:textColorHint="@color/textColorHint" />
 
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@+id/open_folder"
-                android:text="@string/open_folder" />
+                android:text="@string/open_folder_checkbox_label" />
         </LinearLayout>
     </LinearLayout>
 
@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         android:background="@color/colorPrimaryDark"
-        android:text="@string/export"
+        android:text="@string/export_title"
         android:textColor="@color/colorAccent" />
 
 </LinearLayout>

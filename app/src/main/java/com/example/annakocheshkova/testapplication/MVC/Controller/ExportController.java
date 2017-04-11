@@ -58,36 +58,47 @@ public class ExportController {
     }
 
     /**
+     * creates folder for a file if it doesn't exist
+     * @return true if successful
+     */
+    private boolean createFolder() {
+        File folder = new File(mainView.getFolder());
+        boolean success = true;
+        if (!folder.exists()) {
+            success = folder.mkdirs();
+        }
+        return success;
+    }
+
+    /**
      * Exports the list of tasks locally
      * @param name path to file on device
      * @param tasksList list of tasks to be exported
      */
     private void exportLocal(String name, List<Task> tasksList) {
-        File folder = new File(mainView.getFolder());
-        boolean success = false;
-        if (!folder.exists()) {
-            success = folder.mkdirs();
-        }
-        if (!success)
+        if (!createFolder())
             mainView.showWrongFilePathError();
-        Gson gson = new Gson();
-        String tasks = gson.toJson(tasksList);
-        File file = new File(name);
-        try {
-            file.createNewFile();
-            if(file.exists()) {
-                OutputStream outputStream;
-                try {
-                    outputStream = new FileOutputStream(file);
-                    outputStream.write(tasks.getBytes());
-                    outputStream.close();
-                    mainView.close();
-                } catch (FileNotFoundException e) {
-                    mainView.showWrongFilePathError();
+         else {
+            Gson gson = new Gson();
+            int version = dataStore.getVersion();
+            String tasks = version + "\n" + gson.toJson(tasksList);
+            File file = new File(name);
+            try {
+                if (!file.createNewFile())
+                    mainView.showIOError();
+                else {
+                    try {
+                        OutputStream outputStream = new FileOutputStream(file);
+                        outputStream.write(tasks.getBytes());
+                        outputStream.close();
+                        mainView.close();
+                    } catch (FileNotFoundException e) {
+                        mainView.showWrongFilePathError();
+                    }
                 }
+            } catch (IOException e) {
+                mainView.showIOError();
             }
-        } catch (IOException e) {
-            mainView.showIOError();
         }
     }
 

@@ -25,7 +25,6 @@ import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -135,10 +134,10 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
             if (actionBar != null)
-                actionBar.setTitle(R.string.edit);
+                actionBar.setTitle(R.string.edit_item_title);
         } else {
             if (actionBar != null)
-                actionBar.setTitle(R.string.edit);
+                actionBar.setTitle(R.string.edit_item_title);
         }
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -292,12 +291,12 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
 
     @Override
     public void showWrongTimeError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time_error), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showWrongAlarmTimeError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time_error), Toast.LENGTH_LONG).show();
     }
 
     @Override
