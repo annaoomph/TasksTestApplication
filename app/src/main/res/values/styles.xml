@@ -2,25 +2,43 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorLight</item>
+        <item name="android:textColorHint">@color/textColorHint</item>
     </style>
 
-    <style name="ActionBarThemeOverlay" parent="">
-        <item name="android:textColorPrimary">@color/textColorLight</item>
-        <item name="android:background">@color/colorPrimaryDark</item>
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
+    <style name="ActionBarThemeOverlay" parent="AppTheme.NoActionBar">
+        <item name="android:textColorPrimary">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:background">?android:attr/colorPrimary</item>
+        <item name="colorControlNormal">?android:attr/colorAccent</item>
+        <item name="colorControlHighlight">?android:attr/colorAccent</item>
+    </style>
+
+    <style name="DrawerListItemStyle" parent="AppTheme.NoActionBar">
+        <item name="android:textAppearance">?android:attr/textAppearanceListItemSmall</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:background">?android:attr/colorPrimary</item>
+    </style>
+
+    <style name="DrawerStyle" parent="AppTheme.NoActionBar">
+        <item name="android:background">?android:attr/colorPrimary</item>
+        <item name="android:divider">?android:attr/colorAccent</item>
+    </style>
+
+    <style name="EditTextStyle" parent="AppTheme.NoActionBar">
+        <item name="android:backgroundTint">?android:attr/colorPrimary</item>
+    </style>
+
+    <style name="CheckBoxStyle" parent="AppTheme.NoActionBar">
+        <item name="android:buttonTint">?android:attr/colorPrimary</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
