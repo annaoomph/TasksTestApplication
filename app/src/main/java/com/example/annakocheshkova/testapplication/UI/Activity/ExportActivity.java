@@ -68,18 +68,15 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         fileNameText = (EditText)findViewById(R.id.file_name);
         serverText = (EditText)findViewById(R.id.server_path);
         serverText.setVisibility(View.GONE);
-        final LinearLayout openFolderLayout = (LinearLayout)findViewById(R.id.open_folder_layout);
         radioGroup = (RadioGroup)findViewById(R.id.radio_button_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 if (checkedId == R.id.local_button) {
                     fileNameText.setVisibility(View.VISIBLE);
-                    openFolderLayout.setVisibility(View.VISIBLE);
                     serverText.setVisibility(View.GONE);
                 } else {
                     serverText.setVisibility(View.VISIBLE);
-                    openFolderLayout.setVisibility(View.GONE);
                     fileNameText.setVisibility(View.GONE);
                 }
             }
@@ -131,16 +128,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void close() {
-        CheckBox openFolderCheckBox = (CheckBox)findViewById(R.id.open_folder);
-        boolean openFolder = openFolderCheckBox.isChecked();
-        if (openFolder) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri uri = Uri.parse(Environment.getExternalStorageDirectory().getPath() + "/" + getString(R.string.folder_name) + "/");
-            intent.setDataAndType(uri,"*/*");
-            startActivity(intent);
-        } else {
             Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
-        }
         finish();
     }
 

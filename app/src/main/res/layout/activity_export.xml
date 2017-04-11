@@ -74,27 +74,6 @@
             android:hint="@string/path_to_server_hint"
             android:textColor="@color/textColorPrimary"
             android:textColorHint="@color/textColorHint" />
-
-        <LinearLayout
-            android:id="@+id/open_folder_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/open_folder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:textSize="@dimen/default_text_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:labelFor="@+id/open_folder"
-                android:text="@string/open_folder_checkbox_label" />
-        </LinearLayout>
     </LinearLayout>
 
     <Button
