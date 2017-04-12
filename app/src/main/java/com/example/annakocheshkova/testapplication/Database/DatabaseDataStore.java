@@ -33,7 +33,15 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public List<Task> getAllTasks(){
-        return simpleTaskDao.queryForAll();
+        List<Task> tasks = simpleTaskDao.queryForAll();
+
+        //TODO Solve this (auto refresh off?)
+        for (Task task : tasks) {
+            for (SubTask subTask : task.getSubTasks()) {
+                subTask.setTask(null);
+            }
+        }
+        return tasks;
     }
 
     @Override

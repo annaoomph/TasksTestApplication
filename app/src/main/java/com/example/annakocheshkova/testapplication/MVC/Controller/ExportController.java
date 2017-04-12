@@ -80,14 +80,8 @@ public class ExportController {
         if (!createFolder())
             mainView.showWrongFilePathError();
          else {
-            //TODO Solve issue with ForeignCollection
             Gson gson = new Gson();
             int version = dataStore.getVersion();
-            for (Task task : tasksList) {
-                for (SubTask subTask : task.getSubTasks()) {
-                    subTask.setTask(null);
-                }
-            }
 
             String tasks = version + "\n" + gson.toJson(tasksList);
             File file = new File(name);
