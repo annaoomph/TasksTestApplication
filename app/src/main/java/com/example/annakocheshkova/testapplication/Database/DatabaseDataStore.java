@@ -13,98 +13,89 @@ import java.util.List;
  */
 class DatabaseDataStore implements DataStore {
 
-    /**
-     * Dao for Tasks table
-     */
-    private final RuntimeExceptionDao<Task, Integer> simpleTaskDao;
-
-    /**
-     * Dao for subTasks table
-     */
-    private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
+    private DatabaseHelper databaseHelper;
 
     /**
      * simple constructor that gets all the Daos
      */
     DatabaseDataStore() {
-        simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
-        simpleSubTaskDao = new DatabaseHelper().getSimpleSubTaskDao();
+        databaseHelper = DatabaseHelper.getInstance();
     }
 
     @Override
     public List<Task> getAllTasks(){
-        return simpleTaskDao.queryForAll();
+        return databaseHelper.getSimpleTaskDao().queryForAll();
     }
 
     @Override
     public List<SubTask> getAllSubTasks(){
-        return simpleSubTaskDao.queryForAll();
+        return  databaseHelper.getSimpleSubTaskDao().queryForAll();
     }
 
     @Override
     public List<SubTask> getAllSubtasksByTask(Task task) {
-        return simpleSubTaskDao.queryForEq("task_id", task);
+        return  databaseHelper.getSimpleSubTaskDao().queryForEq("task_id", task);
     }
 
     @Override
     public void createTask(Task item) {
-        simpleTaskDao.create(item);
+        databaseHelper.getSimpleTaskDao().create(item);
         if (item.getSubTasks() != null)
         for (SubTask subTask : item.getSubTasks()) {
             subTask.setTask(item);
-            simpleSubTaskDao.create(subTask);
+            databaseHelper.getSimpleSubTaskDao().create(subTask);
         }
     }
 
     @Override
     public void createSubTask(SubTask item) {
-        simpleSubTaskDao.create(item);
+        databaseHelper.getSimpleSubTaskDao().create(item);
     }
 
     @Override
     public void updateTask(Task item) {
-        simpleTaskDao.update(item);
+        databaseHelper.getSimpleTaskDao().update(item);
     }
 
     @Override
     public void updateSubTask(SubTask item) {
-        simpleSubTaskDao.update(item);
+        databaseHelper.getSimpleSubTaskDao().update(item);
     }
 
     @Override
     public void deleteTask(Task item) {
-        simpleTaskDao.delete(item);
+        databaseHelper.getSimpleTaskDao().delete(item);
         deleteSubTasksByTask(item);
     }
 
     @Override
     public void deleteSubTask(SubTask item) {
-        simpleSubTaskDao.delete(item);
+        databaseHelper.getSimpleSubTaskDao().delete(item);
     }
 
     @Override
     public Task getTask(int id) {
-        return simpleTaskDao.queryForId(id);
+        return databaseHelper.getSimpleTaskDao().queryForId(id);
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        return simpleSubTaskDao.queryForId(id);
+        return  databaseHelper.getSimpleSubTaskDao().queryForId(id);
     }
 
     public List<Task> getAllTasksWithAlarms() {
-        return simpleTaskDao.queryForEq("notification", true);
+        return databaseHelper.getSimpleTaskDao().queryForEq("notification", true);
     }
 
     @Override
     public int getVersion() {
-        return new DatabaseHelper().getDatabaseVersion();
+        return databaseHelper.getDatabaseVersion();
     }
 
     @Override
     public void deleteSubTasksByTask(Task task) {
         List<SubTask> alarms = getAllSubtasksByTask(task);
-        simpleSubTaskDao.delete(alarms);
+        databaseHelper.getSimpleSubTaskDao().delete(alarms);
     }
 
 }

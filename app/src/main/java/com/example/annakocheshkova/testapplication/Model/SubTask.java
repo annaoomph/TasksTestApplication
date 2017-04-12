@@ -11,7 +11,7 @@ public class SubTask {
 
     @DatabaseField(generatedId = true)
     private
-    @SerializedName("subtask_id") int id;
+    @SerializedName("id") int id;
 
     /**
      * the main task of the subtask
@@ -24,14 +24,14 @@ public class SubTask {
      */
     @DatabaseField
     private
-    @SerializedName("subtask_name") String name;
+    @SerializedName("name") String name;
 
     /**
      * if the subtask is completed
      */
     @DatabaseField
     private
-    @SerializedName("subtask_completed") Boolean completed;
+    @SerializedName("completed") Boolean completed;
 
     public SubTask(){}
 

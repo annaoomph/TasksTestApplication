@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.MVC.Controller;
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MVC.View.TaskView;
 import com.example.annakocheshkova.testapplication.Receiver.ReminderAlarmManager;
@@ -76,7 +75,7 @@ public class TaskController implements UndoListener<Task> {
     public void onUndo(Task deletedItem) {
         if (deletedItem != null) {
             dataStore.createTask(deletedItem);
-            if (deletedItem.fireAlarm())
+            if (deletedItem.hasAlarm())
                 ReminderAlarmManager.addAlarm(deletedItem);
         }
         onViewLoaded();

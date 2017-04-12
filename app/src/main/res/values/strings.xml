@@ -14,8 +14,7 @@
     <string name="repeating_every_label">Repeating every</string>
     <string name="window_title">Task Manager</string>
     <string name="cancel_btn">Cancel</string>
-    <string name="deleted_string_first_part">Item</string>
-    <string name="deleted_string_second_part">deleted!</string>
+    <string name="deleted_string">Item %s deleted!</string>
     <string name="alert_dialog_fragment_tag">Alert Dialog Fragment</string>
     <string name="attention">Attention</string>
     <string name="no_such_task_error">Sorry, there\'s no such task. Check if it was already deleted.</string>

@@ -26,35 +26,35 @@ public class Task
 
     @DatabaseField(generatedId = true)
     private
-    @SerializedName("task_id") int id;
+    @SerializedName("id") int id;
 
     /**
      * name of the task
      */
     @DatabaseField
     private
-    @SerializedName("task_name") String name;
+    @SerializedName("name") String name;
 
     /**
      * time when the task expires (don't mess with the notification time!)
      */
     @DatabaseField
     private
-    @SerializedName("task_time") long time;
+    @SerializedName("time") long time;
 
     /**
      * if the task has a notification set
      */
     @DatabaseField
     private
-    @SerializedName("task_notification") boolean notification;
+    @SerializedName("notification") boolean notification;
 
     /**
      * time when the task should notify user
      */
     @DatabaseField
     private
-    @SerializedName("task_alarm_time") long alarmTime;
+    @SerializedName("alarm_time") long alarmTime;
 
     /**
      * list of subtasks of this task
@@ -140,10 +140,10 @@ public class Task
     }
 
     /**
-     * Returns if to shown a notification
-     * @return true if show, false if not
+     * Checks if item has alarm scheduled
+     * @return true if it has, false if it has not
      */
-    public boolean fireAlarm() {
+    public boolean hasAlarm() {
         return notification;
     }
 

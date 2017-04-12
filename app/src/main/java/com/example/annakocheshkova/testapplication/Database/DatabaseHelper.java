@@ -39,10 +39,18 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     /**
      * constructor that initializes all Daos
      */
-    DatabaseHelper() {
+    private DatabaseHelper() {
         super(MyApplication.getAppContext(),DATABASE_NAME, null, DATABASE_VERSION);
         simpleTaskRuntimeDao = null;
         simpleSubTaskRuntimeDao = null;
+    }
+
+    /**
+     * Gets an instance of the Database Helper
+     * @return instance
+     */
+    public static DatabaseHelper getInstance() {
+        return new DatabaseHelper();
     }
 
     /**

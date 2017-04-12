@@ -90,8 +90,8 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
             }
         });
         //TODO set isLogged
-        boolean isLogged = false;
-        if (!isLogged) {
+        boolean isLoggedIn = false;
+        if (!isLoggedIn) {
             serverButton.setEnabled(false);
             loginLink.setVisibility(View.VISIBLE);
         }
