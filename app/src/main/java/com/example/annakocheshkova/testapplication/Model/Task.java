@@ -7,6 +7,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Task created by user, should contain a name and time to expire (to be added)
@@ -58,8 +59,8 @@ public class Task
     /**
      * list of subtasks of this task
      */
-    @ForeignCollectionField
-    private Collection<SubTask> subTasks;
+    //@ForeignCollectionField
+    private List<SubTask> subTasks;
 
 
     public Task(){
@@ -109,6 +110,10 @@ public class Task
         }
     }
 
+    public void setSubTasks(List<SubTask> subTasks) {
+        this.subTasks = subTasks;
+    }
+
     /**
      * set notification on task
      * @param show if to shown notification
@@ -143,7 +148,7 @@ public class Task
      * get all the subtasks of this task
      * @return subtasks
      */
-    public Collection<SubTask> getSubTasks() {
+    public List<SubTask> getSubTasks() {
         return subTasks;
     }
 
