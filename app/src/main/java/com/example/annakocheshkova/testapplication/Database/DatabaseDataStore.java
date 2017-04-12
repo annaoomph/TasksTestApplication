@@ -49,6 +49,11 @@ class DatabaseDataStore implements DataStore {
     @Override
     public void createTask(Task item) {
         simpleTaskDao.create(item);
+        if (item.getSubTasks() != null)
+        for (SubTask subTask : item.getSubTasks()) {
+            subTask.setTask(item);
+            simpleSubTaskDao.create(subTask);
+        }
     }
 
     @Override
@@ -69,6 +74,7 @@ class DatabaseDataStore implements DataStore {
     @Override
     public void deleteTask(Task item) {
         simpleTaskDao.delete(item);
+        deleteSubTasksByTask(item);
     }
 
     @Override

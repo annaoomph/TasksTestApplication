@@ -69,7 +69,6 @@ public class TaskController implements UndoListener<Task> {
         view.showCancelBar(item);
         ReminderAlarmManager.removeAlarm(item);
         dataStore.deleteTask(item);
-        dataStore.deleteSubTasksByTask(item);
         onViewLoaded();
     }
 
@@ -77,33 +76,10 @@ public class TaskController implements UndoListener<Task> {
     public void onUndo(Task deletedItem) {
         if (deletedItem != null) {
             dataStore.createTask(deletedItem);
-            for (SubTask subTask : deletedItem.getSubTasks()) {
-                subTask.setTask(deletedItem);
-                dataStore.createSubTask(subTask);
-            }
-            ReminderAlarmManager.addAlarm(deletedItem);
+            if (deletedItem.fireAlarm())
+                ReminderAlarmManager.addAlarm(deletedItem);
         }
         onViewLoaded();
-    }
-
-    /**
-     * a method to compare two tasks for proper sorting
-     * @param firstTask first task to be compared
-     * @param secondTask second task to be compared
-     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
-     */
-    private int compareTasks(Task firstTask, Task secondTask) {
-        if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
-            if (firstTask.getTime() > secondTask.getTime()) {
-                return 1;
-            } else if (firstTask.getTime() < secondTask.getTime()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } else {
-            return firstTask.getStatus().compareTo(secondTask.getStatus());
-        }
     }
 
     /**
@@ -114,7 +90,17 @@ public class TaskController implements UndoListener<Task> {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task firstTask, Task secondTask) {
-                return compareTasks(firstTask, secondTask);
+                if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
+                    if (firstTask.getTime() > secondTask.getTime()) {
+                        return 1;
+                    } else if (firstTask.getTime() < secondTask.getTime()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return firstTask.getStatus().compareTo(secondTask.getStatus());
+                }
             }
         });
     }

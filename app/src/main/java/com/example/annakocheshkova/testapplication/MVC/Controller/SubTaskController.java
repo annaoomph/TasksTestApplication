@@ -124,25 +124,15 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
         Collections.sort(list, new Comparator<SubTask>() {
             @Override
             public int compare(SubTask firstSubTask, SubTask secondSubTask) {
-                return compareSubTasks(firstSubTask, secondSubTask);
+                if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
+                    return -1;
+                }
+                if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
+                    return 1;
+                }
+                return firstSubTask.getName().compareTo(secondSubTask.getName());
             }
         });
-    }
-
-    /**
-     * a method to compare two subtasks for proper sorting
-     * @param firstSubTask first subtask to be compared
-     * @param secondSubTask secont subtask to be compared
-     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
-     */
-    private int compareSubTasks (SubTask firstSubTask, SubTask secondSubTask) {
-        if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
-            return -1;
-        }
-        if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
-            return 1;
-        }
-        return firstSubTask.getName().compareTo(secondSubTask.getName());
     }
 
 }

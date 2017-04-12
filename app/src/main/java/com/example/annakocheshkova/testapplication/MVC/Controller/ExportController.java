@@ -5,6 +5,7 @@ import android.os.Environment;
 import com.example.annakocheshkova.testapplication.Database.DataStore;
 import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.ExportView;
+import com.example.annakocheshkova.testapplication.Model.SubTask;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.google.gson.Gson;
@@ -82,6 +83,12 @@ public class ExportController {
             //TODO Solve issue with ForeignCollection
             Gson gson = new Gson();
             int version = dataStore.getVersion();
+            for (Task task : tasksList) {
+                for (SubTask subTask : task.getSubTasks()) {
+                    subTask.setTask(null);
+                }
+            }
+
             String tasks = version + "\n" + gson.toJson(tasksList);
             File file = new File(name);
             try {

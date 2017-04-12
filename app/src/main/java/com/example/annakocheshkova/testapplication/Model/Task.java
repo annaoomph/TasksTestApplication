@@ -58,7 +58,7 @@ public class Task
     /**
      * list of subtasks of this task
      */
-    @ForeignCollectionField
+    @ForeignCollectionField (eager = true)
     private Collection<SubTask> subTasks;
 
 
@@ -138,6 +138,13 @@ public class Task
         return true;
     }
 
+    /**
+     * Returns if to shown a notification
+     * @return true if show, false if not
+     */
+    public boolean fireAlarm() {
+        return notification;
+    }
 
     /**
      * get all the subtasks of this task

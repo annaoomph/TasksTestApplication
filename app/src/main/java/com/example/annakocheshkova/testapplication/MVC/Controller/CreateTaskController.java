@@ -13,7 +13,7 @@ import java.util.Calendar;
 /**
  * controller for create item view
  */
-public class CreateItemController {
+public class CreateTaskController {
 
     /**
      * datastore example to work with data
@@ -34,7 +34,7 @@ public class CreateItemController {
      * creates an example of the datastore
      * @param view main view
      */
-    public CreateItemController(CreateItemView view) {
+    public CreateTaskController(CreateItemView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }

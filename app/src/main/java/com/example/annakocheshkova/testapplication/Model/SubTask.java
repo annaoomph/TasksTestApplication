@@ -15,7 +15,7 @@ public class SubTask {
     /**
      * the main task of the subtask
      */
-    @DatabaseField(columnName = "task_id", foreign = true)
+    @DatabaseField(columnName = "task_id", foreign = true, foreignAutoCreate = false, foreignAutoRefresh = false)
     private Task task;
 
     /**

@@ -19,7 +19,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.annakocheshkova.testapplication.MVC.Controller.CreateItemController;
+import com.example.annakocheshkova.testapplication.MVC.Controller.CreateTaskController;
 import com.example.annakocheshkova.testapplication.MVC.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
@@ -37,7 +37,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
     /**
      * controller of the view
      */
-    CreateItemController createItemController;
+    CreateTaskController createTaskController;
 
     /**
      * toolbar with menu
@@ -129,7 +129,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * sets configuration of the window content
      */
     void setContent() {
-        createItemController = new CreateItemController(this);
+        createTaskController = new CreateTaskController(this);
         int id = getIntent().getIntExtra("id", -1);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
@@ -189,7 +189,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        createItemController.onViewLoaded(id);
+        createTaskController.onViewLoaded(id);
     }
 
     /**
@@ -256,7 +256,7 @@ public class CreateItemActivity extends AppCompatActivity implements CreateItemV
      * @param view button view
      */
     public void onAddNewTaskClick(View view) {
-        createItemController.onItemEditingFinished();
+        createTaskController.onItemEditingFinished();
     }
 
     @Override
