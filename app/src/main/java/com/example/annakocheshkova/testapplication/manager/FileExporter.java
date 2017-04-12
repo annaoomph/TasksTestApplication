@@ -13,21 +13,21 @@ import java.util.List;
 /**
  * A class for exporting tasks to file
  */
-public class TaskFileExporter implements Exporter<Task> {
+public class FileExporter<T> implements Exporter<T> {
 
     @Override
-    public void export(List<Task> items, String path, String name, int version) throws IOException, FileNotFoundException {
+    public void export(List<T> items, String path, String name, int version) throws IOException, FileNotFoundException {
         if (!createFolder(path))
             throw new FileNotFoundException();
         else {
             Gson gson = new Gson();
-            String tasks = version + "\n" + gson.toJson(items);
+            String fileString = version + "\n" + gson.toJson(items);
             File file = new File(name);
             if (!file.createNewFile())
                 throw new FileNotFoundException();
             else {
                 OutputStream outputStream = new FileOutputStream(file);
-                outputStream.write(tasks.getBytes());
+                outputStream.write(fileString.getBytes());
                 outputStream.close();
             }
         }

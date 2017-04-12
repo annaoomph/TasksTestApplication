@@ -5,7 +5,7 @@ import com.example.annakocheshkova.testapplication.Database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.MVC.View.ExportView;
 import com.example.annakocheshkova.testapplication.Model.Task;
 import com.example.annakocheshkova.testapplication.manager.Exporter;
-import com.example.annakocheshkova.testapplication.manager.TaskFileExporter;
+import com.example.annakocheshkova.testapplication.manager.FileExporter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -56,7 +56,7 @@ public class ExportController {
      * @param tasksList list of tasks to be exported
      */
     private void exportLocal(String name, List<Task> tasksList) {
-        exporter = new TaskFileExporter();
+        exporter = new FileExporter<Task>();
         try {
             exporter.export(tasksList, view.getFolder(), name, dataStore.getVersion());
         } catch (FileNotFoundException exc) {
