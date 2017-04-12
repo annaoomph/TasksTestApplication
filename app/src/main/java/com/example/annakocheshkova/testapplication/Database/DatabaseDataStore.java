@@ -33,12 +33,7 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public List<Task> getAllTasks(){
-        List<Task> tasks = simpleTaskDao.queryForAll();
-        for (Task task : tasks) {
-            List<SubTask> subTasks = getAllSubtasksByTask(task);
-            task.setSubTasks(subTasks);
-        }
-        return tasks;
+        return simpleTaskDao.queryForAll();
     }
 
     @Override
@@ -83,10 +78,7 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public Task getTask(int id) {
-        Task task = simpleTaskDao.queryForId(id);
-        List<SubTask> subTasks = getAllSubtasksByTask(task);
-        task.setSubTasks(subTasks);
-        return task;
+        return simpleTaskDao.queryForId(id);
     }
 
     @Override
@@ -105,8 +97,8 @@ class DatabaseDataStore implements DataStore {
 
     @Override
     public void deleteSubTasksByTask(Task task) {
-        List<SubTask> subTasks = task.getSubTasks();
-        simpleSubTaskDao.delete(subTasks);
+        List<SubTask> alarms = getAllSubtasksByTask(task);
+        simpleSubTaskDao.delete(alarms);
     }
 
 }
