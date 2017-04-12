@@ -82,7 +82,6 @@ public class ExportController {
          else {
             Gson gson = new Gson();
             int version = dataStore.getVersion();
-
             String tasks = version + "\n" + gson.toJson(tasksList);
             File file = new File(name);
             try {

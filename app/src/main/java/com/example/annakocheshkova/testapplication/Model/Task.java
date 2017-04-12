@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.Model;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -25,41 +26,41 @@ public class Task
 
     @DatabaseField(generatedId = true)
     private
-    int id;
+    @SerializedName("task_id") int id;
 
     /**
      * name of the task
      */
     @DatabaseField
     private
-    String name;
+    @SerializedName("task_name") String name;
 
     /**
      * time when the task expires (don't mess with the notification time!)
      */
     @DatabaseField
     private
-    long time;
+    @SerializedName("task_time") long time;
 
     /**
      * if the task has a notification set
      */
     @DatabaseField
     private
-    boolean notification;
+    @SerializedName("task_notification") boolean notification;
 
     /**
      * time when the task should notify user
      */
     @DatabaseField
     private
-    long alarmTime;
+    @SerializedName("task_alarm_time") long alarmTime;
 
     /**
      * list of subtasks of this task
      */
     @ForeignCollectionField (eager = true)
-    private Collection<SubTask> subTasks;
+    @SerializedName("subtasks") private Collection<SubTask> subTasks;
 
 
     public Task(){
