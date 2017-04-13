@@ -15,20 +15,9 @@ public interface ImportView {
     void showFiles(List<File> files);
 
     /**
-     * Redraws files when the item was chosen
-     */
-    void redrawFiles();
-
-    /**
-     * Gets path to current files folder
-     * @return files folder
-     */
-    String getFolderPath();
-
-    /**
      * Shows the error if the file is corrupt
      */
-    void corruptFileError();
+    void showCorruptFileError();
 
     /**
      * Shows the error if the file was not chosen
@@ -37,9 +26,14 @@ public interface ImportView {
 
     /**
      * Closes the view on success
-     * @param numberItems number of item that were added
      */
-    void close(int numberItems);
+    void close();
+
+    /**
+     * Shows the number of items that were imported
+     * @param numberItems number of items that were added
+     */
+    void showMessage(int numberItems);
 
     /**
      * Gets the path to chosen file

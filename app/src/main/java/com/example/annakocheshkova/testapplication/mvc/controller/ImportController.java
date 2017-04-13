@@ -3,13 +3,14 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
+import com.example.annakocheshkova.testapplication.manager.converter.Converter;
+import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.manager.importer.Importer;
 import com.example.annakocheshkova.testapplication.manager.importer.ImporterFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -27,8 +28,6 @@ public class ImportController {
      */
     private ImportView view;
 
-    private Importer<Task> taskImporter;
-
     /**
      * Creates an instance of importController
      * @param view main view
@@ -36,23 +35,14 @@ public class ImportController {
     public ImportController(ImportView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
-        taskImporter = ImporterFactory.getTaskImporter(true);
     }
 
     /**
      * Called when the view was loaded
      */
     public void onViewLoaded() {
-        String folderPath = view.getFolderPath();
-        List<File> files = FileManager.getFilesInFolder(folderPath);
+        List<File> files = FileManager.getFilesInFolder();
         view.showFiles(files);
-    }
-
-    /**
-     * Called when the user has chosen an item
-     */
-    public void onFileChosen() {
-        view.redrawFiles();
     }
 
     /**
@@ -64,11 +54,14 @@ public class ImportController {
             view.showFileNotChosenError();
         } else {
             try {
-                Task[] tasks = taskImporter.importData(path, Task[].class);
+                Converter<Task> converter = ConverterFactory.getConverter();
+                Importer<Task> taskImporter = ImporterFactory.getTaskImporter(ImporterFactory.ImportType.LOCAL_FROM_FILE);
+                Task[] tasks = taskImporter.importData(path, Task[].class, converter);
                 dataStore.createTasks(tasks);
-                view.close(tasks.length);
+                view.showMessage(tasks.length);
+                view.close();
             } catch (Exception exception) {
-                view.corruptFileError();
+                view.showCorruptFileError();
             }
         }
     }

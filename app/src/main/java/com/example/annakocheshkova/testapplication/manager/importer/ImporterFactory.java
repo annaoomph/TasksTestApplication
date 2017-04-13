@@ -7,11 +7,16 @@ import com.example.annakocheshkova.testapplication.model.Task;
  */
 public class ImporterFactory {
 
-        public static Importer<Task> getTaskImporter(boolean local) {
-            if (local)
-                return new FileImporter<Task>();
-            else
-                return new FileImporter<Task>();
-            //TODO Set this to Remote Importer
-        }
+    public enum ImportType {
+        LOCAL_FROM_FILE,
+        REMOTE
     }
+
+    public static Importer<Task> getTaskImporter(ImportType importType) {
+        if (importType == ImportType.LOCAL_FROM_FILE) {
+            return new FileImporter<>();
+        } else {
+            return new FileImporter<>();
+        }    //TODO Set this to Remote Importer
+    }
+}

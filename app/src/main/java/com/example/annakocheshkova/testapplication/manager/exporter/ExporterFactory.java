@@ -7,11 +7,17 @@ import com.example.annakocheshkova.testapplication.model.Task;
  */
 public class ExporterFactory {
 
-    public static Exporter<Task> getTaskExporter(boolean local) {
-        if (local)
+    public enum ExportType {
+        LOCAL_TO_FILE,
+        REMOTE
+    }
+
+    public static Exporter<Task> getTaskExporter(ExportType exportType) {
+        if (exportType == ExportType.LOCAL_TO_FILE) {
             return new FileExporter<>();
-        else
+        } else {
             return new FileExporter<>();
+        }
         //TODO Set this to Remote Exporter
     }
 }

@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.manager.importer;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
-import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,11 +13,10 @@ import java.io.IOException;
 class FileImporter<T> implements Importer<T> {
 
     @Override
-    public T[] importData(String pathToFile, Class<T[]> type) throws Exception {
+    public T[] importData(String pathToFile, Class<T[]> type, Converter<T> converter) throws Exception {
         File file = new File(pathToFile);
         String fileText = readFromFile(file);
-        Converter<T> converter = ConverterFactory.getConverter();
-        return converter.deConvert(fileText, type);
+        return converter.deconvert(fileText, type);
     }
 
     /**
@@ -26,20 +24,12 @@ class FileImporter<T> implements Importer<T> {
      * @param file to be read
      * @return text in file
      */
-    private String readFromFile(File file) {
+    private String readFromFile(File file) throws FileNotFoundException, IOException {
         int length = (int) file.length();
         byte[] bytes = new byte[length];
-        try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            try {
-                fileInputStream.read(bytes);
-                fileInputStream.close();
-                return new String(bytes);
-            } catch (IOException e) {
-                return "";
-            }
-        } catch (FileNotFoundException e) {
-            return "";
-        }
+        FileInputStream fileInputStream = new FileInputStream(file);
+        fileInputStream.read(bytes);
+        fileInputStream.close();
+        return new String(bytes);
     }
 }

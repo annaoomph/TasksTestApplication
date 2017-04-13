@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
-import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
-
-import java.io.File;
 
 public class ExportActivity extends AppCompatActivity implements ExportView {
 
@@ -111,14 +108,9 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
-    public String getFolder() {
-        return Environment.getExternalStorageDirectory() + "/" + getString(R.string.folder_name) + "/";
-    }
-
-    @Override
     public String getNameOrPath() {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            return getFolder() + File.separator + fileNameText.getText().toString();
+            return fileNameText.getText().toString();
         }
         else return serverText.getText().toString();
     }

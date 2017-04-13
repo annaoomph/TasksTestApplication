@@ -70,8 +70,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         view = findViewById(R.id.main_content);
         taskController = new TaskController(this);
-        List<Task> tasks = new ArrayList<>();
-        taskAdapter = new TaskAdapter(tasks, taskController);
+        taskAdapter = new TaskAdapter(taskController);
         listView.setAdapter(taskAdapter);
         taskController.onViewLoaded();
         drawerListView.setAdapter(new ArrayAdapter<>(this,

@@ -21,7 +21,7 @@ class JsonConverter<T> implements Converter<T>{
     }
 
     @Override
-    public T[] deConvert(String formattedData, Class<T[]> type) {
+    public T[] deconvert(String formattedData, Class<T[]> type) {
         Gson gson = new Gson();
         return gson.fromJson(formattedData, type);
     }

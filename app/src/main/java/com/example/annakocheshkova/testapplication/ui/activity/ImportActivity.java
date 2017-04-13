@@ -1,18 +1,14 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
-import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.R;
@@ -21,7 +17,6 @@ import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -59,12 +54,11 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(getString(R.string.import_label));
         }
-        List<File> items = new ArrayList<>();
-        fileAdapter = new FileAdapter(items, importController);
+        fileAdapter = new FileAdapter();
         listView.setAdapter(fileAdapter);
         listView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        listView.setLayoutManager(mLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(linearLayoutManager);
         Button importButton = (Button)findViewById(R.id.import_button);
         importButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,17 +75,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     }
 
     @Override
-    public void redrawFiles() {
-        fileAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public String getFolderPath() {
-        return Environment.getExternalStorageDirectory() + "/" + getString(R.string.folder_name) + "/";
-    }
-
-    @Override
-    public void corruptFileError() {
+    public void showCorruptFileError() {
         Toast.makeText(this, R.string.corrupt_file_error, Toast.LENGTH_LONG).show();
     }
 
@@ -101,10 +85,13 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     }
 
     @Override
-    public void close(int numberOfItems) {
+    public void close() {
         finish();
-        Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void showMessage(int numberOfItems) {
+        Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
     }
 
     @Override

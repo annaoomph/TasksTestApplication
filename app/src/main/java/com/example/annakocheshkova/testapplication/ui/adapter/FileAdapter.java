@@ -13,6 +13,7 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ImportController;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +23,7 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
     /**
      * A list of the subtasks to be displayed by the adapter
      */
-    private static List<File> fileList;
-
-    /**
-     * SubTasks controller working with the subTaskView
-     */
-    private static ImportController importController;
+    private List<File> fileList;
 
     /**
      * A color to draw all the items that are not chosen
@@ -42,22 +38,19 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
     /**
      * The position of chosen file
      */
-    private static int chosenPosition;
+    private int chosenPosition;
 
     /**
      * Creates new instance of adapter
-     * @param data list of subtasks to be shown
-     * @param importController controller of the import view
      */
-    public FileAdapter(List<File> data, ImportController importController) {
-        FileAdapter.importController = importController;
-        fileList = data;
+    public FileAdapter() {
+        fileList = new ArrayList<>();
         chosenPosition = -1;
         lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
         chosenColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
         /**
          * A textView that displays the name of the subtask
@@ -82,9 +75,8 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
 
         @Override
         public void onClick(View view) {
-            File file = fileList.get(getAdapterPosition());
             chosenPosition = getAdapterPosition();
-            importController.onFileChosen();
+            notifyDataSetChanged();
         }
     }
 
@@ -122,6 +114,10 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
         return fileList.size();
     }
 
+    /**
+     * Gets the path to the item user has chosen
+     * @return path
+     */
     public String getChosenItemPath() {
         if (chosenPosition < 0)
             return "";

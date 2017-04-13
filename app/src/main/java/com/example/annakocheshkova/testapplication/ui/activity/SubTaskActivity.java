@@ -63,13 +63,12 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        List<SubTask> items = new ArrayList<>();
-        subTaskAdapter = new SubTaskAdapter(items, subTaskController);
+        subTaskAdapter = new SubTaskAdapter(subTaskController);
         listView.setAdapter(subTaskAdapter);
         subTaskController.onViewLoaded(getIntent().getIntExtra("id", 0));
         listView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        listView.setLayoutManager(mLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(linearLayoutManager);
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {

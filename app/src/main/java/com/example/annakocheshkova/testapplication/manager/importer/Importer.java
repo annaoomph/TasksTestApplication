@@ -1,5 +1,7 @@
 package com.example.annakocheshkova.testapplication.manager.importer;
 
+import com.example.annakocheshkova.testapplication.manager.converter.Converter;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,5 +19,5 @@ public interface Importer<T extends Object> {
      * @param type type of objects you want to import (note: pass this as SomeClass[].class)
      * @return an array of objects
      */
-    T[] importData(String path, Class<T[]> type) throws Exception;
+    T[] importData(String path, Class<T[]> type, Converter<T> converter) throws Exception;
 }

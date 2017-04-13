@@ -20,5 +20,5 @@ public interface Converter<T> {
      * @param type type of objects you want to import (note: pass this as SomeClass[].class)
      * @return List of objects of certain type
      */
-    T[] deConvert(String formattedData, Class<T[]> type);
+    T[] deconvert(String formattedData, Class<T[]> type);
 }

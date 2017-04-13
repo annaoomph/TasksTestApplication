@@ -10,6 +10,8 @@ import com.example.annakocheshkova.testapplication.mvc.controller.SubTaskControl
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,12 +22,12 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     /**
      * a list of the subtasks to be displayed by the adapter
      */
-    private static List<SubTask> subTasksList;
+    private List<SubTask> subTasksList;
 
     /**
      * subTasks controller working with the subTaskView
      */
-    private static SubTaskController subTaskController;
+    private SubTaskController subTaskController;
 
     /**
      * this color is used when the subtask is not completed
@@ -39,17 +41,16 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
 
     /**
      * creates new instance of adapter
-     * @param data list of subtasks to be shown
      * @param subTaskController controller of the subtasks view
      */
-    public SubTaskAdapter(List<SubTask> data, SubTaskController subTaskController) {
-        SubTaskAdapter.subTaskController = subTaskController;
-        subTasksList = data;
+    public SubTaskAdapter(SubTaskController subTaskController) {
+        this.subTaskController = subTaskController;
+        subTasksList = new ArrayList<>();
         darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
         lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
          * a textView that displays the name of the subtask

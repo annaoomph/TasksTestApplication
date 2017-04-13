@@ -36,10 +36,4 @@ public interface ExportView {
      * Shows the error if IO error has occured
      */
     void showIOError();
-
-    /**
-     * Gets the current folder for file
-     * @return folder string
-     */
-    String getFolder();
 }
