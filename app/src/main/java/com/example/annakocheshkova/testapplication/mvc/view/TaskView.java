@@ -1,11 +1,11 @@
-package com.example.annakocheshkova.testapplication.mvc.View;
+package com.example.annakocheshkova.testapplication.mvc.view;
 
 import com.example.annakocheshkova.testapplication.model.Task;
 
 import java.util.List;
 
 /**
- * an interface for main task activity
+ * An interface for main task activity
  */
 public interface TaskView {
 

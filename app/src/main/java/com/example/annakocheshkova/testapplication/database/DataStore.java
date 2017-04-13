@@ -83,4 +83,11 @@ public interface DataStore {
      * @return list of all the needed tasks
      */
     List<Task> getAllTasksWithAlarms();
+
+    /**
+     * Creates a set of tasks
+     * @param item new tasks
+     */
+    void createTasks(Task[] item);
+
 }

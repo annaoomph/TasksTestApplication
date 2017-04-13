@@ -1,7 +1,7 @@
-package com.example.annakocheshkova.testapplication.mvc.View;
+package com.example.annakocheshkova.testapplication.mvc.view;
 
 /**
- * a view for alert dialog fragment
+ * A view for alert dialog fragment
  */
 public interface DialogView {
 

@@ -2,90 +2,103 @@ package com.example.annakocheshkova.testapplication.database;
 
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * A class that implements DataStore interface. Gets all the data from sqlite database datastore.
  */
 class DatabaseDataStore implements DataStore {
+    private DatabaseHelper databaseHelper;
 
     /**
-     * Dao for Tasks table
-     */
-    private final RuntimeExceptionDao<Task, Integer> simpleTaskDao;
-
-    /**
-     * Dao for subTasks table
-     */
-    private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
-
-    /**
-     * Creates new instance of DatabaseDatastore
+     * Creates an instance of database datastore
      */
     DatabaseDataStore() {
-        simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
-        simpleSubTaskDao = new DatabaseHelper().getSimpleSubTaskDao();
+        databaseHelper = DatabaseHelper.getInstance();
     }
 
     @Override
     public List<Task> getAllTasks(){
-        return simpleTaskDao.queryForAll();
+        return databaseHelper.getSimpleTaskDao().queryForAll();
     }
 
     @Override
     public List<SubTask> getAllSubtasksByTask(Task task) {
-        return simpleSubTaskDao.queryForEq("task_id", task);
+        return  databaseHelper.getSimpleSubTaskDao().queryForEq("task_id", task);
     }
 
     @Override
     public void createTask(Task item) {
-        simpleTaskDao.create(item);
+        databaseHelper.getSimpleTaskDao().create(item);
+        if (item.getSubTasks() != null)
+            for (SubTask subTask : item.getSubTasks()) {
+                subTask.setTask(item);
+                databaseHelper.getSimpleSubTaskDao().create(subTask);
+            }
     }
 
     @Override
     public void createSubTask(SubTask item) {
-        simpleSubTaskDao.create(item);
+        databaseHelper.getSimpleSubTaskDao().create(item);
     }
 
     @Override
     public void updateTask(Task item) {
-        simpleTaskDao.update(item);
+        databaseHelper.getSimpleTaskDao().update(item);
     }
 
     @Override
     public void updateSubTask(SubTask item) {
-        simpleSubTaskDao.update(item);
+        databaseHelper.getSimpleSubTaskDao().update(item);
     }
 
     @Override
     public void deleteTask(Task item) {
-        simpleTaskDao.delete(item);
+        databaseHelper.getSimpleTaskDao().delete(item);
+        deleteSubTasksByTask(item);
     }
 
     @Override
     public void deleteSubTask(SubTask item) {
-        simpleSubTaskDao.delete(item);
+        databaseHelper.getSimpleSubTaskDao().delete(item);
     }
 
     @Override
     public Task getTask(int id) {
-        return simpleTaskDao.queryForId(id);
+        return databaseHelper.getSimpleTaskDao().queryForId(id);
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        return simpleSubTaskDao.queryForId(id);
+        return  databaseHelper.getSimpleSubTaskDao().queryForId(id);
     }
 
     public List<Task> getAllTasksWithAlarms() {
-        return simpleTaskDao.queryForEq("notification", true);
+        return databaseHelper.getSimpleTaskDao().queryForEq("notification", true);
     }
 
     @Override
     public void deleteSubTasksByTask(Task task) {
         List<SubTask> alarms = getAllSubtasksByTask(task);
-        simpleSubTaskDao.delete(alarms);
+        databaseHelper.getSimpleSubTaskDao().delete(alarms);
+    }
+
+    @Override
+    public void createTasks(Task[] items) {
+        ArrayList<Task> tasksList = new ArrayList<>(Arrays.asList(items));
+        databaseHelper.getSimpleTaskDao().create(tasksList);
+        for (Task task : tasksList) {
+            if (task.getSubTasks() != null) {
+                for (SubTask subTask : task.getSubTasks()) {
+                    subTask.setTask(task);
+                    databaseHelper.getSimpleSubTaskDao().create(subTask);
+                }
+
+            }
+        }
+
     }
 
 }

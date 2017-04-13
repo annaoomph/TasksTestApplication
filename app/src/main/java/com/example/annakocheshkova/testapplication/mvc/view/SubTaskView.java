@@ -1,11 +1,11 @@
-package com.example.annakocheshkova.testapplication.mvc.View;
+package com.example.annakocheshkova.testapplication.mvc.view;
 
 import com.example.annakocheshkova.testapplication.model.SubTask;
 
 import java.util.List;
 
 /**
- * an interface for detailedTask activity
+ * An interface for detailedTask activity
  */
 public interface SubTaskView {
     /**

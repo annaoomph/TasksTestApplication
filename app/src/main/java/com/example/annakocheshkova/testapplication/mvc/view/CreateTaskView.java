@@ -1,77 +1,78 @@
-package com.example.annakocheshkova.testapplication.mvc.View;
+package com.example.annakocheshkova.testapplication.mvc.view;
 
 import com.example.annakocheshkova.testapplication.model.Task;
 
 /**
- * An interface for create item activity
+ * an interface for create item activity
  */
-public interface CreateItemView {
+public interface CreateTaskView {
     /**
-     * Shows the item to be edited
+     * shows the item to be edited
      * @param item item to be edited
      * @param alarmTime the chosen period
      */
     void showItem(Task item, long alarmTime);
 
     /**
-     * Closes the view if the item was updated/created
+     * closes the view if the item was updated/created
      */
     void close();
 
     /**
-     * Shows an error when the wrong time is set
+     * shows an error when the wrong time is set
      */
     void showWrongTimeError();
 
     /**
-     * Shows an error when the wrong alarm time is set
+     * shows an error when the wrong alarm time is set
      */
     void showWrongAlarmTimeError();
 
     /**
-     * Gets name of the created item or new name of the updated
+     * gets name of the created item or new name of the updated
      * @return name
      */
     String getName();
 
     /**
-     * Gets year set by user
+     * gets year set by user
      * @return year
      */
     int getYear();
 
     /**
-     * Gets month set by user
+     * gets month set by user
      * @return month
      */
     int getMonth();
 
     /**
-     * Gets day set by user
+     * gets day set by user
      * @return day
      */
     int getDay();
 
     /**
-     * Gets hour set by user
+     * gets hour set by user
      * @return hour
      */
     int getHour();
 
     /**
-     * Gets minute set by user
+     * gets minute set by user
      * @return minute
      */
     int getMinute();
 
+
     /**
-     * Finds out if alarm needs to be fired
+     * finds out if alarm needs to be fired
      * @return true if needs, false if not
      */
     boolean ifFireAlarm();
 
     /**
-     * Gets the time when to fire alarm
+     * gets the time when to fire alarm
      * @return the chosen period
      */
     long getReminderTime();
