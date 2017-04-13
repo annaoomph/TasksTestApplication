@@ -20,7 +20,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.mvc.controller.CreateTaskController;
-import com.example.annakocheshkova.testapplication.mvc.view.CreateItemView;
+import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
@@ -32,7 +32,7 @@ import java.util.Date;
 /**
  * a view of the activity, which allows user to create a new task
  */
-public class CreateItemActivity extends AppCompatActivity implements CreateItemView {
+public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
 
     /**
      * controller of the view

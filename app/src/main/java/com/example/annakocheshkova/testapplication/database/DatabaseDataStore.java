@@ -3,6 +3,8 @@ package com.example.annakocheshkova.testapplication.database;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,11 +24,6 @@ class DatabaseDataStore implements DataStore {
     @Override
     public List<Task> getAllTasks(){
         return databaseHelper.getSimpleTaskDao().queryForAll();
-    }
-
-    @Override
-    public List<SubTask> getAllSubTasks(){
-        return  databaseHelper.getSimpleSubTaskDao().queryForAll();
     }
 
     @Override
@@ -85,14 +82,24 @@ class DatabaseDataStore implements DataStore {
     }
 
     @Override
-    public int getVersion() {
-        return databaseHelper.getDatabaseVersion();
-    }
-
-    @Override
     public void deleteSubTasksByTask(Task task) {
         List<SubTask> alarms = getAllSubtasksByTask(task);
         databaseHelper.getSimpleSubTaskDao().delete(alarms);
     }
 
+    @Override
+    public void createTasks(Task[] items) {
+        ArrayList<Task> tasksList = new ArrayList<>(Arrays.asList(items));
+        databaseHelper.getSimpleTaskDao().create(tasksList);
+        for (Task task : tasksList) {
+            if (task.getSubTasks() != null) {
+                for (SubTask subTask : task.getSubTasks()) {
+                    subTask.setTask(task);
+                    databaseHelper.getSimpleSubTaskDao().create(subTask);
+                }
+
+            }
+        }
+
+    }
 }

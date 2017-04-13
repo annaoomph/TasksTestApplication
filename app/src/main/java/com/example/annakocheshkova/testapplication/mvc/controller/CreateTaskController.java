@@ -2,7 +2,7 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.mvc.view.CreateItemView;
+import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 
@@ -21,7 +21,7 @@ public class CreateTaskController {
     /**
      * main view of this controller
      */
-    private CreateItemView view;
+    private CreateTaskView view;
 
     /**
      * task we are currently editing (null if creating)
@@ -32,7 +32,7 @@ public class CreateTaskController {
      * creates an example of the datastore
      * @param view main view
      */
-    public CreateTaskController(CreateItemView view) {
+    public CreateTaskController(CreateTaskView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }

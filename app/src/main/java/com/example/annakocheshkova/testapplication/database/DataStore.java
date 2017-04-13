@@ -17,12 +17,6 @@ public interface DataStore {
     List<Task> getAllTasks();
 
     /**
-     * get the list of all the subtasks
-     * @return list of all the subtasks
-     */
-    List<SubTask> getAllSubTasks();
-
-    /**
      * get the list of the subtasks connected with a specific task
      * @param task the main task
      * @return list of the subtasks
@@ -92,8 +86,9 @@ public interface DataStore {
     List<Task> getAllTasksWithAlarms();
 
     /**
-     * Gets current datastore version (it can be database version, f.e.)
-     * @return version
+     * Creates a set of tasks
+     * @param item new tasks
      */
-    int getVersion();
+    void createTasks(Task[] item);
+
 }

@@ -18,15 +18,6 @@ import java.util.List;
 public class SubTaskController implements OnItemEditedListener, UndoListener<SubTask>{
 
     /**
-     * event called when user finished editing a subtask and the main view needs to be updated
-     */
-    @Override
-    public void onItemEdited() {
-        if (currentTask != -1)
-            onViewLoaded(currentTask);
-    }
-
-    /**
      * datastore example to work with the data
      */
     private DataStore dataStore;
@@ -94,6 +85,15 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
                 view.showTitle(main.getName());
             }
         }
+    }
+
+    /**
+     * event called when user finished editing a subtask and the main view needs to be updated
+     */
+    @Override
+    public void onItemEdited() {
+        if (currentTask != -1)
+            onViewLoaded(currentTask);
     }
 
     /**

@@ -32,6 +32,14 @@
     <string name="file_created">The file was created in:</string>
     <string name="folder_name">Tasks</string>
     <string name="open_folder_checkbox_label">Open folder after creation</string>
+    <string name="database_version_label">Database version</string>
+    <string name="import_label">Import</string>
+    <string name="db_version_hint">1</string>
+    <string name="files_list_title">Choose one of the files:</string>
+    <string name="corrupt_file_error">The file you have chosen is corrupt. You may delete it.</string>
+    <string name="file_not_chosen_error">You have not chosen any file.</string>
+    <string name="items_added_label"> item(s) were added</string>
+
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>

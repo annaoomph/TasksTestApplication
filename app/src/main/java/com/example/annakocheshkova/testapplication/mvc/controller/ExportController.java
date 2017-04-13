@@ -59,7 +59,7 @@ public class ExportController {
      */
     private void exportLocal(String name, List<Task> tasksList) {
         try {
-            taskExporter.export(tasksList, view.getFolder(), name, dataStore.getVersion());
+            taskExporter.exportData(tasksList, view.getFolder(), name);
         } catch (FileNotFoundException exc) {
             view.showWrongFilePathError();
         }

@@ -5,7 +5,7 @@ import com.example.annakocheshkova.testapplication.model.Task;
 /**
  * an interface for create item activity
  */
-public interface CreateItemView {
+public interface CreateTaskView {
     /**
      * shows the item to be edited
      * @param item item to be edited

@@ -9,9 +9,9 @@ public class ExporterFactory {
 
     public static Exporter<Task> getTaskExporter(boolean local) {
         if (local)
-            return new FileExporter<Task>();
+            return new FileExporter<>();
         else
-            return new FileExporter<Task>();
+            return new FileExporter<>();
         //TODO Set this to Remote Exporter
     }
 }

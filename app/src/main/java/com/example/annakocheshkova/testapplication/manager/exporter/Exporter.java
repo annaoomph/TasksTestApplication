@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Interface for exporting items
+ * @param <T> type of the data
  */
 public interface Exporter<T> {
 
@@ -14,7 +15,6 @@ public interface Exporter<T> {
      * @param items to be exported
      * @param path path where to export
      * @param name name of the file (if necessary)
-     * @param databaseVersion version of the database
      */
-    void export(List<T> items, String path, String name, int databaseVersion) throws IOException, FileNotFoundException;
+    void exportData(List<T> items, String path, String name) throws FileNotFoundException, IOException ;
 }

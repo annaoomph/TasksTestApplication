@@ -81,6 +81,11 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
             public void onItemClick (AdapterView < ? > parent, View view, int position, long id){
                 drawerLayout.closeDrawer(drawerListView);
                 switch (position) {
+                    case 0: {
+                        Intent intent = new Intent(view.getContext(), ImportActivity.class);
+                        view.getContext().startActivity(intent);
+                        break;
+                    }
                     case 1: {
                         Intent intent = new Intent(view.getContext(), ExportActivity.class);
                         view.getContext().startActivity(intent);
@@ -156,7 +161,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add) {
-            startActivity(new Intent(this, CreateItemActivity.class));
+            startActivity(new Intent(this, CreateTaskActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -188,7 +193,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     @Override
     public void editTask(int id) {
-        Intent intent = new Intent(view.getContext(), CreateItemActivity.class);
+        Intent intent = new Intent(view.getContext(), CreateTaskActivity.class);
         intent.putExtra("id", id);
         view.getContext().startActivity(intent);
     }

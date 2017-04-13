@@ -23,7 +23,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     /**
      * current version of the database (change to higher number if structure changes are made)
      */
-    private static final int DATABASE_VERSION = 37;
+    private static int DATABASE_VERSION = 37;
 
     /**
      * Dao for tasks table
@@ -51,14 +51,6 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      */
     public static DatabaseHelper getInstance() {
         return new DatabaseHelper();
-    }
-
-    /**
-     * Gets current database version
-     * @return version
-     */
-    int getDatabaseVersion() {
-        return DATABASE_VERSION;
     }
 
     @Override
@@ -110,4 +102,9 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         simpleTaskRuntimeDao = null;
         simpleSubTaskRuntimeDao = null;
     }
+
+    public void setVersion(int version) {
+        DATABASE_VERSION = version;
+    }
+
 }
