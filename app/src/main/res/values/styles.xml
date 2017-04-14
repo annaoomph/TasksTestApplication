@@ -13,6 +13,13 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorPrimaryInverse">@color/textColorLight</item>
         <item name="android:textColorHint">@color/textColorHint</item>
+        <item name="buttonStyle">@style/ButtonStyle</item>
+    </style>
+
+    <style name="ButtonStyle" parent="Base.Widget.AppCompat.Button">
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:background">?android:attr/colorPrimary</item>
     </style>
 
     <style name="ActionBarThemeOverlay" parent="AppTheme.NoActionBar">

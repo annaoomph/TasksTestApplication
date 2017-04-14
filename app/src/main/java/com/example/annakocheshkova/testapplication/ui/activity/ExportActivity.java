@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -83,7 +84,8 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
                 openLogin();
             }
         });
-        //TODO set isLogged
+        //TODO check isLogged
+        //TODO Add on resume method and check if is logged
         boolean isLoggedIn = false;
         if (!isLoggedIn) {
             serverButton.setEnabled(false);
@@ -99,7 +101,8 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     private void openLogin() {
-        //TODO open login from...
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -133,7 +136,6 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     @Override
     public void showWrongFilePathError() {
         Toast.makeText(this, R.string.wrong_path_error, Toast.LENGTH_LONG).show();
-
     }
 
     @Override

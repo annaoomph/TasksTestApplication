@@ -39,6 +39,7 @@ public class TaskController implements UndoListener<Task> {
      * Called everytime you need to update the main view list of tasks
      */
     public void onViewLoaded() {
+        //TODO method try to login
         List<Task> tasks = dataStore.getAllTasks();
         sort(tasks);
         view.showItems(tasks);

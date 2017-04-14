@@ -89,6 +89,11 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
                         view.getContext().startActivity(intent);
                         break;
                     }
+                    case 2: {
+                        Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                        view.getContext().startActivity(intent);
+                        break;
+                    }
                 }
             }
         });
