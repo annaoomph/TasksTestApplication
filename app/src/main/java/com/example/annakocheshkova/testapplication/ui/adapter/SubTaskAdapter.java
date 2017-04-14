@@ -50,37 +50,6 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
         lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
-
-        /**
-         * A textView that displays the name of the subtask
-         */
-        TextView textRow;
-
-        /**
-         * Creates new instance of a view holder for a certain row
-         * @param view main view
-         */
-        ViewHolder(View view) {
-            super(view);
-            textRow = (TextView) view.findViewById(R.id.row_text);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            SubTask subTask = subTasksList.get(getAdapterPosition());
-            subTaskController.onStatusChanged(subTask);
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            subTaskController.onUpdate(subTasksList.get(getAdapterPosition()));
-            return true;
-        }
-    }
-
     /**
      * Called everytime when data changes
      * @param newItems new data
@@ -118,5 +87,36 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     @Override
     public int getItemCount() {
         return subTasksList.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
+
+        /**
+         * A textView that displays the name of the subtask
+         */
+        TextView textRow;
+
+        /**
+         * Creates new instance of a view holder for a certain row
+         * @param view main view
+         */
+        ViewHolder(View view) {
+            super(view);
+            textRow = (TextView) view.findViewById(R.id.row_text);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            SubTask subTask = subTasksList.get(getAdapterPosition());
+            subTaskController.onStatusChanged(subTask);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            subTaskController.onUpdate(subTasksList.get(getAdapterPosition()));
+            return true;
+        }
     }
 }

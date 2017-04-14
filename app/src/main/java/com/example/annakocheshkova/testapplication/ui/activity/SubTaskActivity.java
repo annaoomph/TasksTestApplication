@@ -19,7 +19,7 @@ import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.ui.adapter.SubTaskAdapter;
-import com.example.annakocheshkova.testapplication.utils.Component.UndoComponent;
+import com.example.annakocheshkova.testapplication.utils.component.UndoComponent;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     View mainView;
 
     /**
-     * mMain controller for the view
+     * Main controller for the view
      */
     SubTaskController subTaskController;
 
@@ -50,6 +50,23 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         setContent();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.custom_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_add) {
+            subTaskController.onCreate();
+        }
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
     /**
      * Sets all content configuration and click listeners
      */
@@ -83,24 +100,6 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_add) {
-            subTaskController.onCreate();
-        }
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

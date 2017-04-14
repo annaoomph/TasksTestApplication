@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.Component;
+package com.example.annakocheshkova.testapplication.utils.component;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
+import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;
 
 /**
  * A class that handles all undo actions, responsible for storing objects

@@ -5,8 +5,8 @@ import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
-import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
-import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
+import com.example.annakocheshkova.testapplication.utils.listener.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;
 
 import java.util.Collections;
 import java.util.Comparator;

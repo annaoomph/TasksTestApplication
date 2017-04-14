@@ -37,8 +37,16 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_importer);
+        setContentView(R.layout.activity_import);
         setContent();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -92,14 +100,6 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     @Override
     public void showMessage(int numberOfItems) {
         Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

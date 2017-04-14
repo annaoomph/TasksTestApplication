@@ -49,36 +49,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
         chosenColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
-
-        /**
-         * A textView that displays the name of the subtask
-         */
-        TextView textRow;
-
-        /**
-         * A stripe shown when the file is selected
-         */
-        ImageButton chosenSign;
-
-        /**
-         * Creates new instance of a view holder for a certain row
-         * @param view main view
-         */
-        ViewHolder(View view) {
-            super(view);
-            textRow = (TextView) view.findViewById(R.id.file_row_text);
-            chosenSign = (ImageButton) view.findViewById(R.id.chosen_sign);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            chosenPosition = getAdapterPosition();
-            notifyDataSetChanged();
-        }
-    }
-
     /**
      * Called everytime when data changes
      * @param newItems new data
@@ -121,5 +91,35 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
         if (chosenPosition < 0)
             return "";
         return fileList.get(chosenPosition).getPath();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+
+        /**
+         * A textView that displays the name of the subtask
+         */
+        TextView textRow;
+
+        /**
+         * A stripe shown when the file is selected
+         */
+        ImageButton chosenSign;
+
+        /**
+         * Creates new instance of a view holder for a certain row
+         * @param view main view
+         */
+        ViewHolder(View view) {
+            super(view);
+            textRow = (TextView) view.findViewById(R.id.file_row_text);
+            chosenSign = (ImageButton) view.findViewById(R.id.chosen_sign);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            chosenPosition = getAdapterPosition();
+            notifyDataSetChanged();
+        }
     }
 }

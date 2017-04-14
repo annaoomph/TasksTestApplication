@@ -1,28 +1,27 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
-import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
+import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * a controller which handles all the actions connected with tasks
+ * A controller which handles all the actions connected with tasks
  */
 public class TaskController implements UndoListener<Task> {
 
     /**
-     * datastore to work with data
+     * A datastore to work with data
      */
     private DataStore dataStore;
 
     /**
-     * main view
+     * Main view
      */
     private TaskView view;
 
@@ -77,10 +76,6 @@ public class TaskController implements UndoListener<Task> {
     public void onUndo(Task deletedItem) {
         if (deletedItem != null) {
             dataStore.createTask(deletedItem);
-            for (SubTask subTask : deletedItem.getSubTasks()) {
-                subTask.setTask(deletedItem);
-                dataStore.createSubTask(subTask);
-            }
             if (deletedItem.hasAlarm())
                 ReminderAlarmManager.addAlarm(deletedItem);
         }
@@ -88,7 +83,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * sorts the given list of tasks
+     * Sorts the given list of tasks
      * @param tasks list
      */
     private void sort (List<Task> tasks) {

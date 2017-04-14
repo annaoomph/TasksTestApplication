@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.Listener;
+package com.example.annakocheshkova.testapplication.utils.listener;
 
 /**
  * Listener handling on undo moments in application (when application needs something to be stored permanently and restored in case user clicked Cancel)

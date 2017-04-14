@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.Listener;
+package com.example.annakocheshkova.testapplication.utils.listener;
 
 /**
  * Listener responding when user finished editing item (used for alertdialog right now)

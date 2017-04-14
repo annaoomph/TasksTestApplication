@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
@@ -47,8 +48,17 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         setContent();
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
-     * sets all the content configuration and listeners
+     * Sets all the content configuration and listeners
      */
     private void setContent() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -117,7 +127,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void close() {
-        Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.file_created) + FileManager.getPath() + getNameOrPath(), Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -136,14 +146,4 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     public void showIOError() {
         Toast.makeText(this, R.string.io_error , Toast.LENGTH_LONG).show();
     }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
-
 }

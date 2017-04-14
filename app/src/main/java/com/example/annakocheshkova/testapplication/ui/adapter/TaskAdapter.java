@@ -60,6 +60,63 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         redColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.redColor);
     }
 
+    @Override
+    public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, null);
+        return new ViewHolder(itemLayoutView);
+    }
+
+    /**
+     * A method called everytime when data changes
+     * @param newItems new data
+     */
+    public void changeData(List<Task> newItems) {
+        taskList = newItems;
+        this.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Task item = taskList.get(position);
+        holder.textRow.setText(item.getName());
+        switch (item.getStatus()) {
+            case Completed: holder.textRow.setTextColor(lightColor); break;
+            case Pending: holder.textRow.setTextColor(darkColor); break;
+            case Expired: holder.textRow.setTextColor(redColor); break;
+        }
+        if (item.hasAlarm()) {
+            holder.timeText.setText(getDateTimeString(item.getAlarmTime()));
+            holder.alarmLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.alarmLayout.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Gets the task by its position in the list of items
+     * @param position of the task
+     * @return task
+     */
+    public Task getItem(int position) {
+        return taskList.get(position);
+    }
+
+    /**
+     * Gets date and time of the task in string format
+     * @param time task time
+     * @return date and time in string format
+     */
+    private String getDateTimeString(long time) {
+        DateFormat format = SimpleDateFormat.getDateTimeInstance();
+        Date date = new Date(time);
+        return format.format(date);
+    }
+
+    @Override
+    public int getItemCount() {
+        return taskList.size();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
@@ -100,62 +157,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             taskController.onItemUpdate(taskList.get(getAdapterPosition()).getID());
             return true;
         }
-    }
-
-    @Override
-    public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, null);
-        return new ViewHolder(itemLayoutView);
-    }
-
-    /**
-     * A method called everytime when data changes
-     * @param newItems new data
-     */
-    public void changeData(List<Task> newItems) {
-        taskList = newItems;
-        this.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Task item = taskList.get(position);
-        holder.textRow.setText(item.getName());
-        switch (item.getStatus()) {
-            case Completed: holder.textRow.setTextColor(lightColor); break;
-            case Pending: holder.textRow.setTextColor(darkColor); break;
-            case Expired: holder.textRow.setTextColor(redColor); break;
-        }
-        if (item.hasAlarms()) {
-            holder.timeText.setText(getDateTimeString(item.getAlarmTime()));
-            holder.alarmLayout.setVisibility(View.VISIBLE);
-        } else {
-            holder.alarmLayout.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * Gets the task by its position in the list of items
-     * @param position of the task
-     * @return task
-     */
-    public Task getItem(int position) {
-        return taskList.get(position);
-    }
-
-    /**
-     * Gets date and time of the task in string format
-     * @param time task time
-     * @return date and time in string format
-     */
-    private String getDateTimeString(long time) {
-        DateFormat format = SimpleDateFormat.getDateTimeInstance();
-        Date date = new Date(time);
-        return format.format(date);
-    }
-
-    @Override
-    public int getItemCount() {
-        return taskList.size();
     }
 }
