@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
@@ -48,7 +49,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     /**
-     * sets all the content configuration and listeners
+     * Sets all the content configuration and listeners
      */
     private void setContent() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -117,7 +118,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void close() {
-        Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.file_created) + FileManager.getPath() + getNameOrPath(), Toast.LENGTH_LONG).show();
         finish();
     }
 

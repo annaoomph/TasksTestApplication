@@ -39,7 +39,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     View mainView;
 
     /**
-     * mMain controller for the view
+     * Main controller for the view
      */
     SubTaskController subTaskController;
 

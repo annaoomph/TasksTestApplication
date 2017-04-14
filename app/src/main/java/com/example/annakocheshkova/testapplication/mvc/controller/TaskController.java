@@ -12,17 +12,17 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * a controller which handles all the actions connected with tasks
+ * A controller which handles all the actions connected with tasks
  */
 public class TaskController implements UndoListener<Task> {
 
     /**
-     * datastore to work with data
+     * A datastore to work with data
      */
     private DataStore dataStore;
 
     /**
-     * main view
+     * Main view
      */
     private TaskView view;
 
@@ -88,7 +88,7 @@ public class TaskController implements UndoListener<Task> {
     }
 
     /**
-     * sorts the given list of tasks
+     * Sorts the given list of tasks
      * @param tasks list
      */
     private void sort (List<Task> tasks) {

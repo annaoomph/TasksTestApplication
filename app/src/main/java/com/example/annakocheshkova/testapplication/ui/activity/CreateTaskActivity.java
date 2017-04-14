@@ -187,7 +187,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             }
         });
         String[] spinnerItems = getResources().getStringArray(R.array.reminder);
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         createTaskController.onViewLoaded(id);
@@ -265,7 +265,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void showItem(Task item, long timePeriod) {
         nameText.setText(item.getName());
-        reminderCheckBox.setChecked(item.hasAlarms());
+        reminderCheckBox.setChecked(item.hasAlarm());
         int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
         int alarmPosition = 0; //position in spinner adapter
         switch (timePeriodInMinutes) {
@@ -281,7 +281,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         chosenYear = calendar.get(Calendar.YEAR);
         chosenMonth = calendar.get(Calendar.MONTH);
         chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
-        chosenMinute = calendar.get(Calendar.MINUTE);
+        chosenMinute = calendar.get(Calendar.MINUTE) + 1;
         chosenHour = calendar.get(Calendar.HOUR_OF_DAY);
         updateDisplay();
 

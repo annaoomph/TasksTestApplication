@@ -60,7 +60,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     /**
-     * Set all the content configuration and listeners
+     * Sets all the content configuration and listeners
      */
     void setContent() {
         String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);

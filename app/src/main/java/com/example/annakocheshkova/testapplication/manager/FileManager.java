@@ -44,4 +44,14 @@ public class FileManager {
         if (!success) throw new FileNotFoundException();
         return folderPath;
     }
+
+    /**
+     * Gets the current folder path
+     * @return folder path
+     */
+    public static String getPath() {
+        return Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
+    }
+
+
 }
