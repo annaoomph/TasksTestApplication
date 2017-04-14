@@ -9,6 +9,7 @@ import com.example.annakocheshkova.testapplication.manager.importer.Importer;
 import com.example.annakocheshkova.testapplication.manager.importer.ImporterFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
+import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 
 import java.io.File;
 import java.util.List;
@@ -58,7 +59,10 @@ public class ImportController {
                 Importer<Task> taskImporter = ImporterFactory.getTaskImporter(ImporterFactory.ImportType.LOCAL_FROM_FILE);
                 Task[] tasks = taskImporter.importData(path, Task[].class, converter);
                 dataStore.createTasks(tasks);
-                //TODO Check Alarm
+                for (Task task : tasks) {
+                    if (task.hasAlarm())
+                        ReminderAlarmManager.addAlarm(task);
+                }
                 view.showMessage(tasks.length);
                 view.close();
             } catch (Exception exception) {

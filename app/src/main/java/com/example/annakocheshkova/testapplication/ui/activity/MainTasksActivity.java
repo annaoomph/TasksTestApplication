@@ -23,7 +23,7 @@ import com.example.annakocheshkova.testapplication.ui.adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.utils.Component.UndoComponent;
+import com.example.annakocheshkova.testapplication.utils.component.UndoComponent;
 
 import java.util.List;
 
@@ -59,8 +59,42 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         setContent();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        taskController.onViewLoaded();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.custom_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_add) {
+            startActivity(new Intent(this, CreateTaskActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
     /**
-     * Set all the content configuration and listeners
+     * Sets all the content configuration and listeners
      */
     void setContent() {
         String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
@@ -140,40 +174,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     @Override
     public void showItems(List<Task> items) {
         taskAdapter.changeData(items);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        taskController.onViewLoaded();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_add) {
-            startActivity(new Intent(this, CreateTaskActivity.class));
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override

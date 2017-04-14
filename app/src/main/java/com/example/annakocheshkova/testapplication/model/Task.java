@@ -87,7 +87,7 @@ public class Task
         this.name = anotherTask.getName();
         this.time = anotherTask.getTime();
         this.alarmTime = anotherTask.getAlarmTime();
-        this.notification = anotherTask.hasAlarms();
+        this.notification = anotherTask.hasAlarm();
         subTasks = new ArrayList<>();
         for (SubTask subTask : anotherTask.getSubTasks())
             this.subTasks.add(subTask);
@@ -163,14 +163,6 @@ public class Task
      */
     public long getAlarmTime() {
         return alarmTime;
-    }
-
-    /**
-     * Says if the task should notify user
-     * @return true if it should, false if not
-     */
-    public boolean hasAlarms() {
-        return notification;
     }
 
     /**

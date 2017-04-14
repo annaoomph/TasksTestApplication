@@ -3,7 +3,6 @@ package com.example.annakocheshkova.testapplication.ui.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -176,7 +175,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         chosenMonth = c.get(Calendar.MONTH);
         chosenDay = c.get(Calendar.DAY_OF_MONTH);
         chosenHour = c.get(Calendar.HOUR_OF_DAY);
-        chosenMinute = c.get(Calendar.MINUTE);
+        chosenMinute = c.get(Calendar.MINUTE) + 1;
 
         updateDisplay();
 
@@ -187,26 +186,12 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             }
         });
         String[] spinnerItems = getResources().getStringArray(R.array.reminder);
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         createTaskController.onViewLoaded(id);
     }
 
-    /**
-     * Updates date and time shown in edittext boxes
-     */
-    private void updateDisplay() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(chosenYear, chosenMonth, chosenDay, chosenHour, chosenMinute);
-        DateFormat dateFormat = SimpleDateFormat.getDateInstance();
-        DateFormat timeFormat = SimpleDateFormat.getTimeInstance();
-        Date date = new Date(calendar.getTimeInMillis());
-        String dateString = dateFormat.format(date);
-        String timeString = timeFormat.format(date);
-        dateDisplay.setText(dateString);
-        timeDisplay.setText(timeString);
-    }
 
     /**
      * The callback received when the user sets the date in the dialog
@@ -220,9 +205,9 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
                     chosenDay = dayOfMonth;
                     updateDisplay();
                 }
-    };
+            };
 
-     /**
+    /**
      * The callback received when the user sets the time in the dialog
      */
     private TimePickerDialog.OnTimeSetListener onTimeSetListener =
@@ -255,6 +240,21 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     /**
+     * Updates date and time shown in edittext boxes
+     */
+    private void updateDisplay() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(chosenYear, chosenMonth, chosenDay, chosenHour, chosenMinute);
+        DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+        DateFormat timeFormat = SimpleDateFormat.getTimeInstance(3);
+        Date date = new Date(calendar.getTimeInMillis());
+        String dateString = dateFormat.format(date);
+        String timeString = timeFormat.format(date);
+        dateDisplay.setText(dateString);
+        timeDisplay.setText(timeString);
+    }
+
+    /**
      * Responds to confirmation button click
      * @param view button view
      */
@@ -265,7 +265,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void showItem(Task item, long timePeriod) {
         nameText.setText(item.getName());
-        reminderCheckBox.setChecked(item.hasAlarms());
+        reminderCheckBox.setChecked(item.hasAlarm());
         int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
         int alarmPosition = 0; //position in spinner adapter
         switch (timePeriodInMinutes) {

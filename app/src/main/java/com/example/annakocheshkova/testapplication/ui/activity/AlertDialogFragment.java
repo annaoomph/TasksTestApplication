@@ -9,7 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
 import com.example.annakocheshkova.testapplication.mvc.controller.DialogController;
 import com.example.annakocheshkova.testapplication.mvc.view.DialogView;
-import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.utils.listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.R;
 
 /**
