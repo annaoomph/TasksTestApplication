@@ -117,7 +117,11 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void close() {
-        Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+        if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
+            Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, getString(R.string.server_success) + getNameOrPath(), Toast.LENGTH_LONG).show();
+        }
         finish();
     }
 
@@ -134,7 +138,11 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void showIOError() {
-        Toast.makeText(this, R.string.io_error , Toast.LENGTH_LONG).show();
+        if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
+            Toast.makeText(this, R.string.io_error, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, R.string.io_server_error, Toast.LENGTH_LONG).show();
+        }
     }
 
 

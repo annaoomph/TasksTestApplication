@@ -27,9 +27,7 @@
         <activity android:name=".ui.activity.SubTaskActivity" />
 
         <receiver android:name=".receiver.ReminderAlarmManager" />
-        <receiver
-            android:name=".receiver.ReminderAlarmManager"
-           />
+        <receiver android:name=".receiver.ReminderAlarmManager" />
         <receiver
             android:name=".receiver.MyBootReceiver"
             android:enabled="true"
@@ -41,7 +39,8 @@
         </receiver>
 
         <activity android:name=".ui.activity.ExportActivity" />
-        <activity android:name=".ui.activity.ImportActivity"></activity>
+        <activity android:name=".ui.activity.ImportActivity" />
+        <activity android:name=".ui.activity.LoginActivity"></activity>
     </application>
 
 </manifest>

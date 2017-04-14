@@ -19,8 +19,7 @@ public class ExporterFactory {
         if (exportType == ExportType.LOCAL_TO_FILE) {
             return new FileExporter<>();
         } else {
-            return new FileExporter<>();
+            return new RemoteExporter<>();
         }
-        //TODO Set this to Remote Exporter
     }
 }
