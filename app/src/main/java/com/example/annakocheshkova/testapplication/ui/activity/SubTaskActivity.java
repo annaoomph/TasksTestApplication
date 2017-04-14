@@ -13,14 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-import com.example.annakocheshkova.testapplication.mvc.controller.SubTaskController;
-import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
+
+import com.example.annakocheshkova.testapplication.mvc.Controller.SubTaskController;
+import com.example.annakocheshkova.testapplication.mvc.View.SubTaskView;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.ui.adapter.SubTaskAdapter;
 import com.example.annakocheshkova.testapplication.utils.Component.UndoComponent;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,14 +61,15 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         subTaskController = new SubTaskController(this);
         mainView = findViewById(R.id.content);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar!=null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-        subTaskAdapter = new SubTaskAdapter(subTaskController);
+        List<SubTask> items = new ArrayList<>();
+        subTaskAdapter = new SubTaskAdapter(items, subTaskController);
         listView.setAdapter(subTaskAdapter);
         subTaskController.onViewLoaded(getIntent().getIntExtra("id", 0));
         listView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        listView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(mLayoutManager);
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
@@ -126,7 +128,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         bundle.putInt("taskId",  taskId);
         alertdFragment.setArguments(bundle);
         alertdFragment.setOnItemEditedListener(subTaskController);
-        alertdFragment.show(supportFragmentManager, getString(R.string.alert_dialog_fragment_tag));
+        alertdFragment.show(supportFragmentManager, getString(R.string.alertDialogFragmentTag));
     }
 
     @Override
@@ -137,7 +139,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
     @Override
     public void showNoSuchTaskError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task), Toast.LENGTH_LONG).show();
         finish();
     }
 }

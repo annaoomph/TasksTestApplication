@@ -7,8 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.EditText;
-import com.example.annakocheshkova.testapplication.mvc.controller.DialogController;
-import com.example.annakocheshkova.testapplication.mvc.view.DialogView;
+
+import com.example.annakocheshkova.testapplication.mvc.Controller.DialogController;
+import com.example.annakocheshkova.testapplication.mvc.View.DialogView;
 import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.R;
 
@@ -55,7 +56,7 @@ public class AlertDialogFragment extends DialogFragment implements DialogView {
         }
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle((edit)?getString(R.string.edit_item_title):getString(R.string.enter_new_title))
+                .setTitle((edit)?getString(R.string.edit):getString(R.string.enter_new))
                 .setView(input)
                 .setPositiveButton(getString(R.string.ok_string),
                         new DialogInterface.OnClickListener() {

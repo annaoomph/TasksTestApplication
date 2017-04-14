@@ -3,11 +3,8 @@
     package="com.example.annakocheshkova.testapplication">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <application
-        android:name=".MyApplication"
+    <application android:name="com.example.annakocheshkova.testapplication.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,11 +19,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.CreateTaskActivity"
+            android:name=".ui.activity.CreateItemActivity"
             android:label="@string/title_activity_create_item" />
         <activity android:name=".ui.activity.SubTaskActivity" />
 
-        <receiver android:name=".receiver.ReminderAlarmManager" />
         <receiver
             android:name=".receiver.ReminderAlarmManager"
            />
@@ -40,8 +36,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ui.activity.ExportActivity" />
-        <activity android:name=".ui.activity.ImportActivity"></activity>
     </application>
 
 </manifest>

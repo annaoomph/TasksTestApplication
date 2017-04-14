@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activity.CreateTaskActivity">
+    tools:context=".ui.activity.CreateItemActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -39,8 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/set_reminder_checkbox_label"
-            android:textColor="@color/textColorPrimary"
+            android:text="@string/set_reminder"
             android:textSize="@dimen/default_text_size" />
 
         <Spinner android:id="@+id/reminder_spinner"

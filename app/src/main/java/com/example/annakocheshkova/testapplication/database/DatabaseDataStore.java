@@ -2,103 +2,90 @@ package com.example.annakocheshkova.testapplication.database;
 
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import java.util.List;
 
 /**
  * A class that implements DataStore interface. Gets all the data from sqlite database datastore.
  */
 class DatabaseDataStore implements DataStore {
-    private DatabaseHelper databaseHelper;
 
     /**
-     * Creates an instance of database datastore
+     * Dao for Tasks table
+     */
+    private final RuntimeExceptionDao<Task, Integer> simpleTaskDao;
+
+    /**
+     * Dao for subTasks table
+     */
+    private final RuntimeExceptionDao<SubTask, Integer> simpleSubTaskDao;
+
+    /**
+     * Creates new instance of DatabaseDatastore
      */
     DatabaseDataStore() {
-        databaseHelper = DatabaseHelper.getInstance();
+        simpleTaskDao = new DatabaseHelper().getSimpleTaskDao();
+        simpleSubTaskDao = new DatabaseHelper().getSimpleSubTaskDao();
     }
 
     @Override
     public List<Task> getAllTasks(){
-        return databaseHelper.getSimpleTaskDao().queryForAll();
+        return simpleTaskDao.queryForAll();
     }
 
     @Override
     public List<SubTask> getAllSubtasksByTask(Task task) {
-        return  databaseHelper.getSimpleSubTaskDao().queryForEq("task_id", task);
+        return simpleSubTaskDao.queryForEq("task_id", task);
     }
 
     @Override
     public void createTask(Task item) {
-        databaseHelper.getSimpleTaskDao().create(item);
-        if (item.getSubTasks() != null)
-            for (SubTask subTask : item.getSubTasks()) {
-                subTask.setTask(item);
-                databaseHelper.getSimpleSubTaskDao().create(subTask);
-            }
+        simpleTaskDao.create(item);
     }
 
     @Override
     public void createSubTask(SubTask item) {
-        databaseHelper.getSimpleSubTaskDao().create(item);
+        simpleSubTaskDao.create(item);
     }
 
     @Override
     public void updateTask(Task item) {
-        databaseHelper.getSimpleTaskDao().update(item);
+        simpleTaskDao.update(item);
     }
 
     @Override
     public void updateSubTask(SubTask item) {
-        databaseHelper.getSimpleSubTaskDao().update(item);
+        simpleSubTaskDao.update(item);
     }
 
     @Override
     public void deleteTask(Task item) {
-        databaseHelper.getSimpleTaskDao().delete(item);
-        deleteSubTasksByTask(item);
+        simpleTaskDao.delete(item);
     }
 
     @Override
     public void deleteSubTask(SubTask item) {
-        databaseHelper.getSimpleSubTaskDao().delete(item);
+        simpleSubTaskDao.delete(item);
     }
 
     @Override
     public Task getTask(int id) {
-        return databaseHelper.getSimpleTaskDao().queryForId(id);
+        return simpleTaskDao.queryForId(id);
     }
 
     @Override
     public SubTask getSubTask(int id) {
-        return  databaseHelper.getSimpleSubTaskDao().queryForId(id);
+        return simpleSubTaskDao.queryForId(id);
     }
 
     public List<Task> getAllTasksWithAlarms() {
-        return databaseHelper.getSimpleTaskDao().queryForEq("notification", true);
+        return simpleTaskDao.queryForEq("notification", true);
     }
 
     @Override
     public void deleteSubTasksByTask(Task task) {
         List<SubTask> alarms = getAllSubtasksByTask(task);
-        databaseHelper.getSimpleSubTaskDao().delete(alarms);
-    }
-
-    @Override
-    public void createTasks(Task[] items) {
-        ArrayList<Task> tasksList = new ArrayList<>(Arrays.asList(items));
-        databaseHelper.getSimpleTaskDao().create(tasksList);
-        for (Task task : tasksList) {
-            if (task.getSubTasks() != null) {
-                for (SubTask subTask : task.getSubTasks()) {
-                    subTask.setTask(task);
-                    databaseHelper.getSimpleSubTaskDao().create(subTask);
-                }
-
-            }
-        }
-
+        simpleSubTaskDao.delete(alarms);
     }
 
 }

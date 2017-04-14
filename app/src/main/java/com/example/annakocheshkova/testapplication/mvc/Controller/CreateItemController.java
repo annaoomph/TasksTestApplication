@@ -1,30 +1,30 @@
-package com.example.annakocheshkova.testapplication.mvc.controller;
+package com.example.annakocheshkova.testapplication.mvc.Controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
+import com.example.annakocheshkova.testapplication.mvc.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 
 import java.util.Calendar;
 
 /**
- * controller for create item view
+ * A controller for create item view
  */
-public class CreateTaskController {
+public class CreateItemController {
 
     /**
-     * A datastore example to work with data
+     * Datastore example to work with data
      */
     private DataStore dataStore;
 
     /**
      * Main view of this controller
      */
-    private CreateTaskView view;
+    private CreateItemView view;
 
     /**
-     * Task we are currently editing (null if creating)
+     * The task we are currently editing (null if creating)
      */
     private Task editingTask;
 
@@ -32,7 +32,7 @@ public class CreateTaskController {
      * Creates an instance of the datastore
      * @param view main view
      */
-    public CreateTaskController(CreateTaskView view) {
+    public CreateItemController(CreateItemView view) {
         this.view = view;
         dataStore = DataStoreFactory.getDataStore();
     }
@@ -54,7 +54,7 @@ public class CreateTaskController {
 
     /**
      * Updates or creates a certain task;
-     * Finds out if user was updating the item and creates or updates it depending on the result
+     * finds out if user was updating the item and creates or updates it depending on the result
      */
     public void onItemEditingFinished() {
         String name = view.getName();

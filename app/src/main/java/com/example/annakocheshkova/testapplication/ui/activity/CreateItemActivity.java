@@ -19,8 +19,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.annakocheshkova.testapplication.mvc.controller.CreateTaskController;
-import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
+import com.example.annakocheshkova.testapplication.mvc.Controller.CreateItemController;
+import com.example.annakocheshkova.testapplication.mvc.View.CreateItemView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
@@ -33,20 +33,20 @@ import java.util.Date;
 /**
  * A view of the activity, which allows user to create a new task
  */
-public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
+public class CreateItemActivity extends AppCompatActivity implements CreateItemView {
 
     /**
      * Controller of the view
      */
-    CreateTaskController createTaskController;
+    CreateItemController createItemController;
 
     /**
-     * Toolbar with menu
+     * A toolbar with menu
      */
     Toolbar toolbar;
 
     /**
-     * EditText with name of the task
+     * An input with name of the task
      */
     EditText nameText;
 
@@ -61,12 +61,12 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     Spinner spinner;
 
     /**
-     * EditText which displays the date chosen by user
+     * An input which displays the date chosen by user
      */
     private EditText dateDisplay;
 
     /**
-     * Edittext which displays the time chosen by user
+     * An input which displays the time chosen by user
      */
     private EditText timeDisplay;
 
@@ -130,15 +130,15 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
      * Sets configuration of the window content
      */
     void setContent() {
-        createTaskController = new CreateTaskController(this);
+        createItemController = new CreateItemController(this);
         int id = getIntent().getIntExtra("id", -1);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
             if (actionBar != null)
-                actionBar.setTitle(R.string.edit_item_title);
+                actionBar.setTitle(R.string.edit);
         } else {
             if (actionBar != null)
-                actionBar.setTitle(R.string.enter_new_title);
+                actionBar.setTitle(R.string.enter_new);
         }
         if (actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -190,7 +190,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        createTaskController.onViewLoaded(id);
+        createItemController.onViewLoaded(id);
     }
 
     /**
@@ -259,7 +259,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
      * @param view button view
      */
     public void onAddNewTaskClick(View view) {
-        createTaskController.onItemEditingFinished();
+        createItemController.onItemEditingFinished();
     }
 
     @Override
@@ -294,12 +294,12 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
 
     @Override
     public void showWrongTimeError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void showWrongAlarmTimeError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time_error), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time), Toast.LENGTH_LONG).show();
     }
 
     @Override
