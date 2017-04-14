@@ -1,8 +1,8 @@
-package com.example.annakocheshkova.testapplication.mvc.Controller;
+package com.example.annakocheshkova.testapplication.mvc.controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.mvc.View.DialogView;
+import com.example.annakocheshkova.testapplication.mvc.view.DialogView;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
 
@@ -32,12 +32,12 @@ public class DialogController {
     private int mainTaskId;
 
     /**
-     * A listener responding to the event when user finished editing or creating.
+     * Listener responding to the event when user finished editing or creating.
      */
     private OnItemEditedListener onItemEditedListener;
 
     /**
-     * Creates an instance of DialogController
+     * Creates new instance of DialogController
      * @param dialogView main view
      */
     public DialogController(DialogView dialogView) {
@@ -54,7 +54,7 @@ public class DialogController {
     }
 
     /**
-     * Called when the main dialog window is loaded;
+     * Called when the main dialog window is loaded
      * shows the editing item name if needed, stores or resets it here if needed
      * @param taskId id of the main task
      * @param id if of the subtask we are editing
@@ -71,7 +71,7 @@ public class DialogController {
     }
 
     /**
-     * Called when editing ended;
+     * event when editing ended
      * creates or updates subtask depending on what was happening and what was stored here
      * @param newName name of the new (or edited) subtask
      */

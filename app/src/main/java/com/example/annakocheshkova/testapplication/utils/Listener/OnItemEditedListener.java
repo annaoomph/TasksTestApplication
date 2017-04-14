@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.Listener;
 
 /**
- * A listener responding when user finished editing item (used for alertdialog right now)
+ * Listener responding when user finished editing item (used for alertdialog right now)
  */
 public interface OnItemEditedListener {
 

@@ -1,9 +1,9 @@
-package com.example.annakocheshkova.testapplication.mvc.Controller;
+package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.mvc.View.TaskView;
+import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
 
@@ -12,22 +12,22 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * A controller which handles all the actions connected with tasks
+ * a controller which handles all the actions connected with tasks
  */
 public class TaskController implements UndoListener<Task> {
 
     /**
-     * Datastore to work with data
+     * datastore to work with data
      */
     private DataStore dataStore;
 
     /**
-     * Main view
+     * main view
      */
     private TaskView view;
 
     /**
-     * Creates an instance of task controller
+     * Creates new instance of TaskController
      * @param view main view
      */
     public TaskController(TaskView view) {
@@ -81,40 +81,31 @@ public class TaskController implements UndoListener<Task> {
                 subTask.setTask(deletedItem);
                 dataStore.createSubTask(subTask);
             }
-            ReminderAlarmManager.addAlarm(deletedItem);
+            if (deletedItem.hasAlarm())
+                ReminderAlarmManager.addAlarm(deletedItem);
         }
         onViewLoaded();
     }
 
     /**
-     * Compares two tasks for proper sorting
-     * @param firstTask first task to be compared
-     * @param secondTask second task to be compared
-     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
-     */
-    private int compareTasks(Task firstTask, Task secondTask) {
-        if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
-            if (firstTask.getTime() > secondTask.getTime()) {
-                return 1;
-            } else if (firstTask.getTime() < secondTask.getTime()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        } else {
-            return firstTask.getStatus().compareTo(secondTask.getStatus());
-        }
-    }
-
-    /**
-     * Sorts the given list of tasks
+     * sorts the given list of tasks
      * @param tasks list
      */
     private void sort (List<Task> tasks) {
         Collections.sort(tasks, new Comparator<Task>() {
             @Override
             public int compare(Task firstTask, Task secondTask) {
-                return compareTasks(firstTask, secondTask);
+                if (firstTask.getStatus().compareTo(secondTask.getStatus()) == 0) {
+                    if (firstTask.getTime() > secondTask.getTime()) {
+                        return 1;
+                    } else if (firstTask.getTime() < secondTask.getTime()) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return firstTask.getStatus().compareTo(secondTask.getStatus());
+                }
             }
         });
     }

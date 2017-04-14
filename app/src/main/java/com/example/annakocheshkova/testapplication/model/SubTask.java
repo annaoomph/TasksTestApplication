@@ -1,4 +1,6 @@
 package com.example.annakocheshkova.testapplication.model;
+
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -10,27 +12,27 @@ public class SubTask {
 
     @DatabaseField(generatedId = true)
     private
-    int id;
+    @SerializedName("id") int id;
 
     /**
      * The main task of the subtask
      */
     @DatabaseField(columnName = "task_id", foreign = true)
-    private Task task;
+    private transient Task task;
 
     /**
      * Name of the subtask
      */
     @DatabaseField
     private
-    String name;
+    @SerializedName("name") String name;
 
     /**
      * A boolean field showing the subtask is completed
      */
     @DatabaseField
     private
-    Boolean completed;
+    @SerializedName("completed") Boolean completed;
 
     /**
      * Creates new instance of subtask

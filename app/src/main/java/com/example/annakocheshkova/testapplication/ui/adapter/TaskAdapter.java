@@ -7,14 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.example.annakocheshkova.testapplication.mvc.Controller.TaskController;
+import com.example.annakocheshkova.testapplication.mvc.controller.TaskController;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,12 +26,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     /**
      * List of the tasks to be displayed by the adapter
      */
-    private static List<Task> taskList;
+    private List<Task> taskList;
 
     /**
      * SubTasks controller working with the subTaskView
      */
-    private static TaskController taskController;
+    private TaskController taskController;
 
     /**
      * A color to draw a task that is not completed
@@ -50,17 +50,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     /**
      * Creates new instance of the adapter
-     * @param taskList list of the tasks to be displayed by adapter
+     * @param taskController controller of the parent view
      */
-    public TaskAdapter(List<Task> taskList, TaskController taskController) {
-        TaskAdapter.taskList = taskList;
-        TaskAdapter.taskController = taskController;
+    public TaskAdapter(TaskController taskController) {
+        this.taskList = new ArrayList<>();
+        this.taskController = taskController;
         darkColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
         lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
         redColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.redColor);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
 
         /**
          * A text with the name of the subtask

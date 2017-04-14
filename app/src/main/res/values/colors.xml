@@ -8,4 +8,6 @@
     <color name="textColorLight">#ffffff</color>
     <color name="completedColor">#939393</color>
     <color name="redColor">#ff0303</color>
+    <color name="chosenBackground">#cfcfcf</color>
+
 </resources>

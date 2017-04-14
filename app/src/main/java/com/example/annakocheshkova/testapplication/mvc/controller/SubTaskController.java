@@ -1,10 +1,10 @@
-package com.example.annakocheshkova.testapplication.mvc.Controller;
+package com.example.annakocheshkova.testapplication.mvc.controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.mvc.View.SubTaskView;
+import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
 import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
 
@@ -18,16 +18,7 @@ import java.util.List;
 public class SubTaskController implements OnItemEditedListener, UndoListener<SubTask>{
 
     /**
-     * Called when user finished editing a subtask and the main view needs to be updated
-     */
-    @Override
-    public void onItemEdited() {
-        if (currentTask != -1)
-            onViewLoaded(currentTask);
-    }
-
-    /**
-     * Datastore instance to work with the data
+     * Datastore example to work with the data
      */
     private DataStore dataStore;
 
@@ -42,7 +33,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     private static int currentTask = -1;
 
     /**
-     * Creates an instance of subTaskController
+     * Creates an instance of SubTaskController
      * @param view main view
      */
     public SubTaskController(SubTaskView view) {
@@ -77,8 +68,8 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
-     * Called everytime view needs to be updated;
-     * gets a list of subtasks by their main task
+     * Called everytime view needs to be updated
+     * Gets a list of subtasks by their main task
      * @param task_id id of the main task
      */
     public void onViewLoaded(int task_id) {
@@ -94,6 +85,15 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
                 view.showTitle(main.getName());
             }
         }
+    }
+
+    /**
+     * Called when user finished editing a subtask and the main view needs to be updated
+     */
+    @Override
+    public void onItemEdited() {
+        if (currentTask != -1)
+            onViewLoaded(currentTask);
     }
 
     /**
@@ -122,25 +122,15 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
         Collections.sort(list, new Comparator<SubTask>() {
             @Override
             public int compare(SubTask firstSubTask, SubTask secondSubTask) {
-                return compareSubTasks(firstSubTask, secondSubTask);
+                if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
+                    return -1;
+                }
+                if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
+                    return 1;
+                }
+                return firstSubTask.getName().compareTo(secondSubTask.getName());
             }
         });
-    }
-
-    /**
-     * Compares two subtasks for proper sorting
-     * @param firstSubTask first subtask to be compared
-     * @param secondSubTask second subtask to be compared
-     * @return the result of the comparison (0 if they has equal place, -1 if the first is higher)
-     */
-    private int compareSubTasks (SubTask firstSubTask, SubTask secondSubTask) {
-        if (!firstSubTask.getStatus() && secondSubTask.getStatus()) {
-            return -1;
-        }
-        if (firstSubTask.getStatus() && !secondSubTask.getStatus()) {
-            return 1;
-        }
-        return firstSubTask.getName().compareTo(secondSubTask.getName());
     }
 
 }

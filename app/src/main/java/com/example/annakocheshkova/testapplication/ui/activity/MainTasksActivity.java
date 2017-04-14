@@ -18,14 +18,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.example.annakocheshkova.testapplication.mvc.Controller.TaskController;
+import com.example.annakocheshkova.testapplication.mvc.controller.TaskController;
 import com.example.annakocheshkova.testapplication.ui.adapter.TaskAdapter;
-import com.example.annakocheshkova.testapplication.mvc.View.TaskView;
+import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.utils.Component.UndoComponent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,16 +69,27 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         view = findViewById(R.id.main_content);
         taskController = new TaskController(this);
-        List<Task> tasks = new ArrayList<>();
-        taskAdapter = new TaskAdapter(tasks, taskController);
+        taskAdapter = new TaskAdapter(taskController);
         listView.setAdapter(taskAdapter);
         taskController.onViewLoaded();
         drawerListView.setAdapter(new ArrayAdapter<>(this,
                 R.layout.drawer_list_item, leftDrawerTitles));
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
-            public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
+            public void onItemClick (AdapterView < ? > parent, View view, int position, long id){
                 drawerLayout.closeDrawer(drawerListView);
+                switch (position) {
+                    case 0: {
+                        Intent intent = new Intent(view.getContext(), ImportActivity.class);
+                        view.getContext().startActivity(intent);
+                        break;
+                    }
+                    case 1: {
+                        Intent intent = new Intent(view.getContext(), ExportActivity.class);
+                        view.getContext().startActivity(intent);
+                        break;
+                    }
+                }
             }
         });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -149,7 +159,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add) {
-            startActivity(new Intent(this, CreateItemActivity.class));
+            startActivity(new Intent(this, CreateTaskActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -181,7 +191,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
     @Override
     public void editTask(int id) {
-        Intent intent = new Intent(view.getContext(), CreateItemActivity.class);
+        Intent intent = new Intent(view.getContext(), CreateTaskActivity.class);
         intent.putExtra("id", id);
         view.getContext().startActivity(intent);
     }
