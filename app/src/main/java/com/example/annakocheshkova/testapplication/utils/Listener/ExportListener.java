@@ -6,7 +6,7 @@ package com.example.annakocheshkova.testapplication.utils.Listener;
 public interface ExportListener {
 
     /**
-     * Called if user has not privileges to do export
+     * Called if user has no privileges to do export
      */
     void onUnauthorized();
 

@@ -1,6 +1,4 @@
 package com.example.annakocheshkova.testapplication.manager.converter;
-
-
 import java.util.List;
 import java.util.Map;
 
@@ -9,14 +7,14 @@ import java.util.Map;
  */
 public interface Converter<T> {
     /**
-     * Converts the data to some format
+     * Converts the data (list) to some format
      * @param data the given data
      * @return formatted data
      */
     String convert(List<T> data);
 
     /**
-     * Converts the data to some format
+     * Converts the data (map) to some format
      * @param data the given data
      * @return formatted data
      */

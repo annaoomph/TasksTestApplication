@@ -17,7 +17,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * An exporter to some server
+ * An exporter to server
  * @param <T> type of the data
  */
 class RemoteExporter<T> implements Exporter<T>, HttpListener {
@@ -46,7 +46,7 @@ class RemoteExporter<T> implements Exporter<T>, HttpListener {
     }
 
     @Override
-    public void onFailure(){
+    public void onFailure() {
         exportListener.onConnectionError();
     }
 

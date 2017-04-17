@@ -175,5 +175,4 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
             finish();
         return super.onOptionsItemSelected(item);
     }
-
 }

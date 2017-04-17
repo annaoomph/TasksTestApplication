@@ -12,10 +12,10 @@
         layout="@layout/toolbar" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.0">
+        android:layout_weight="1.0"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/username_text"
@@ -31,21 +31,21 @@
             android:id="@+id/password_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginBottom="@dimen/small_margin"
             android:hint="@string/password_hint"
             android:inputType="textPassword"
             app:theme="@style/EditTextStyle" />
     </LinearLayout>
 
     <Button
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/small_margin"
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_button"
-        app:theme="@style/AppTheme.NoActionBar"
-        android:text="@string/login_label" />
+        android:layout_marginBottom="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:text="@string/login_label"
+        app:theme="@style/AppTheme.NoActionBar" />
 </LinearLayout>

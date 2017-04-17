@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * a controller which handles all the actions connected with tasks
  */
-public class TaskController implements UndoListener<Task>, HttpListener{
+public class TaskController implements UndoListener<Task>, HttpListener {
 
     /**
      * datastore to work with data

@@ -13,15 +13,9 @@ import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
-import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 /**
  * A controller that handles login
@@ -38,6 +32,10 @@ public class LoginController implements HttpListener {
      */
     private LoginView loginView;
 
+    /**
+     * Creates an instance of login controller
+     * @param loginView view that this controller handles
+     */
     public LoginController(LoginView loginView) {
         this.loginView = loginView;
         preferencesManager = PreferencesFactory.getPreferencesManager();

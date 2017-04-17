@@ -37,8 +37,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home)
+        if (id == android.R.id.home) {
             finish();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -47,7 +48,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
      */
     private void setContent() {
         loginController = new LoginController(this);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();

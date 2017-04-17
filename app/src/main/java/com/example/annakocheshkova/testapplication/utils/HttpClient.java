@@ -28,6 +28,11 @@ public class HttpClient {
     private HttpListener httpListener;
 
     /**
+     * A token for authorization
+     */
+    private String token;
+
+    /**
      * Http client
      */
     private final OkHttpClient client = new OkHttpClient();
@@ -35,8 +40,7 @@ public class HttpClient {
     /**
      * Content media type
      */
-    private static final MediaType MEDIA_TYPE_JSON
-            = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
     /**
      * Creates an instance of HttpClient
@@ -44,15 +48,15 @@ public class HttpClient {
      */
     public HttpClient(HttpListener httpListener) {
         this.httpListener = httpListener;
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        token = preferencesManager.getString(MyApplication.getAppContext().getString(R.string.token_pref_name));
     }
 
     /**
      * Makes a GET-request
      * @param url to visit
      */
-    public void doGetRequest(String url) throws IOException{
-        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        String token = preferencesManager.getString(MyApplication.getAppContext().getString(R.string.token_pref_name));
+    public void doGetRequest(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authentication", token)
@@ -93,8 +97,6 @@ public class HttpClient {
      * @param data to be sent
      */
     public void doPostRequest(String url, String data) {
-        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        String token = preferencesManager.getString(MyApplication.getAppContext().getString(R.string.token_pref_name));
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authentication", token)

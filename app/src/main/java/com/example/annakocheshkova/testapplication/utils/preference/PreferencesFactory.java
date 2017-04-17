@@ -6,8 +6,8 @@ package com.example.annakocheshkova.testapplication.utils.preference;
 public class PreferencesFactory {
 
     /**
-     * Gets current preferences manager
-     * @return manager
+     * Gets preferences manager
+     * @return preferences manager
      */
     public static PreferencesManager getPreferencesManager() {
         return new SharedPreferencesManager();

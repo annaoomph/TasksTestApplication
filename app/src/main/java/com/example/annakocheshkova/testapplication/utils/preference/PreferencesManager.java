@@ -6,8 +6,7 @@ package com.example.annakocheshkova.testapplication.utils.preference;
 public interface PreferencesManager {
 
     /**
-     * Get a boolean from application preferences
-     *
+     * Gets a boolean from application preferences     *
      * @param prefName name of the preference
      * @return value of the preference
      */
