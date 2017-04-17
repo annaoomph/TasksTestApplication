@@ -1,5 +1,7 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+
 import java.io.File;
 import java.util.List;
 
@@ -40,4 +42,10 @@ public interface ImportView {
      * @return path
      */
     String getChosenFilePath();
+
+    /**
+     * Shows the exception when some feature was not implemented
+     * @param exception instance of exception
+     */
+    void showNotImplementedError(NotImplementedException exception);
 }

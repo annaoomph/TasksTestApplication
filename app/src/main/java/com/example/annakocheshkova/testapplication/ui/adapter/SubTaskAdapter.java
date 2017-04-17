@@ -50,42 +50,11 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
         lightColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.completedColor);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
-
-        /**
-         * A textView that displays the name of the subtask
-         */
-        TextView textRow;
-
-        /**
-         * Creates new instance of a view holder for a certain row
-         * @param view main view
-         */
-        ViewHolder(View view) {
-            super(view);
-            textRow = (TextView) view.findViewById(R.id.row_text);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            SubTask subTask = subTasksList.get(getAdapterPosition());
-            subTaskController.onStatusChanged(subTask);
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            subTaskController.onUpdate(subTasksList.get(getAdapterPosition()));
-            return true;
-        }
-    }
-
     /**
      * Called everytime when data changes
      * @param newItems new data
      */
-    public void changeData(List<SubTask> newItems) {
+    public void setData(List<SubTask> newItems) {
         subTasksList = newItems;
         this.notifyDataSetChanged();
     }
@@ -106,17 +75,48 @@ public class SubTaskAdapter extends RecyclerView.Adapter<SubTaskAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.textRow.setText(subTasksList.get(position).getName());
         if (subTasksList.get(position).getStatus()) {
             holder.textRow.setTextColor(lightColor);
         } else {
             holder.textRow.setTextColor(darkColor);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SubTask subTask = subTasksList.get(holder.getAdapterPosition());
+                subTaskController.onStatusChanged(subTask);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                subTaskController.onUpdate(subTasksList.get(holder.getAdapterPosition()));
+                return true;
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return subTasksList.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        /**
+         * A textView that displays the name of the subtask
+         */
+        TextView textRow;
+
+        /**
+         * Creates new instance of a view holder for a certain row
+         * @param view main view
+         */
+        ViewHolder(View view) {
+            super(view);
+            textRow = (TextView) view.findViewById(R.id.row_text);
+        }
     }
 }

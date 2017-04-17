@@ -85,20 +85,4 @@ class DatabaseDataStore implements DataStore {
         databaseHelper.getSimpleSubTaskDao().delete(alarms);
     }
 
-    @Override
-    public void createTasks(Task[] items) {
-        ArrayList<Task> tasksList = new ArrayList<>(Arrays.asList(items));
-        databaseHelper.getSimpleTaskDao().create(tasksList);
-        for (Task task : tasksList) {
-            if (task.getSubTasks() != null) {
-                for (SubTask subTask : task.getSubTasks()) {
-                    subTask.setTask(task);
-                    databaseHelper.getSimpleSubTaskDao().create(subTask);
-                }
-
-            }
-        }
-
-    }
-
 }

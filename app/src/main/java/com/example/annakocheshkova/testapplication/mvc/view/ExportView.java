@@ -1,5 +1,7 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+
 /**
  * An interface for the Export Activity
  */
@@ -36,4 +38,16 @@ public interface ExportView {
      * Shows the error if IO error has occured
      */
     void showIOError();
+
+    /**
+     * Shows the exception when some feature was not implemented
+     * @param exception instance of exception
+     */
+    void showNotImplementedError(NotImplementedException exception);
+
+    /**
+     * Shows the message on export success
+     * @param message path details
+     */
+    void showSuccessMessage(String message);
 }

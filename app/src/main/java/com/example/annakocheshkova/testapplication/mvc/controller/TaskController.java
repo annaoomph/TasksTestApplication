@@ -77,8 +77,9 @@ public class TaskController implements UndoListener<Task> {
     public void onUndo(Task deletedItem) {
         if (deletedItem != null) {
             dataStore.createTask(deletedItem);
-            if (deletedItem.hasAlarm())
+            if (deletedItem.hasAlarm()) {
                 ReminderAlarmManager.addAlarm(deletedItem);
+            }
         }
         onViewLoaded();
     }

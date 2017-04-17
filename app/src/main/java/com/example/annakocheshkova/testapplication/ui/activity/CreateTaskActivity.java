@@ -113,6 +113,53 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         setContent();
     }
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this, onDateSetListener, chosenYear, chosenMonth, chosenDay);
+            case TIME_DIALOG_ID:
+                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, false);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * The callback received when the user sets the date in the dialog
+     */
+    private DatePickerDialog.OnDateSetListener onDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    chosenYear = year;
+                    chosenMonth = monthOfYear;
+                    chosenDay = dayOfMonth;
+                    updateDisplay();
+                }
+            };
+
+    /**
+     * The callback received when the user sets the time in the dialog
+     */
+    private TimePickerDialog.OnTimeSetListener onTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+
+                public void onTimeSet(TimePicker view, int hour, int minute) {
+                    chosenHour = hour;
+                    chosenMinute = minute;
+                    updateDisplay();
+                }
+            };
+
     /**
      * Gets all the views needed to work with
      */
@@ -134,14 +181,17 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         int id = getIntent().getIntExtra("id", -1);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
-            if (actionBar != null)
+            if (actionBar != null) {
                 actionBar.setTitle(R.string.edit_item_title);
+            }
         } else {
-            if (actionBar != null)
+            if (actionBar != null) {
                 actionBar.setTitle(R.string.enter_new_title);
+            }
         }
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         ImageButton setDate = (ImageButton)findViewById(R.id.set_date);
         ImageButton setTime = (ImageButton)findViewById(R.id.set_time);
@@ -206,52 +256,6 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         String timeString = timeFormat.format(date);
         dateDisplay.setText(dateString);
         timeDisplay.setText(timeString);
-    }
-
-    /**
-     * The callback received when the user sets the date in the dialog
-     */
-    private DatePickerDialog.OnDateSetListener onDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    chosenYear = year;
-                    chosenMonth = monthOfYear;
-                    chosenDay = dayOfMonth;
-                    updateDisplay();
-                }
-    };
-
-     /**
-     * The callback received when the user sets the time in the dialog
-     */
-    private TimePickerDialog.OnTimeSetListener onTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-
-                public void onTimeSet(TimePicker view, int hour, int minute) {
-                    chosenHour = hour;
-                    chosenMinute = minute;
-                    updateDisplay();
-                }
-            };
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_DIALOG_ID:
-                return new DatePickerDialog(this, onDateSetListener, chosenYear, chosenMonth, chosenDay);
-            case TIME_DIALOG_ID:
-                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, false);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
     }
 
     /**

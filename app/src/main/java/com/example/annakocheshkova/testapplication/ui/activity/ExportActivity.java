@@ -18,6 +18,7 @@ import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 public class ExportActivity extends AppCompatActivity implements ExportView {
 
@@ -46,6 +47,15 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
         setContent();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -112,14 +122,19 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     public String getNameOrPath() {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
             return fileNameText.getText().toString();
+        } else {
+            return serverText.getText().toString();
         }
-        else return serverText.getText().toString();
     }
 
     @Override
     public void close() {
-        Toast.makeText(this, getString(R.string.file_created) + FileManager.getPath() + getNameOrPath(), Toast.LENGTH_LONG).show();
         finish();
+    }
+
+    @Override
+    public void showSuccessMessage(String message) {
+        Toast.makeText(this, getString(R.string.file_created) + message, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -130,7 +145,6 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     @Override
     public void showWrongFilePathError() {
         Toast.makeText(this, R.string.wrong_path_error, Toast.LENGTH_LONG).show();
-
     }
 
     @Override
@@ -138,13 +152,8 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         Toast.makeText(this, R.string.io_error , Toast.LENGTH_LONG).show();
     }
 
-
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
+    public void showNotImplementedError(NotImplementedException exception) {
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
-
 }

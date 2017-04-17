@@ -2,12 +2,14 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
+import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
 import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.manager.exporter.Exporter;
 import com.example.annakocheshkova.testapplication.manager.exporter.ExporterFactory;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,9 +46,9 @@ public class ExportController {
         boolean local = view.isLocal();
         String nameOrPath = view.getNameOrPath();
         List<Task> tasks = dataStore.getAllTasks();
-        Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
         try {
-            Converter<Task> converter = ConverterFactory.getConverter();
+            Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
+            Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
             taskExporter.exportData(tasks, nameOrPath, converter);
         } catch (FileNotFoundException exc) {
             view.showWrongFilePathError();
@@ -54,6 +56,10 @@ public class ExportController {
         catch (IOException exception) {
             view.showIOError();
         }
+        catch (NotImplementedException exception) {
+            view.showNotImplementedError(exception);
+        }
+        view.showSuccessMessage(view.getNameOrPath() + FileManager.defaultPath);
         view.close();
     }
 }

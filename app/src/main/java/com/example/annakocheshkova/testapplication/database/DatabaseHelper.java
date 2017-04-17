@@ -16,6 +16,11 @@ import com.j256.ormlite.table.TableUtils;
 class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     /**
+     * A database helper one and only instance
+     */
+    private static final DatabaseHelper databaseHelper = new DatabaseHelper();
+
+    /**
      * Name of the database we are working with
      */
     private static final String DATABASE_NAME = "tasks.db";
@@ -49,7 +54,7 @@ class DatabaseHelper extends OrmLiteSqliteOpenHelper {
      * @return instance
      */
     public static DatabaseHelper getInstance() {
-        return new DatabaseHelper();
+        return databaseHelper;
     }
 
     @Override

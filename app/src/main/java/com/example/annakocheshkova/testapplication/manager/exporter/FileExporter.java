@@ -1,5 +1,9 @@
 package com.example.annakocheshkova.testapplication.manager.exporter;
 
+import android.os.Environment;
+
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
 import java.io.File;
@@ -16,7 +20,7 @@ class FileExporter<T> implements Exporter<T> {
 
     @Override
     public void exportData(List<T> items, String name, Converter<T> converter) throws FileNotFoundException, IOException  {
-        String folder = FileManager.createFolder();
+        String folder = FileManager.createFolder(Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/");
         String formattedData = converter.convert(items);
         File file = new File(folder + File.separator + name);
         if (!file.createNewFile())

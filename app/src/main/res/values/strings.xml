@@ -39,6 +39,7 @@
     <string name="corrupt_file_error">The file you have chosen is corrupt. You may delete it.</string>
     <string name="file_not_chosen_error">You have not chosen any file.</string>
     <string name="items_added_label"> item(s) were added</string>
+    <string name="feature_not_implemented">Sorry, the feature %s has not yet been implemented</string>
 
     <string-array name="drawer_items">
         <item>Import</item>

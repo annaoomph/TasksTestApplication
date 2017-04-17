@@ -15,12 +15,12 @@ import java.util.List;
  */
 public class FileManager {
 
+    public static final String defaultPath = Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
     /**
      * Gets the list of files in some folder
      * @return List of files in the folder
      */
-    public static List<File> getFilesInFolder() {
-        String folderPath = Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
+    public static List<File> getFilesInFolder(String folderPath) {
         List<File> files = new ArrayList<>();
         File folder = new File(folderPath);
         for (File file : folder.listFiles()) {
@@ -34,8 +34,7 @@ public class FileManager {
     /**
      * Creates folder for a file if it doesn't exist
      */
-    public static String createFolder() throws FileNotFoundException{
-        String folderPath = Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
+    public static String createFolder(String folderPath) throws FileNotFoundException{
         File folder = new File(folderPath);
         boolean success = true;
         if (!folder.exists()) {
@@ -43,14 +42,6 @@ public class FileManager {
         }
         if (!success) throw new FileNotFoundException();
         return folderPath;
-    }
-
-    /**
-     * Gets the current folder path
-     * @return folder path
-     */
-    public static String getPath() {
-        return Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
     }
 
 
