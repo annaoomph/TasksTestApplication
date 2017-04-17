@@ -12,7 +12,8 @@ public class ImporterFactory {
      * Enum with import types
      */
     public enum ImportType {
-        LOCAL_FROM_FILE
+        LOCAL_FROM_FILE,
+        REMOTE
     }
 
     /**
@@ -22,10 +23,13 @@ public class ImporterFactory {
      * @throws NotImplementedException exception thrown if the import type was not implemented
      */
     public static Importer<Task> getTaskImporter(ImportType importType) throws NotImplementedException {
-        if (importType == ImportType.LOCAL_FROM_FILE) {
-            return new FileImporter<>();
-        } else {
-            throw new NotImplementedException(importType.toString());
+        switch (importType) {
+            case LOCAL_FROM_FILE:
+                return new FileImporter<>();
+            case REMOTE:
+                throw new NotImplementedException(importType.toString());
+            default:
+                throw new NotImplementedException(importType.toString());
         }
     }
 }

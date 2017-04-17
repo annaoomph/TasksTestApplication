@@ -35,7 +35,7 @@ public interface ImportView {
      * Shows the number of items that were imported
      * @param numberItems number of items that were added
      */
-    void showMessage(int numberItems);
+    void showSuccessMessage(int numberItems);
 
     /**
      * Gets the path to chosen file

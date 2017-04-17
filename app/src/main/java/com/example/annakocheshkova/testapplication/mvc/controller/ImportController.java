@@ -1,9 +1,5 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 
-import android.os.Environment;
-
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
@@ -17,6 +13,7 @@ import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -47,7 +44,7 @@ public class ImportController {
      * Called when the view was loaded
      */
     public void onViewLoaded() {
-        List<File> files = FileManager.getFilesInFolder(Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/");
+        List<File> files = FileManager.getFilesInFolder(FileManager.DEFAULT_PATH);
         view.showFiles(files);
     }
 
@@ -69,13 +66,13 @@ public class ImportController {
                         ReminderAlarmManager.addAlarm(task);
                     }
                 }
-                view.showMessage(tasks.length);
+                view.showSuccessMessage(tasks.length);
                 view.close();
             }
             catch (NotImplementedException exception) {
                 view.showNotImplementedError(exception);
             }
-            catch (Exception exception) {
+            catch (IOException exception) {
                 view.showCorruptFileError();
             }
         }

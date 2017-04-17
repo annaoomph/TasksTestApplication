@@ -47,7 +47,7 @@ public interface ExportView {
 
     /**
      * Shows the message on export success
-     * @param message path details
+     * @param path path where the application has exported the files to
      */
-    void showSuccessMessage(String message);
+    void showSuccessMessage(String path);
 }

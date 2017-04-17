@@ -20,7 +20,7 @@ class FileExporter<T> implements Exporter<T> {
 
     @Override
     public void exportData(List<T> items, String name, Converter<T> converter) throws FileNotFoundException, IOException  {
-        String folder = FileManager.createFolder(Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/");
+        String folder = FileManager.createFolder(FileManager.DEFAULT_PATH);
         String formattedData = converter.convert(items);
         File file = new File(folder + File.separator + name);
         if (!file.createNewFile())

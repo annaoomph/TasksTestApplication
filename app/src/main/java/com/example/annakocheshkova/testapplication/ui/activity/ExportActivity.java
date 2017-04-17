@@ -133,8 +133,8 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
-    public void showSuccessMessage(String message) {
-        Toast.makeText(this, getString(R.string.file_created) + message, Toast.LENGTH_LONG).show();
+    public void showSuccessMessage(String path) {
+        Toast.makeText(this, getString(R.string.file_created) + path, Toast.LENGTH_LONG).show();
     }
 
     @Override

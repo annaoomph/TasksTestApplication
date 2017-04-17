@@ -100,7 +100,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     }
 
     @Override
-    public void showMessage(int numberOfItems) {
+    public void showSuccessMessage(int numberOfItems) {
         Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
     }
 

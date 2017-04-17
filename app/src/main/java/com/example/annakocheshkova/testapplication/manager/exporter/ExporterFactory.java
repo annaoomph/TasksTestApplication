@@ -23,10 +23,13 @@ public class ExporterFactory {
      * @throws NotImplementedException exception thrown if the import type was not implemented
      */
     public static Exporter<Task> getTaskExporter(ExportType exportType) throws NotImplementedException {
-        if (exportType == ExportType.LOCAL_TO_FILE) {
-            return new FileExporter<>();
-        } else {
-            throw new NotImplementedException(exportType.toString());
+        switch (exportType) {
+            case LOCAL_TO_FILE:
+                return new FileExporter<>();
+            case REMOTE:
+                throw new NotImplementedException(exportType.toString());
+            default:
+                throw new NotImplementedException(exportType.toString());
         }
     }
 }

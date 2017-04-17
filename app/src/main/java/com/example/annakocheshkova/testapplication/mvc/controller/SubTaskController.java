@@ -63,20 +63,20 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     public void onStatusChanged(SubTask subTask) {
         subTask.setStatus(!subTask.getStatus());
         dataStore.updateSubTask(subTask);
-        onViewLoaded(currentTask);
+        reloadList();
     }
 
     /**
      * Called everytime view needs to be updated
      * Gets a list of subtasks by their main task
-     * @param task_id id of the main task
+     * @param taskId id of the main task
      */
-    public void onViewLoaded(int task_id) {
-        if (task_id == -1) {
+    public void onViewLoaded(int taskId) {
+        if (taskId == -1) {
             view.showNoSuchTaskError();
         } else {
-            Task main = dataStore.getTask(task_id);
-            currentTask = task_id;
+            Task main = dataStore.getTask(taskId);
+            currentTask = taskId;
             if (main == null) {
                 view.showNoSuchTaskError();
             } else {
@@ -89,11 +89,25 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     }
 
     /**
+     * Reloads the list of subtasks
+     */
+    public void reloadList() {
+        Task main = dataStore.getTask(currentTask);
+        if (main == null) {
+            view.showNoSuchTaskError();
+        } else {
+            List<SubTask> list = dataStore.getAllSubtasksByTask(main);
+            sort(list);
+            view.showItems(list);
+        }
+    }
+
+    /**
      * Called when user finished editing a subtask and the main view needs to be updated
      */
     @Override
     public void onItemEdited() {
-        onViewLoaded(currentTask);
+        reloadList();
     }
 
     /**
@@ -103,13 +117,13 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     public void onDelete(SubTask subTask) {
         view.showCancelBar(subTask);
         dataStore.deleteSubTask(subTask);
-        onViewLoaded(currentTask);
+        reloadList();
     }
 
     @Override
     public void onUndo(SubTask item) {
         dataStore.createSubTask(item);
-        onViewLoaded(currentTask);
+        reloadList();
     }
 
     /**
