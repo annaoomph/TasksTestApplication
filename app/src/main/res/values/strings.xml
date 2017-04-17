@@ -53,6 +53,7 @@
     <string name="remember_me_pref_name">remember</string>
     <string name="token_pref_name">token</string>
     <string name="properties_not_found">The properties file has not been found! Connect to developers.</string>
+    <string name="unauthorized_export_error">Sorry. You are unauthorized. Please try to login again.</string>
 
     <string-array name="drawer_items">
         <item>Import</item>

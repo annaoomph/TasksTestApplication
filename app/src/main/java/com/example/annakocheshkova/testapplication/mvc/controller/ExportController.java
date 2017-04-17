@@ -10,6 +10,7 @@ import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.manager.exporter.Exporter;
 import com.example.annakocheshkova.testapplication.manager.exporter.ExporterFactory;
+import com.example.annakocheshkova.testapplication.utils.Listener.ExportListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
 
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * A controller to handle export view
  */
-public class ExportController {
+public class ExportController implements ExportListener {
 
     /**
      * Controller's main view
@@ -58,17 +59,27 @@ public class ExportController {
         String nameOrPath = view.getNameOrPath();
         List<Task> tasks = dataStore.getAllTasks();
         Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
-        try {
-            Converter<Task> converter = ConverterFactory.getConverter();
-            taskExporter.exportData(tasks, nameOrPath, converter);
-        }
-        catch (FileNotFoundException exc) {
-            view.showWrongFilePathError();
-        }
-        catch (IOException exception) {
-            view.showIOError();
-        }
+        Converter<Task> converter = ConverterFactory.getConverter();
+        taskExporter.exportData(tasks, nameOrPath, converter, this);
+    }
 
+    @Override
+    public void onUnauthorized() {
+        view.showUnauthorizedError();
+    }
+
+    @Override
+    public void onSuccess() {
         view.close();
+    }
+
+    @Override
+    public void onIOError() {
+        view.showIOError();
+    }
+
+    @Override
+    public void onConnectionError() {
+        view.showNoConnectionError();
     }
 }

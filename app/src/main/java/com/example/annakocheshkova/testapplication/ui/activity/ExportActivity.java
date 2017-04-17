@@ -144,11 +144,6 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
-    public void showWrongFilePathError() {
-        Toast.makeText(this, R.string.wrong_path_error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     public void showIOError() {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
             Toast.makeText(this, R.string.io_error, Toast.LENGTH_LONG).show();
@@ -166,6 +161,11 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
             serverButton.setEnabled(false);
             loginLink.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void showUnauthorizedError() {
+        Toast.makeText(this, R.string.unauthorized_export_error, Toast.LENGTH_LONG).show();
     }
 
     @Override

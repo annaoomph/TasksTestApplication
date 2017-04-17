@@ -28,11 +28,6 @@ public interface ExportView {
     void showNoConnectionError();
 
     /**
-     * Shows the error if the path to file is incorrect
-     */
-    void showWrongFilePathError();
-
-    /**
      * Shows the error if IO error has occured
      */
     void showIOError();
@@ -42,4 +37,9 @@ public interface ExportView {
      * @param loggedIn true if user is logged in
      */
     void showExtraContent(boolean loggedIn);
+
+    /**
+     * Shows an error if user has no privileged to do export
+     */
+    void showUnauthorizedError();
 }
