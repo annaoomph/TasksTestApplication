@@ -46,11 +46,9 @@
     <string name="login_label">Login</string>
     <string name="app_prefs_name">ApplicationPreferences</string>
     <string name="wrong_creds_error">The credentials you entered are wrong!</string>
-    <string name="remember_me_label">Remember</string>
     <string name="server_url_config_name">server_url</string>
     <string name="fake_request_config_name">fake_request</string>
     <string name="loggedIn_pref_name">loggedIn</string>
-    <string name="remember_me_pref_name">remember</string>
     <string name="token_pref_name">token</string>
     <string name="properties_not_found">The properties file has not been found! Connect to developers.</string>
     <string name="unauthorized_export_error">Sorry. You are unauthorized. Please try to login again.</string>

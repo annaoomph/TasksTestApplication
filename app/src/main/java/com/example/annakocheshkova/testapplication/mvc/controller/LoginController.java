@@ -67,19 +67,10 @@ public class LoginController implements HttpListener {
         }
     }
 
-    /**
-     * Called when the view was loaded
-     */
-    public void onViewLoaded() {
-        Boolean remember = preferencesManager.getBoolean(MyApplication.getAppContext().getString(R.string.remember_me_pref_name));
-        loginView.setRememberMe(remember);
-    }
-
     @Override
     public void onSuccess(String response) {
         Context context = MyApplication.getAppContext();
         preferencesManager.setBoolean(context.getString(R.string.loggedIn_pref_name), true);
-        preferencesManager.setBoolean(context.getString(R.string.remember_me_pref_name), loginView.ifRememberMe());
         preferencesManager.setString(context.getString(R.string.token_pref_name), response);
         loginView.close();
     }

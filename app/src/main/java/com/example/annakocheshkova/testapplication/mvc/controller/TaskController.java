@@ -62,7 +62,7 @@ public class TaskController implements UndoListener<Task>, HttpListener{
         HttpClient httpClient = new HttpClient(this);
         try {
             String url = ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.server_url_config_name));
-            String fakeRequestString =  ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.fake_request_config_name));
+            String fakeRequestString = ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.fake_request_config_name));
             if (fakeRequestString == null) {
                 throw new IOException();
             }

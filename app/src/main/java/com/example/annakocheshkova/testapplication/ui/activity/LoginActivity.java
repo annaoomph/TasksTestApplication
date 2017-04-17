@@ -22,8 +22,6 @@ import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
 
 public class LoginActivity extends AppCompatActivity implements LoginView{
 
-    CheckBox rememberMe;
-
     /**
      * A controller for the view
      */
@@ -49,8 +47,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
      */
     private void setContent() {
         loginController = new LoginController(this);
-        rememberMe = (CheckBox)findViewById(R.id.remember_me);
-        loginController.onViewLoaded();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,11 +77,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     }
 
     @Override
-    public void setRememberMe(Boolean remember) {
-        rememberMe.setChecked(remember);
-    }
-
-    @Override
     public void showNoConnectionError() {
         Toast.makeText(this, R.string.no_connection_error, Toast.LENGTH_LONG).show();
     }
@@ -98,11 +89,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @Override
     public void close() {
         finish();
-    }
-
-    @Override
-    public boolean ifRememberMe() {
-        return rememberMe.isChecked();
     }
 
     @Override
