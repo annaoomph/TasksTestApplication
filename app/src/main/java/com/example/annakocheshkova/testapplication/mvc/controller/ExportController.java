@@ -49,8 +49,9 @@ public class ExportController {
         try {
             Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
             Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
-            taskExporter.exportData(tasks, nameOrPath, converter);
-            view.showSuccessMessage(view.getNameOrPath() + FileManager.DEFAULT_PATH);
+            String fullPath = FileManager.DEFAULT_PATH + view.getNameOrPath();
+            taskExporter.exportData(tasks, nameOrPath,  FileManager.DEFAULT_PATH, converter);
+            view.showSuccessMessage(fullPath);
             view.close();
         } catch (FileNotFoundException exc) {
             view.showWrongFilePathError();

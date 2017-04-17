@@ -19,10 +19,10 @@ import java.util.List;
 class FileExporter<T> implements Exporter<T> {
 
     @Override
-    public void exportData(List<T> items, String name, Converter<T> converter) throws FileNotFoundException, IOException  {
-        String folder = FileManager.createFolder(FileManager.DEFAULT_PATH);
+    public void exportData(List<T> items, String name, String path , Converter<T> converter) throws FileNotFoundException, IOException  {
+        FileManager.createFolder(path);
         String formattedData = converter.convert(items);
-        File file = new File(folder + File.separator + name);
+        File file = new File(path + File.separator + name);
         if (!file.createNewFile())
             throw new FileNotFoundException();
         else {

@@ -75,15 +75,15 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
         if (taskId == -1) {
             view.showNoSuchTaskError();
         } else {
-            Task main = dataStore.getTask(taskId);
+            Task task = dataStore.getTask(taskId);
             currentTask = taskId;
-            if (main == null) {
+            if (task == null) {
                 view.showNoSuchTaskError();
             } else {
-                List<SubTask> list = dataStore.getAllSubtasksByTask(main);
+                List<SubTask> list = dataStore.getAllSubtasksByTask(task);
                 sort(list);
                 view.showItems(list);
-                view.showTitle(main.getName());
+                view.showTitle(task.getName());
             }
         }
     }
@@ -91,12 +91,12 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     /**
      * Reloads the list of subtasks
      */
-    public void reloadList() {
-        Task main = dataStore.getTask(currentTask);
-        if (main == null) {
+    private void reloadList() {
+        Task task = dataStore.getTask(currentTask);
+        if (task == null) {
             view.showNoSuchTaskError();
         } else {
-            List<SubTask> list = dataStore.getAllSubtasksByTask(main);
+            List<SubTask> list = dataStore.getAllSubtasksByTask(task);
             sort(list);
             view.showItems(list);
         }

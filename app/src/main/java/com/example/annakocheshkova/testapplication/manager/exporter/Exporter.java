@@ -15,7 +15,8 @@ public interface Exporter<T> {
     /**
      * Exports items
      * @param items to be exported
+     * @param path to file locally or on server
      * @param name name of the file (if necessary)
      */
-    void exportData(List<T> items, String name, Converter<T> converter) throws FileNotFoundException, IOException ;
+    void exportData(List<T> items, String name, String path, Converter<T> converter) throws FileNotFoundException, IOException ;
 }
