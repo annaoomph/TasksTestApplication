@@ -32,4 +32,15 @@ public interface TaskView {
      * @param id id of the chosen task
      */
     void editTask(int id);
+
+    /**
+     * Shows the login or logout button
+     * @param loggedIn true if user is logged in
+     */
+    void showLoginButton(boolean loggedIn);
+
+    /**
+     * Opens the login view
+     */
+    void showLoginScreen();
 }

@@ -1,12 +1,21 @@
 package com.example.annakocheshkova.testapplication.utils;
 
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
+import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
+
 import java.io.IOException;
 
+import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * A client making http calls
@@ -16,7 +25,7 @@ public class HttpClient {
     /**
      * A listener of http events
      */
-    private Callback httpListener;
+    private HttpListener httpListener;
 
     /**
      * Http client
@@ -33,7 +42,7 @@ public class HttpClient {
      * Creates an instance of HttpClient
      * @param httpListener listener of http events
      */
-    public HttpClient(Callback httpListener) {
+    public HttpClient(HttpListener httpListener) {
         this.httpListener = httpListener;
     }
 
@@ -41,13 +50,41 @@ public class HttpClient {
      * Makes a GET-request
      * @param url to visit
      */
-    public void doGetRequest(String url) {
+    public void doGetRequest(String url) throws IOException{
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        String token = preferencesManager.getString(MyApplication.getAppContext().getString(R.string.token_pref_name));
         Request request = new Request.Builder()
                 .url(url)
-                //.addHeader("Accept", "application/json; q=0.5")
-                //TODO add headers (token)
+                .addHeader("Authentication", token)
                 .build();
-        client.newCall(request).enqueue(httpListener);
+        client.newCall(request).enqueue(new Callback()  {
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                httpListener.onFailure();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    if (response.code() == 401) {
+                        httpListener.onUnauthorized();
+                    } else {
+                        httpListener.onFailure();
+                    }
+                } else {
+                    httpListener.onSuccess(response.body().toString());
+                }
+            }
+        });
+    }
+
+    /**
+     * Makes a fake request
+     * @param url to visit
+     */
+    public void doFakeRequest(String url) {
+       httpListener.onSuccess("");
     }
 
     /**
@@ -55,11 +92,32 @@ public class HttpClient {
      * @param url url to make a request
      * @param data to be sent
      */
-    public void doPostRequest(String url, String data){
+    public void doPostRequest(String url, String data) {
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        String token = preferencesManager.getString(MyApplication.getAppContext().getString(R.string.token_pref_name));
         Request request = new Request.Builder()
                 .url(url)
+                .addHeader("Authentication", token)
                 .post(RequestBody.create(MEDIA_TYPE_JSON, data))
                 .build();
-        client.newCall(request).enqueue(httpListener);
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                httpListener.onFailure();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    if (response.code() == 401) {
+                        httpListener.onUnauthorized();
+                    } else {
+                        httpListener.onFailure();
+                    }
+                } else {
+                    httpListener.onSuccess(response.body().toString());
+                }
+            }
+        });
     }
 }

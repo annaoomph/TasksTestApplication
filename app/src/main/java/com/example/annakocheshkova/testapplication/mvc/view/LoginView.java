@@ -43,4 +43,9 @@ public interface LoginView {
      * @return true if yes
      */
     boolean ifRememberMe();
+
+    /**
+     * Shows an error if the controller can't find properties
+     */
+    void showPropertiesNotFoundError();
 }

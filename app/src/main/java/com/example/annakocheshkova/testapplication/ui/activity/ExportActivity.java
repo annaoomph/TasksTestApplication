@@ -41,11 +41,27 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
      */
     EditText serverText;
 
+    /**
+     * RadioButton for choosing server export
+     */
+    RadioButton serverButton;
+
+    /**
+     * A link redirecting user to login screen
+     */
+    TextView loginLink;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
         setContent();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exportController.onViewLoaded();
     }
 
     /**
@@ -76,21 +92,15 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
                 }
             }
         });
-        RadioButton serverButton = (RadioButton)findViewById(R.id.remote_button);
-        TextView loginLink = (TextView)findViewById(R.id.login_link_view);
+        serverButton = (RadioButton)findViewById(R.id.remote_button);
+        loginLink = (TextView)findViewById(R.id.login_link_view);
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openLogin();
             }
         });
-        //TODO check isLogged
-        //TODO Add on resume method and check if is logged
-        boolean isLoggedIn = false;
-        if (!isLoggedIn) {
-            serverButton.setEnabled(false);
-            loginLink.setVisibility(View.VISIBLE);
-        }
+        exportController.onViewLoaded();
         Button exportButton = (Button)findViewById(R.id.button);
         exportButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +157,16 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         }
     }
 
+    @Override
+    public void showExtraContent(boolean loggedIn) {
+        if (loggedIn) {
+            serverButton.setEnabled(true);
+            loginLink.setVisibility(View.GONE);
+        } else {
+            serverButton.setEnabled(false);
+            loginLink.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -2,6 +2,7 @@ package com.example.annakocheshkova.testapplication.manager.converter;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An interface to covert any data to some format
@@ -13,6 +14,13 @@ public interface Converter<T> {
      * @return formatted data
      */
     String convert(List<T> data);
+
+    /**
+     * Converts the data to some format
+     * @param data the given data
+     * @return formatted data
+     */
+    String convert(Map<T, T> data);
 
     /**
      * Gets the data from formatted string

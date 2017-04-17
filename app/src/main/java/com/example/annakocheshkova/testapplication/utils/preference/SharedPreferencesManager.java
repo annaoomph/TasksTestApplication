@@ -34,4 +34,9 @@ class SharedPreferencesManager implements PreferencesManager{
         editor.putString(prefName, prefValue);
         editor.commit();
     }
+
+    @Override
+    public String getString(String prefName) {
+        return settings.getString(prefName, "");
+    }
 }

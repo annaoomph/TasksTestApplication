@@ -67,6 +67,7 @@
         android:layout_marginBottom="@dimen/small_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/login_button"
         app:theme="@style/AppTheme.NoActionBar"
         android:text="@string/login_label" />
 </LinearLayout>

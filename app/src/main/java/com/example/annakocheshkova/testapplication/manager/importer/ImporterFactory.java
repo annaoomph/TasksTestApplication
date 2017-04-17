@@ -20,6 +20,6 @@ public class ImporterFactory {
             return new FileImporter<>();
         } else {
             return new FileImporter<>();
-        }    //TODO Set this to Remote Importer
+        }
     }
 }

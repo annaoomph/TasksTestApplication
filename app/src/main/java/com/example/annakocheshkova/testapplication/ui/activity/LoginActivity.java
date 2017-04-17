@@ -59,6 +59,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.login_label);
         }
+        Button loginButton = (Button)findViewById(R.id.login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginController.onLoginClicked();
+            }
+        });
     }
 
     @Override
@@ -96,6 +103,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     @Override
     public boolean ifRememberMe() {
         return rememberMe.isChecked();
+    }
+
+    @Override
+    public void showPropertiesNotFoundError() {
+        Toast.makeText(this, R.string.properties_not_found, Toast.LENGTH_LONG).show();
     }
 
 }

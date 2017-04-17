@@ -26,4 +26,10 @@ public interface PreferencesManager {
      * @param prefValue value of the preference
      */
     void setString(String prefName, String prefValue);
+
+    /**
+     * Gets the string in the application preferences
+     * @param prefName name of the preference
+     */
+    String getString(String prefName);
 }

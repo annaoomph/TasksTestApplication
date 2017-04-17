@@ -2,6 +2,7 @@ package com.example.annakocheshkova.testapplication.manager.converter;
 
 import com.google.gson.Gson;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A converter to format all data to json
@@ -11,6 +12,12 @@ class JsonConverter<T> implements Converter<T>{
 
     @Override
     public String convert(List<T> data) {
+        Gson gson = new Gson();
+        return gson.toJson(data);
+    }
+
+    @Override
+    public String convert(Map<T, T> data) {
         Gson gson = new Gson();
         return gson.toJson(data);
     }

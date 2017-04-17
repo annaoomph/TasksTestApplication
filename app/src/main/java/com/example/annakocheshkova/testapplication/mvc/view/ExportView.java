@@ -36,4 +36,10 @@ public interface ExportView {
      * Shows the error if IO error has occured
      */
     void showIOError();
+
+    /**
+     * Shows or hides the content that is available only for logged in users
+     * @param loggedIn true if user is logged in
+     */
+    void showExtraContent(boolean loggedIn);
 }

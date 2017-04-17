@@ -52,6 +52,11 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
      */
     TaskController taskController;
 
+    /**
+     * A left-side menu
+     */
+    ListView drawerListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +68,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
      * Set all the content configuration and listeners
      */
     void setContent() {
-        String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
-        final ListView drawerListView = (ListView) findViewById(R.id.left_drawer);
+        drawerListView = (ListView) findViewById(R.id.left_drawer);
         RecyclerView listView = (RecyclerView)findViewById(R.id.tasks_view);
         final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         view = findViewById(R.id.main_content);
@@ -72,8 +76,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         taskAdapter = new TaskAdapter(taskController);
         listView.setAdapter(taskAdapter);
         taskController.onViewLoaded();
-        drawerListView.setAdapter(new ArrayAdapter<>(this,
-                R.layout.drawer_list_item, leftDrawerTitles));
         drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick (AdapterView < ? > parent, View view, int position, long id){
@@ -90,8 +92,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
                         break;
                     }
                     case 2: {
-                        Intent intent = new Intent(view.getContext(), LoginActivity.class);
-                        view.getContext().startActivity(intent);
+                        taskController.onLoginClicked();
                         break;
                     }
                 }
@@ -198,6 +199,22 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     public void editTask(int id) {
         Intent intent = new Intent(view.getContext(), CreateTaskActivity.class);
         intent.putExtra("id", id);
+        view.getContext().startActivity(intent);
+    }
+
+    @Override
+    public void showLoginButton(boolean loggedIn) {
+        String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
+        if (!loggedIn) {
+            leftDrawerTitles = getResources().getStringArray(R.array.drawer_items_for_logged_in);
+        }
+        drawerListView.setAdapter(new ArrayAdapter<>(this,
+                R.layout.drawer_list_item, leftDrawerTitles));
+    }
+
+    @Override
+    public void showLoginScreen() {
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
         view.getContext().startActivity(intent);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
@@ -8,6 +10,8 @@ import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.manager.exporter.Exporter;
 import com.example.annakocheshkova.testapplication.manager.exporter.ExporterFactory;
+import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -38,6 +42,15 @@ public class ExportController {
     }
 
     /**
+     * Called when the view was loaded. Checks if the user is logged in
+     */
+    public void onViewLoaded() {
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        Boolean loggedIn = preferencesManager.getBoolean(MyApplication.getAppContext().getString(R.string.loggedIn_pref_name));
+        view.showExtraContent(loggedIn);
+    }
+
+    /**
      * Called when the export is clicked
      */
     public void onExport() {
@@ -48,12 +61,14 @@ public class ExportController {
         try {
             Converter<Task> converter = ConverterFactory.getConverter();
             taskExporter.exportData(tasks, nameOrPath, converter);
-        } catch (FileNotFoundException exc) {
+        }
+        catch (FileNotFoundException exc) {
             view.showWrongFilePathError();
         }
         catch (IOException exception) {
             view.showIOError();
         }
+
         view.close();
     }
 }

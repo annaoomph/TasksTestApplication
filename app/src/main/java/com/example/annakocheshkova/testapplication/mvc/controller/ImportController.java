@@ -58,7 +58,6 @@ public class ImportController {
                 Importer<Task> taskImporter = ImporterFactory.getTaskImporter(ImporterFactory.ImportType.LOCAL_FROM_FILE);
                 Task[] tasks = taskImporter.importData(path, Task[].class, converter);
                 dataStore.createTasks(tasks);
-                //TODO Check Alarm
                 view.showMessage(tasks.length);
                 view.close();
             } catch (Exception exception) {
