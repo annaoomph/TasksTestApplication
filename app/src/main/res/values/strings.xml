@@ -39,17 +39,12 @@
     <string name="corrupt_file_error">The file you have chosen is corrupt. You may delete it.</string>
     <string name="file_not_chosen_error">You have not chosen any file.</string>
     <string name="items_added_label"> item(s) were added</string>
-    <string name="io_server_error">Could not reach server. Please check your connection.</string>
+    <string name="io_server_error">Can not reach server. Please check your connection.</string>
     <string name="server_success">The files were sent to:</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_label">Login</string>
-    <string name="app_prefs_name">ApplicationPreferences</string>
     <string name="wrong_creds_error">The credentials you entered are wrong!</string>
-    <string name="server_url_config_name">server_url</string>
-    <string name="fake_request_config_name">fake_request</string>
-    <string name="loggedIn_pref_name">loggedIn</string>
-    <string name="token_pref_name">token</string>
     <string name="properties_not_found">The properties file has not been found! Connect to developers.</string>
     <string name="unauthorized_export_error">Sorry. You are unauthorized. Please try to login again.</string>
 
@@ -64,6 +59,7 @@
         <item>Export</item>
         <item>Logout</item>
     </string-array>
+
     <string-array name="reminder">
         <item>in time</item>
         <item>a minute before</item>

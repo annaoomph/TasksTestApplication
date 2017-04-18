@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.preference;
 
 /**
- * Factory gets current preferences manager
+ * A factory that gets preferences manager
  */
 public class PreferencesFactory {
 

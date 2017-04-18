@@ -2,15 +2,15 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import android.content.Context;
 
 import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
-import com.example.annakocheshkova.testapplication.utils.ConfigurationManager;
-import com.example.annakocheshkova.testapplication.utils.HttpClient;
+import com.example.annakocheshkova.testapplication.utils.configuration.ConfigurationManager;
+import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
+import com.example.annakocheshkova.testapplication.client.BaseHttpClientFactory;
 import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
 import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
@@ -59,21 +59,12 @@ public class TaskController implements UndoListener<Task>, HttpListener {
         List<Task> tasks = dataStore.getAllTasks();
         sort(tasks);
         view.showItems(tasks);
-        HttpClient httpClient = new HttpClient(this);
         try {
-            String url = ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.server_url_config_name));
-            String fakeRequestString = ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.fake_request_config_name));
-            if (fakeRequestString == null) {
-                throw new IOException();
-            }
-            boolean fakeRequest = fakeRequestString.equalsIgnoreCase("true");
-            if (fakeRequest) {
-                httpClient.doFakeRequest(url);
-            } else {
-                httpClient.doGetRequest(url);
-            }
+            String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
+            BaseHttpClient httpClient = BaseHttpClientFactory.getHttpClient(this);
+            httpClient.doGetRequest(url);
         } catch (IOException e) {
-            preferencesManager.setBoolean(context.getString(R.string.loggedIn_pref_name), false);
+            preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, false);
         }
     }
 
@@ -147,7 +138,7 @@ public class TaskController implements UndoListener<Task>, HttpListener {
      * Called when user pressed login/logout button
      */
     public void onLoginClicked() {
-        boolean loggedIn = preferencesManager.getBoolean(MyApplication.getAppContext().getString(R.string.loggedIn_pref_name));
+        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
         if (loggedIn) {
             logout();
         } else {
@@ -157,9 +148,8 @@ public class TaskController implements UndoListener<Task>, HttpListener {
 
     @Override
     public void onSuccess(String response) {
-        Context context = MyApplication.getAppContext();
-        preferencesManager.setBoolean(context.getString(R.string.loggedIn_pref_name), true);
-        preferencesManager.setString(context.getString(R.string.token_pref_name), response);
+        preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, true);
+        preferencesManager.setString(PreferencesManager.TOKEN, response);
         view.showLoginButton(false);
     }
 
@@ -174,9 +164,8 @@ public class TaskController implements UndoListener<Task>, HttpListener {
     }
 
     private void logout() {
-        Context context = MyApplication.getAppContext();
-        preferencesManager.setBoolean(context.getString(R.string.loggedIn_pref_name), false);
-        preferencesManager.setString(context.getString(R.string.token_pref_name), "");
+        preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, false);
+        preferencesManager.setString(PreferencesManager.TOKEN, "");
         view.showLoginButton(true);
     }
 }

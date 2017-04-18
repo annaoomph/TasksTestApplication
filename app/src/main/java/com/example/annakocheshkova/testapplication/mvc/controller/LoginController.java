@@ -1,15 +1,12 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 
-import android.content.Context;
 import android.util.ArrayMap;
-
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
 import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
-import com.example.annakocheshkova.testapplication.utils.ConfigurationManager;
-import com.example.annakocheshkova.testapplication.utils.HttpClient;
+import com.example.annakocheshkova.testapplication.utils.configuration.ConfigurationManager;
+import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
+import com.example.annakocheshkova.testapplication.client.BaseHttpClientFactory;
 import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
@@ -45,21 +42,15 @@ public class LoginController implements HttpListener {
      * Called when user clicked login
      */
     public void onLoginClicked(){
-        HttpClient httpClient = new HttpClient(this);
         try {
-            String url = ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.server_url_config_name));
-            String fakeRequestString =  ConfigurationManager.getConfigValue(MyApplication.getAppContext().getString(R.string.fake_request_config_name));
-            boolean fakeRequest = fakeRequestString.equalsIgnoreCase("true");
-            if (fakeRequest) {
-                httpClient.doFakeRequest(url);
-            } else {
-                Map<String, String> credentials = new ArrayMap<>();
-                credentials.put("username", loginView.getUsername());
-                credentials.put("password", loginView.getPassword());
-                Converter<String> converter = ConverterFactory.getConverter();
-                String json = converter.convert(credentials);
-                httpClient.doPostRequest(url, json);
-            }
+            String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
+            BaseHttpClient httpClient = BaseHttpClientFactory.getHttpClient(this);
+            Map<String, String> credentials = new ArrayMap<>();
+            credentials.put("username", loginView.getUsername());
+            credentials.put("password", loginView.getPassword());
+            Converter<String> converter = ConverterFactory.getConverter();
+            String json = converter.convert(credentials);
+            httpClient.doPostRequest(url, json);
         } catch (IOException e) {
             loginView.showPropertiesNotFoundError();
         }
@@ -67,9 +58,8 @@ public class LoginController implements HttpListener {
 
     @Override
     public void onSuccess(String response) {
-        Context context = MyApplication.getAppContext();
-        preferencesManager.setBoolean(context.getString(R.string.loggedIn_pref_name), true);
-        preferencesManager.setString(context.getString(R.string.token_pref_name), response);
+        preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, true);
+        preferencesManager.setString(PreferencesManager.TOKEN, response);
         loginView.close();
     }
 

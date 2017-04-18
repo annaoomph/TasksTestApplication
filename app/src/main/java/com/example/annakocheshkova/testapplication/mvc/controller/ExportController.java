@@ -44,7 +44,7 @@ public class ExportController implements ExportListener {
      */
     public void onViewLoaded() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        Boolean loggedIn = preferencesManager.getBoolean(MyApplication.getAppContext().getString(R.string.loggedIn_pref_name));
+        Boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
         view.showExtraContent(loggedIn);
     }
 

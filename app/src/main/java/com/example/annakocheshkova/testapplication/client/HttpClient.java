@@ -1,7 +1,5 @@
-package com.example.annakocheshkova.testapplication.utils;
+package com.example.annakocheshkova.testapplication.client;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
@@ -15,12 +13,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * A client making http calls
  */
-public class HttpClient {
+public class HttpClient implements BaseHttpClient{
 
     /**
      * A listener of http events
@@ -46,17 +43,17 @@ public class HttpClient {
      * Creates an instance of HttpClient
      * @param httpListener listener of http events
      */
-    public HttpClient(HttpListener httpListener) {
+    HttpClient(HttpListener httpListener) {
         this.httpListener = httpListener;
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        token = preferencesManager.getString(MyApplication.getAppContext().getString(R.string.token_pref_name));
+        token = preferencesManager.getString(PreferencesManager.TOKEN);
     }
 
     /**
      * Makes a GET-request
      * @param url to visit
      */
-    public void doGetRequest(String url) throws IOException {
+    public void doGetRequest(String url){
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authentication", token)
@@ -81,14 +78,6 @@ public class HttpClient {
                 }
             }
         });
-    }
-
-    /**
-     * Makes a fake request
-     * @param url to visit
-     */
-    public void doFakeRequest(String url) {
-       httpListener.onSuccess("");
     }
 
     /**

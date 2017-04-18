@@ -6,6 +6,16 @@ package com.example.annakocheshkova.testapplication.utils.preference;
 public interface PreferencesManager {
 
     /**
+     * Name of the logged in boolean in the preferences
+     */
+    String LOGGED_IN = "loggedIn";
+
+    /**
+     * Name of the token string in the preferences
+     */
+    String TOKEN = "token";
+
+    /**
      * Gets a boolean from application preferences     *
      * @param prefName name of the preference
      * @return value of the preference
@@ -29,6 +39,7 @@ public interface PreferencesManager {
     /**
      * Gets the string in the application preferences
      * @param prefName name of the preference
+     * @return value of the preference
      */
     String getString(String prefName);
 }

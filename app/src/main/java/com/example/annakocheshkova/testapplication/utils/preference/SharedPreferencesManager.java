@@ -3,7 +3,6 @@ package com.example.annakocheshkova.testapplication.utils.preference;
 import android.content.SharedPreferences;
 
 import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 
 /**
  * A manager for shared preferences
@@ -16,10 +15,15 @@ class SharedPreferencesManager implements PreferencesManager{
     private SharedPreferences settings;
 
     /**
+     * Name of the shared preferences
+     */
+    private static final String appPreferences = "Application preferences";
+
+    /**
      * Creates new instance of shared preferences manager
      */
     SharedPreferencesManager() {
-        settings = MyApplication.getAppContext().getSharedPreferences(MyApplication.getAppContext().getString(R.string.app_prefs_name), 0);
+        settings = MyApplication.getAppContext().getSharedPreferences(appPreferences, 0);
     }
 
     @Override

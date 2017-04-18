@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils;
+package com.example.annakocheshkova.testapplication.utils.configuration;
 
 import android.content.res.Resources;
 
@@ -13,6 +13,16 @@ import java.util.Properties;
  * A class that gets configuration data from properties
  */
 public class ConfigurationManager {
+
+    /**
+     * Name of the property fake request in the config
+     */
+    public static final String FAKE_REQUEST = "fake_request";
+
+    /**
+     * Name of the property server url in the config
+     */
+    public static final String SERVER_URL = "server_url";
 
     /**
      * Gets configuration value
