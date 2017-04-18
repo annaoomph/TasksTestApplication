@@ -11,7 +11,7 @@ import java.io.IOException;
 public class BaseHttpClientFactory {
 
     /**
-     * Gets an http-client depending on which one we need
+     * Gets an http-client depending on the situation
      * @param httpListener http listener for creating a client
      * @return http-client
      */

@@ -11,7 +11,7 @@ public interface ExportListener {
     void onUnauthorized();
 
     /**
-     * Called when data was successfully exported
+     * Called when data is successfully exported
      */
     void onSuccess();
 

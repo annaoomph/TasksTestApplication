@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.utils.preference;
 
 import android.content.SharedPreferences;
-
 import com.example.annakocheshkova.testapplication.MyApplication;
 
 /**

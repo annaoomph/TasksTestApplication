@@ -7,8 +7,15 @@ import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
  */
 class FakeHttpClient implements BaseHttpClient{
 
+    /**
+     * A listener of http events
+     */
     private HttpListener httpListener;
 
+    /**
+     * Creates an instance of http client
+     * @param httpListener listener on http events
+     */
     FakeHttpClient(HttpListener httpListener) {
         this.httpListener = httpListener;
     }

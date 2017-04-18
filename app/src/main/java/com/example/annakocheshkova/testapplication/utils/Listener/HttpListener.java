@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.Listener;
 
 /**
- * A custom listener responding to events connected with request
+ * A custom listener responding to events connected with http requests
  */
 public interface HttpListener {
 

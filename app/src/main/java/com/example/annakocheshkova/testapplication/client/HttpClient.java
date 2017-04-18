@@ -17,7 +17,7 @@ import okhttp3.Response;
 /**
  * A client making http calls
  */
-public class HttpClient implements BaseHttpClient{
+class HttpClient implements BaseHttpClient{
 
     /**
      * A listener of http events
@@ -49,10 +49,7 @@ public class HttpClient implements BaseHttpClient{
         token = preferencesManager.getString(PreferencesManager.TOKEN);
     }
 
-    /**
-     * Makes a GET-request
-     * @param url to visit
-     */
+    @Override
     public void doGetRequest(String url){
         Request request = new Request.Builder()
                 .url(url)
@@ -80,11 +77,7 @@ public class HttpClient implements BaseHttpClient{
         });
     }
 
-    /**
-     * Makes a POST-request
-     * @param url url to make a request
-     * @param data to be sent
-     */
+    @Override
     public void doPostRequest(String url, String data) {
         Request request = new Request.Builder()
                 .url(url)
