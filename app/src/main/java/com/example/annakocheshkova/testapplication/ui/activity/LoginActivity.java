@@ -19,6 +19,7 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.controller.LoginController;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 public class LoginActivity extends AppCompatActivity implements LoginView{
 
@@ -96,4 +97,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
         Toast.makeText(this, R.string.properties_not_found, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void showNotImplementedError(NotImplementedException exception) {
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+    }
 }

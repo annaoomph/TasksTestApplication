@@ -4,6 +4,7 @@ import android.util.ArrayMap;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
 import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 import com.example.annakocheshkova.testapplication.utils.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
 import com.example.annakocheshkova.testapplication.client.BaseHttpClientFactory;
@@ -48,11 +49,14 @@ public class LoginController implements HttpListener {
             Map<String, String> credentials = new ArrayMap<>();
             credentials.put("username", loginView.getUsername());
             credentials.put("password", loginView.getPassword());
-            Converter<String> converter = ConverterFactory.getConverter();
+            Converter<String> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
             String json = converter.convert(credentials);
             httpClient.doPostRequest(url, json);
         } catch (IOException e) {
             loginView.showPropertiesNotFoundError();
+        }
+        catch (NotImplementedException e) {
+            loginView.showNotImplementedError(e);
         }
     }
 

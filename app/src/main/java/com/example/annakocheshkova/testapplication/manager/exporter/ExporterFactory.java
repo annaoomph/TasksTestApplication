@@ -26,7 +26,7 @@ public class ExporterFactory {
             case LOCAL_TO_FILE:
                 return new FileExporter<>();
             case REMOTE:
-                throw new NotImplementedException(exportType.toString());
+                return new RemoteExporter<>();
             default:
                 throw new NotImplementedException(exportType.toString());
         }

@@ -1,5 +1,7 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+
 /**
  * An interface for the login activity
  */
@@ -36,4 +38,10 @@ public interface LoginView {
      * Shows an error if the controller can't find properties
      */
     void showPropertiesNotFoundError();
+
+    /**
+     * Shows the exception when some feature was not implemented
+     * @param exception instance of exception
+     */
+    void showNotImplementedError(NotImplementedException exception);
 }

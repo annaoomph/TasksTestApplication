@@ -21,7 +21,7 @@ class RemoteExporter<T> implements Exporter<T>, HttpListener {
     private ExportListener exportListener;
 
     @Override
-    public void exportData(List<T> items, String url, Converter<T> converter, ExportListener exportListener) {
+    public void exportData(List<T> items, String url, String path, Converter<T> converter, ExportListener exportListener) {
         try {
             this.exportListener = exportListener;
             BaseHttpClient httpClient = BaseHttpClientFactory.getHttpClient(this);
