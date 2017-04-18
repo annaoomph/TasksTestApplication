@@ -113,6 +113,53 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         setContent();
     }
 
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        switch (id) {
+            case DATE_DIALOG_ID:
+                return new DatePickerDialog(this, onDateSetListener, chosenYear, chosenMonth, chosenDay);
+            case TIME_DIALOG_ID:
+                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, false);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * The callback received when the user sets the date in the dialog
+     */
+    private DatePickerDialog.OnDateSetListener onDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    chosenYear = year;
+                    chosenMonth = monthOfYear;
+                    chosenDay = dayOfMonth;
+                    updateDisplay();
+                }
+            };
+
+    /**
+     * The callback received when the user sets the time in the dialog
+     */
+    private TimePickerDialog.OnTimeSetListener onTimeSetListener =
+            new TimePickerDialog.OnTimeSetListener() {
+
+                public void onTimeSet(TimePicker view, int hour, int minute) {
+                    chosenHour = hour;
+                    chosenMinute = minute;
+                    updateDisplay();
+                }
+            };
+
     /**
      * Gets all the views needed to work with
      */
@@ -134,14 +181,17 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         int id = getIntent().getIntExtra("id", -1);
         ActionBar actionBar = getSupportActionBar();
         if (id > 0) {
-            if (actionBar != null)
+            if (actionBar != null) {
                 actionBar.setTitle(R.string.edit_item_title);
+            }
         } else {
-            if (actionBar != null)
+            if (actionBar != null) {
                 actionBar.setTitle(R.string.enter_new_title);
+            }
         }
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         ImageButton setDate = (ImageButton)findViewById(R.id.set_date);
         ImageButton setTime = (ImageButton)findViewById(R.id.set_time);
@@ -187,7 +237,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
             }
         });
         String[] spinnerItems = getResources().getStringArray(R.array.reminder);
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, spinnerItems);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         createTaskController.onViewLoaded(id);
@@ -209,52 +259,6 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     }
 
     /**
-     * The callback received when the user sets the date in the dialog
-     */
-    private DatePickerDialog.OnDateSetListener onDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    chosenYear = year;
-                    chosenMonth = monthOfYear;
-                    chosenDay = dayOfMonth;
-                    updateDisplay();
-                }
-    };
-
-     /**
-     * The callback received when the user sets the time in the dialog
-     */
-    private TimePickerDialog.OnTimeSetListener onTimeSetListener =
-            new TimePickerDialog.OnTimeSetListener() {
-
-                public void onTimeSet(TimePicker view, int hour, int minute) {
-                    chosenHour = hour;
-                    chosenMinute = minute;
-                    updateDisplay();
-                }
-            };
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DATE_DIALOG_ID:
-                return new DatePickerDialog(this, onDateSetListener, chosenYear, chosenMonth, chosenDay);
-            case TIME_DIALOG_ID:
-                return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, false);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
      * Responds to confirmation button click
      * @param view button view
      */
@@ -265,7 +269,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     public void showItem(Task item, long timePeriod) {
         nameText.setText(item.getName());
-        reminderCheckBox.setChecked(item.hasAlarms());
+        reminderCheckBox.setChecked(item.hasAlarm());
         int timePeriodInMinutes =  (int) timePeriod / 1000 / 60;
         int alarmPosition = 0; //position in spinner adapter
         switch (timePeriodInMinutes) {
@@ -281,7 +285,7 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         chosenYear = calendar.get(Calendar.YEAR);
         chosenMonth = calendar.get(Calendar.MONTH);
         chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
-        chosenMinute = calendar.get(Calendar.MINUTE);
+        chosenMinute = calendar.get(Calendar.MINUTE) + 1;
         chosenHour = calendar.get(Calendar.HOUR_OF_DAY);
         updateDisplay();
 

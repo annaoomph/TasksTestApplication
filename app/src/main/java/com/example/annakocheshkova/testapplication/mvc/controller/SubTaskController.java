@@ -5,8 +5,8 @@ import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
-import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
-import com.example.annakocheshkova.testapplication.utils.Listener.UndoListener;
+import com.example.annakocheshkova.testapplication.utils.listener.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,27 +63,42 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     public void onStatusChanged(SubTask subTask) {
         subTask.setStatus(!subTask.getStatus());
         dataStore.updateSubTask(subTask);
-        if (currentTask != -1)
-            onViewLoaded(currentTask);
+        reloadList();
     }
 
     /**
      * Called everytime view needs to be updated
      * Gets a list of subtasks by their main task
-     * @param task_id id of the main task
+     * @param taskId id of the main task
      */
-    public void onViewLoaded(int task_id) {
-        Task main = dataStore.getTask(task_id);
-        if (main == null) {
+    public void onViewLoaded(int taskId) {
+        if (taskId == -1) {
             view.showNoSuchTaskError();
         } else {
-            currentTask = task_id;
-            List<SubTask> list = dataStore.getAllSubtasksByTask(main);
-            sort(list);
-            if (currentTask != -1) {
+            Task task = dataStore.getTask(taskId);
+            currentTask = taskId;
+            if (task == null) {
+                view.showNoSuchTaskError();
+            } else {
+                List<SubTask> list = dataStore.getAllSubtasksByTask(task);
+                sort(list);
                 view.showItems(list);
-                view.showTitle(main.getName());
+                view.showTitle(task.getName());
             }
+        }
+    }
+
+    /**
+     * Reloads the list of subtasks
+     */
+    private void reloadList() {
+        Task task = dataStore.getTask(currentTask);
+        if (task == null) {
+            view.showNoSuchTaskError();
+        } else {
+            List<SubTask> list = dataStore.getAllSubtasksByTask(task);
+            sort(list);
+            view.showItems(list);
         }
     }
 
@@ -92,8 +107,7 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
      */
     @Override
     public void onItemEdited() {
-        if (currentTask != -1)
-            onViewLoaded(currentTask);
+        reloadList();
     }
 
     /**
@@ -103,15 +117,13 @@ public class SubTaskController implements OnItemEditedListener, UndoListener<Sub
     public void onDelete(SubTask subTask) {
         view.showCancelBar(subTask);
         dataStore.deleteSubTask(subTask);
-        if (currentTask != -1)
-            onViewLoaded(currentTask);
+        reloadList();
     }
 
     @Override
     public void onUndo(SubTask item) {
         dataStore.createSubTask(item);
-        if (currentTask != -1)
-            onViewLoaded(currentTask);
+        reloadList();
     }
 
     /**

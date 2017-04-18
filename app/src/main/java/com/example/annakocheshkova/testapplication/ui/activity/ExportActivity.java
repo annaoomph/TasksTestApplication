@@ -15,9 +15,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 public class ExportActivity extends AppCompatActivity implements ExportView {
 
@@ -59,13 +61,22 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         exportController.onViewLoaded();
     }
 
     /**
-     * sets all the content configuration and listeners
+     * Sets all the content configuration and listeners
      */
     private void setContent() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -124,18 +135,23 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     public String getNameOrPath() {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
             return fileNameText.getText().toString();
+        } else {
+            return serverText.getText().toString();
         }
-        else return serverText.getText().toString();
     }
 
     @Override
     public void close() {
+        finish();
+    }
+
+    @Override
+    public void showSuccessMessage(String path) {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
             Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, getString(R.string.server_success) + getNameOrPath(), Toast.LENGTH_LONG).show();
         }
-        finish();
     }
 
     @Override
@@ -169,10 +185,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
+    public void showNotImplementedError(NotImplementedException exception) {
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

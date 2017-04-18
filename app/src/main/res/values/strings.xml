@@ -47,6 +47,7 @@
     <string name="wrong_creds_error">The credentials you entered are wrong!</string>
     <string name="properties_not_found">The properties file has not been found! Connect to developers.</string>
     <string name="unauthorized_export_error">Sorry. You are unauthorized. Please try to login again.</string>
+    <string name="feature_not_implemented">Sorry, the feature %s has not yet been implemented</string>
 
     <string-array name="drawer_items">
         <item>Import</item>

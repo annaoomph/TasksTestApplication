@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.client;
 
-import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
+import com.example.annakocheshkova.testapplication.utils.listener.HttpListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
 

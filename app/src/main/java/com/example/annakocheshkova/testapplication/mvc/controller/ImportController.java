@@ -9,8 +9,11 @@ import com.example.annakocheshkova.testapplication.manager.importer.Importer;
 import com.example.annakocheshkova.testapplication.manager.importer.ImporterFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
+import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -41,7 +44,7 @@ public class ImportController {
      * Called when the view was loaded
      */
     public void onViewLoaded() {
-        List<File> files = FileManager.getFilesInFolder();
+        List<File> files = FileManager.getFilesInFolder(FileManager.DEFAULT_PATH);
         view.showFiles(files);
     }
 
@@ -54,13 +57,22 @@ public class ImportController {
             view.showFileNotChosenError();
         } else {
             try {
-                Converter<Task> converter = ConverterFactory.getConverter();
+                Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
                 Importer<Task> taskImporter = ImporterFactory.getTaskImporter(ImporterFactory.ImportType.LOCAL_FROM_FILE);
                 Task[] tasks = taskImporter.importData(path, Task[].class, converter);
-                dataStore.createTasks(tasks);
-                view.showMessage(tasks.length);
+                for (Task task : tasks) {
+                    dataStore.createTask(task);
+                    if (task.hasAlarm()) {
+                        ReminderAlarmManager.addAlarm(task);
+                    }
+                }
+                view.showSuccessMessage(tasks.length);
                 view.close();
-            } catch (Exception exception) {
+            }
+            catch (NotImplementedException exception) {
+                view.showNotImplementedError(exception);
+            }
+            catch (IOException exception) {
                 view.showCorruptFileError();
             }
         }

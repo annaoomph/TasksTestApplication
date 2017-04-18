@@ -1,18 +1,18 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
+import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
 import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.manager.exporter.Exporter;
 import com.example.annakocheshkova.testapplication.manager.exporter.ExporterFactory;
-import com.example.annakocheshkova.testapplication.utils.Listener.ExportListener;
+import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 import java.util.List;
 
 /**
@@ -52,12 +52,16 @@ public class ExportController implements ExportListener {
      * Called when the export is clicked
      */
     public void onExport() {
-        boolean local = view.isLocal();
-        String nameOrPath = view.getNameOrPath();
-        List<Task> tasks = dataStore.getAllTasks();
-        Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
-        Converter<Task> converter = ConverterFactory.getConverter();
-        taskExporter.exportData(tasks, nameOrPath, converter, this);
+        try {
+            boolean local = view.isLocal();
+            String nameOrPath = view.getNameOrPath();
+            List<Task> tasks = dataStore.getAllTasks();
+            Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
+            Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
+            taskExporter.exportData(tasks, nameOrPath, FileManager.DEFAULT_PATH, converter, this);
+        } catch (NotImplementedException exception) {
+            view.showNotImplementedError(exception);
+        }
     }
 
     @Override
@@ -67,6 +71,8 @@ public class ExportController implements ExportListener {
 
     @Override
     public void onSuccess() {
+        String fullPath = FileManager.DEFAULT_PATH + view.getNameOrPath();
+        view.showSuccessMessage(fullPath);
         view.close();
     }
 

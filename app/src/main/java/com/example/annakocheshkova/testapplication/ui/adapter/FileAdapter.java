@@ -49,7 +49,59 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
         chosenColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.textColorPrimary);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
+    /**
+     * Called everytime when data changes
+     * @param newItems new data
+     */
+    public void setData(List<File> newItems) {
+        chosenPosition = -1;
+        fileList = newItems;
+        this.notifyDataSetChanged();
+    }
+
+    @Override
+    public FileAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.file_row,  null);
+        return new FileAdapter.ViewHolder(itemLayoutView);
+    }
+
+    @Override
+    public void onBindViewHolder(final FileAdapter.ViewHolder holder, int position) {
+        holder.textRow.setText(fileList.get(position).getName());
+        if (chosenPosition == position) {
+            holder.textRow.setTextColor(chosenColor);
+            holder.chosenSign.setVisibility(View.VISIBLE);
+        }
+        else {
+            holder.textRow.setTextColor(lightColor);
+            holder.chosenSign.setVisibility(View.GONE);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chosenPosition = holder.getAdapterPosition();
+                notifyDataSetChanged();
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return fileList.size();
+    }
+
+    /**
+     * Gets the path to the item user has chosen
+     * @return path
+     */
+    public String getChosenItemPath() {
+        if (chosenPosition < 0) {
+            return "";
+        }
+        return fileList.get(chosenPosition).getPath();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder  {
 
         /**
          * A textView that displays the name of the subtask
@@ -69,57 +121,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder>  {
             super(view);
             textRow = (TextView) view.findViewById(R.id.file_row_text);
             chosenSign = (ImageButton) view.findViewById(R.id.chosen_sign);
-            itemView.setOnClickListener(this);
         }
-
-        @Override
-        public void onClick(View view) {
-            chosenPosition = getAdapterPosition();
-            notifyDataSetChanged();
-        }
-    }
-
-    /**
-     * Called everytime when data changes
-     * @param newItems new data
-     */
-    public void changeData(List<File> newItems) {
-        chosenPosition = -1;
-        fileList = newItems;
-        this.notifyDataSetChanged();
-    }
-
-    @Override
-    public FileAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.file_row,  null);
-        return new FileAdapter.ViewHolder(itemLayoutView);
-    }
-
-    @Override
-    public void onBindViewHolder(FileAdapter.ViewHolder holder, int position) {
-        holder.textRow.setText(fileList.get(position).getName());
-        if (chosenPosition == position) {
-            holder.textRow.setTextColor(chosenColor);
-            holder.chosenSign.setVisibility(View.VISIBLE);
-        }
-        else {
-            holder.textRow.setTextColor(lightColor);
-            holder.chosenSign.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    public int getItemCount() {
-        return fileList.size();
-    }
-
-    /**
-     * Gets the path to the item user has chosen
-     * @return path
-     */
-    public String getChosenItemPath() {
-        if (chosenPosition < 0)
-            return "";
-        return fileList.get(chosenPosition).getPath();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.client;
 
 import com.example.annakocheshkova.testapplication.utils.configuration.ConfigurationManager;
-import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
+import com.example.annakocheshkova.testapplication.utils.listener.HttpListener;
 
 import java.io.IOException;
 

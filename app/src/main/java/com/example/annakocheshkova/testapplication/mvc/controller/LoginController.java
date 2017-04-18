@@ -7,7 +7,7 @@ import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
 import com.example.annakocheshkova.testapplication.utils.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
 import com.example.annakocheshkova.testapplication.client.BaseHttpClientFactory;
-import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
+import com.example.annakocheshkova.testapplication.utils.listener.HttpListener;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
 

@@ -19,7 +19,7 @@ import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.ui.adapter.SubTaskAdapter;
-import com.example.annakocheshkova.testapplication.utils.Component.UndoComponent;
+import com.example.annakocheshkova.testapplication.utils.component.UndoComponent;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     View mainView;
 
     /**
-     * mMain controller for the view
+     * Main controller for the view
      */
     SubTaskController subTaskController;
 
@@ -48,6 +48,25 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtask);
         setContent();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.custom_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_add) {
+            subTaskController.onCreate();
+        }
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -60,12 +79,13 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
         subTaskController = new SubTaskController(this);
         mainView = findViewById(R.id.content);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         subTaskAdapter = new SubTaskAdapter(subTaskController);
         listView.setAdapter(subTaskAdapter);
-        subTaskController.onViewLoaded(getIntent().getIntExtra("id", 0));
-        listView.setHasFixedSize(true);
+        subTaskController.onViewLoaded(getIntent().getIntExtra("id", -1));
+        listView.setHasFixedSize(true); //for better performance
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -86,33 +106,16 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_add) {
-            subTaskController.onCreate();
-        }
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void showItems(List<SubTask> items) {
-        subTaskAdapter.changeData(items);
+        subTaskAdapter.setData(items);
     }
 
     @Override
     public void showTitle(String title) {
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setTitle(title);
+        }
     }
 
     @Override

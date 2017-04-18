@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.client;
 
-import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
+import com.example.annakocheshkova.testapplication.utils.listener.HttpListener;
 
 /**
  * An http-client making fake requests to server (used if server is temporary unavailable or simply doesn't exist

@@ -9,7 +9,7 @@ import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager
 import java.util.Calendar;
 
 /**
- * controller for create item view
+ * A controller for create item view
  */
 public class CreateTaskController {
 
@@ -82,7 +82,7 @@ public class CreateTaskController {
             Task task;
             if (editingTask != null) {
                 task = editingTask;
-                if (task.hasAlarms()) {
+                if (task.hasAlarm()) {
                     task.setNotification(false);
                     ReminderAlarmManager.removeAlarm(task);
                 }

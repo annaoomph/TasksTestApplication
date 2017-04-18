@@ -4,7 +4,7 @@ import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.DialogView;
 import com.example.annakocheshkova.testapplication.model.SubTask;
-import com.example.annakocheshkova.testapplication.utils.Listener.OnItemEditedListener;
+import com.example.annakocheshkova.testapplication.utils.listener.OnItemEditedListener;
 
 /**
  * A controller for alert dialog fragment
@@ -55,7 +55,7 @@ public class DialogController {
 
     /**
      * Called when the main dialog window is loaded
-     * shows the editing item name if needed, stores or resets it here if needed
+     * Shows the editing item name if needed, stores or resets it here if needed
      * @param taskId id of the main task
      * @param id if of the subtask we are editing
      */
@@ -71,7 +71,7 @@ public class DialogController {
     }
 
     /**
-     * event when editing ended
+     * Called when editing ended
      * creates or updates subtask depending on what was happening and what was stored here
      * @param newName name of the new (or edited) subtask
      */

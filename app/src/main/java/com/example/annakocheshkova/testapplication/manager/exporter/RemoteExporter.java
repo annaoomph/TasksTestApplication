@@ -3,8 +3,8 @@ package com.example.annakocheshkova.testapplication.manager.exporter;
 import com.example.annakocheshkova.testapplication.manager.converter.Converter;
 import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
 import com.example.annakocheshkova.testapplication.client.BaseHttpClientFactory;
-import com.example.annakocheshkova.testapplication.utils.Listener.ExportListener;
-import com.example.annakocheshkova.testapplication.utils.Listener.HttpListener;
+import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
+import com.example.annakocheshkova.testapplication.utils.listener.HttpListener;
 
 import java.io.IOException;
 import java.util.List;

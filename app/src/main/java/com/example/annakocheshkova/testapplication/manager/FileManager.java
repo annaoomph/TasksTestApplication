@@ -16,11 +16,16 @@ import java.util.List;
 public class FileManager {
 
     /**
+     * A path to the default folder the application stores items in
+     */
+    public static final String DEFAULT_PATH = Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
+
+    /**
      * Gets the list of files in some folder
+     * @param folderPath path of the folder to look into
      * @return List of files in the folder
      */
-    public static List<File> getFilesInFolder() {
-        String folderPath = Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
+    public static List<File> getFilesInFolder(String folderPath) {
         List<File> files = new ArrayList<>();
         File folder = new File(folderPath);
         for (File file : folder.listFiles()) {
@@ -33,15 +38,17 @@ public class FileManager {
 
     /**
      * Creates folder for a file if it doesn't exist
+     * @param folderPath path to the folder we want to create
+     * @throws FileNotFoundException exception if fodler was not created
      */
-    public static String createFolder() throws FileNotFoundException{
-        String folderPath = Environment.getExternalStorageDirectory() + "/" + MyApplication.getAppContext().getString(R.string.folder_name) + "/";
+    public static void createFolder(String folderPath) throws FileNotFoundException{
         File folder = new File(folderPath);
         boolean success = true;
         if (!folder.exists()) {
             success = folder.mkdirs();
         }
-        if (!success) throw new FileNotFoundException();
-        return folderPath;
+        if (!success) {
+            throw new FileNotFoundException();
+        }
     }
 }

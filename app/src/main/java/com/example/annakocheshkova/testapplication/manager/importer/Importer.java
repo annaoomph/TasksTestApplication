@@ -19,5 +19,5 @@ public interface Importer<T> {
      * @param type type of objects you want to import (note: pass this as SomeClass[].class)
      * @return an array of objects
      */
-    T[] importData(String path, Class<T[]> type, Converter<T> converter) throws Exception;
+    T[] importData(String path, Class<T[]> type, Converter<T> converter) throws IOException;
 }

@@ -15,6 +15,7 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ImportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 import java.io.File;
 import java.util.List;
@@ -41,6 +42,15 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
         setContent();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Sets all the content configuration and listeners
      */
@@ -56,7 +66,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
         }
         fileAdapter = new FileAdapter();
         listView.setAdapter(fileAdapter);
-        listView.setHasFixedSize(true);
+        listView.setHasFixedSize(true); //for better performance
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
         Button importButton = (Button)findViewById(R.id.import_button);
@@ -71,7 +81,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
 
     @Override
     public void showFiles(List<File> files) {
-        fileAdapter.changeData(files);
+        fileAdapter.setData(files);
     }
 
     @Override
@@ -90,16 +100,8 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     }
 
     @Override
-    public void showMessage(int numberOfItems) {
+    public void showSuccessMessage(int numberOfItems) {
         Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -107,4 +109,8 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
         return fileAdapter.getChosenItemPath();
     }
 
+    @Override
+    public void showNotImplementedError(NotImplementedException exception) {
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
+    }
 }

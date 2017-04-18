@@ -60,48 +60,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         redColor = ContextCompat.getColor(MyApplication.getAppContext(), R.color.redColor);
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener  {
-
-        /**
-         * A text with the name of the subtask
-         */
-        TextView textRow;
-
-        /**
-         * A text with alarm time
-         */
-        TextView timeText;
-
-        /**
-         * Layout that's shown when the task has alarms scheduled
-         */
-        LinearLayout alarmLayout;
-
-        /**
-         * Creates new instance of a view holder
-         * @param view main view
-         */
-        ViewHolder(View view) {
-            super(view);
-            textRow = (TextView) view.findViewById(R.id.row_text);
-            alarmLayout = (LinearLayout) view.findViewById(R.id.alarm_info);
-            timeText = (TextView)view.findViewById(R.id.time_text);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            taskController.onItemChosen(taskList.get(getAdapterPosition()).getID());
-        }
-
-        @Override
-        public boolean onLongClick(View view) {
-            taskController.onItemUpdate(taskList.get(getAdapterPosition()).getID());
-            return true;
-        }
-    }
-
     @Override
     public TaskAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_row, null);
@@ -112,13 +70,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
      * A method called everytime when data changes
      * @param newItems new data
      */
-    public void changeData(List<Task> newItems) {
+    public void setData(List<Task> newItems) {
         taskList = newItems;
         this.notifyDataSetChanged();
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Task item = taskList.get(position);
         holder.textRow.setText(item.getName());
         switch (item.getStatus()) {
@@ -126,12 +84,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             case Pending: holder.textRow.setTextColor(darkColor); break;
             case Expired: holder.textRow.setTextColor(redColor); break;
         }
-        if (item.hasAlarms()) {
+        if (item.hasAlarm()) {
             holder.timeText.setText(getDateTimeString(item.getAlarmTime()));
             holder.alarmLayout.setVisibility(View.VISIBLE);
         } else {
             holder.alarmLayout.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskController.onItemChosen(taskList.get(holder.getAdapterPosition()).getID());
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                taskController.onItemUpdate(taskList.get(holder.getAdapterPosition()).getID());
+                return true;
+            }
+        });
     }
 
     /**
@@ -157,5 +129,34 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return taskList.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        /**
+         * A text with the name of the subtask
+         */
+        TextView textRow;
+
+        /**
+         * A text with alarm time
+         */
+        TextView timeText;
+
+        /**
+         * Layout that's shown when the task has alarms scheduled
+         */
+        LinearLayout alarmLayout;
+
+        /**
+         * Creates new instance of a view holder
+         * @param view main view
+         */
+        ViewHolder(View view) {
+            super(view);
+            textRow = (TextView) view.findViewById(R.id.row_text);
+            alarmLayout = (LinearLayout) view.findViewById(R.id.alarm_info);
+            timeText = (TextView)view.findViewById(R.id.time_text);
+        }
     }
 }
