@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.preference;
+package com.example.annakocheshkova.testapplication.manager.preference;
 
 import android.content.SharedPreferences;
 import com.example.annakocheshkova.testapplication.MyApplication;

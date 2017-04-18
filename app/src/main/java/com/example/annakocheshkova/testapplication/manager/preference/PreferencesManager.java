@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.preference;
+package com.example.annakocheshkova.testapplication.manager.preference;
 
 /**
  * Manages all the preferences operations

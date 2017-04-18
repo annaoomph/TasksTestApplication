@@ -44,10 +44,12 @@
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_label">Login</string>
-    <string name="wrong_creds_error">The credentials you entered are wrong!</string>
-    <string name="properties_not_found">The properties file has not been found! Connect to developers.</string>
-    <string name="unauthorized_export_error">Sorry. You are unauthorized. Please try to login again.</string>
-    <string name="feature_not_implemented">Sorry, the feature %s has not yet been implemented</string>
+    <string name="error_message_server">A server-side issue has occurred. Please try again later.</string>
+    <string name="unauthorized_error">Wrong credentials.</string>
+    <string name="connection_error">Connection error. Please check your connection to the internet.</string>
+    <string name="create_file_error">An error creating the file.</string>
+    <string name="unexpected_error">An unexpected error.</string>
+    <string name="feature_not_implemented">Sorry. Feature %s has not yet been implemented.</string>
 
     <string-array name="drawer_items">
         <item>Import</item>

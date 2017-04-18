@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.manager.converter;
+package com.example.annakocheshkova.testapplication.utils.converter;
 
 import com.google.gson.Gson;
 import java.util.List;

@@ -14,12 +14,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
 
 public class ExportActivity extends AppCompatActivity implements ExportView {
 
@@ -155,21 +153,12 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
-    public void showNoConnectionError() {
-        Toast.makeText(this, R.string.no_connection_error, Toast.LENGTH_LONG).show();
+    public void showError(BaseError error) {
+        Toast.makeText(this, error.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showIOError() {
-        if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            Toast.makeText(this, R.string.io_error, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, R.string.io_server_error, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void showExtraContent(boolean loggedIn) {
+    public void setLoggedIn(boolean loggedIn) {
         if (loggedIn) {
             serverButton.setEnabled(true);
             loginLink.setVisibility(View.GONE);
@@ -177,15 +166,5 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
             serverButton.setEnabled(false);
             loginLink.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void showUnauthorizedError() {
-        Toast.makeText(this, R.string.unauthorized_export_error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showNotImplementedError(NotImplementedException exception) {
-        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

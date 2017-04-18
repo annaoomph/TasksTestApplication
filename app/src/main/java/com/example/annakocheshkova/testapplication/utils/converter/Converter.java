@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.manager.converter;
+package com.example.annakocheshkova.testapplication.utils.converter;
 import java.util.List;
 import java.util.Map;
 

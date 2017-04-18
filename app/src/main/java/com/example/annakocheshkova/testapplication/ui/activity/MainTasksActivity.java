@@ -204,9 +204,9 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    public void showLoginButton(boolean loggedIn) {
+    public void showLoginButton(boolean show) {
         String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
-        if (!loggedIn) {
+        if (!show) {
             leftDrawerTitles = getResources().getStringArray(R.array.drawer_items_for_logged_in);
         }
         drawerListView.setAdapter(new ArrayAdapter<>(this,

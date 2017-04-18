@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
-import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,18 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.controller.LoginController;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
 
 public class LoginActivity extends AppCompatActivity implements LoginView{
 
@@ -78,27 +72,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
     }
 
     @Override
-    public void showNoConnectionError() {
-        Toast.makeText(this, R.string.no_connection_error, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showWrongCredentialsError() {
-        Toast.makeText(this, R.string.wrong_creds_error, Toast.LENGTH_LONG).show();
+    public void showError(BaseError error) {
+        Toast.makeText(this, error.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void close() {
         finish();
-    }
-
-    @Override
-    public void showPropertiesNotFoundError() {
-        Toast.makeText(this, R.string.properties_not_found, Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void showNotImplementedError(NotImplementedException exception) {
-        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
-
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
 
 /**
  * An interface for the login activity
@@ -20,28 +19,13 @@ public interface LoginView {
     String getPassword();
 
     /**
-     * Shows an error if there's no connection to server
+     * Shows an error
+     * @param error to be shown
      */
-    void showNoConnectionError();
-
-    /**
-     * Shows an error if the credentials were wrong
-     */
-    void showWrongCredentialsError();
+    void showError(BaseError error);
 
     /**
      * Closes the view
      */
     void close();
-
-    /**
-     * Shows an error if the controller can't find properties
-     */
-    void showPropertiesNotFoundError();
-
-    /**
-     * Shows the exception when some feature was not implemented
-     * @param exception instance of exception
-     */
-    void showNotImplementedError(NotImplementedException exception);
 }

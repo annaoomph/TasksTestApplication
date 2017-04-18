@@ -3,16 +3,17 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
-import com.example.annakocheshkova.testapplication.manager.converter.Converter;
-import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.manager.exporter.Exporter;
-import com.example.annakocheshkova.testapplication.manager.exporter.ExporterFactory;
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.utils.exporter.Exporter;
+import com.example.annakocheshkova.testapplication.utils.exporter.ExporterFactory;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
-import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
-import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
+
 import java.util.List;
 
 /**
@@ -45,28 +46,19 @@ public class ExportController implements ExportListener {
     public void onViewLoaded() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
         Boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
-        view.showExtraContent(loggedIn);
+        view.setLoggedIn(loggedIn);
     }
 
     /**
      * Called when the export is clicked
      */
     public void onExport() {
-        try {
-            boolean local = view.isLocal();
-            String nameOrPath = view.getNameOrPath();
-            List<Task> tasks = dataStore.getAllTasks();
-            Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local?ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
-            Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
-            taskExporter.exportData(tasks, nameOrPath, FileManager.DEFAULT_PATH, converter, this);
-        } catch (NotImplementedException exception) {
-            view.showNotImplementedError(exception);
-        }
-    }
-
-    @Override
-    public void onUnauthorized() {
-        view.showUnauthorizedError();
+        boolean local = view.isLocal();
+        String nameOrPath = view.getNameOrPath();
+        List<Task> tasks = dataStore.getAllTasks();
+        Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local ? ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
+        Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
+        taskExporter.exportData(tasks, nameOrPath, FileManager.DEFAULT_PATH, converter, this);
     }
 
     @Override
@@ -77,12 +69,7 @@ public class ExportController implements ExportListener {
     }
 
     @Override
-    public void onIOError() {
-        view.showIOError();
-    }
-
-    @Override
-    public void onConnectionError() {
-        view.showNoConnectionError();
+    public void onError(BaseError error) {
+        view.showError(error);
     }
 }

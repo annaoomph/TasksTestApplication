@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
 
 /**
  * An interface for the Export Activity
@@ -25,31 +25,16 @@ public interface ExportView {
     void close();
 
     /**
-     * Shows the error if there's no connection with server
+     * Shows the error
+     * @param error to be shown
      */
-    void showNoConnectionError();
-
-    /**
-     * Shows the error if IO error has occured
-     */
-    void showIOError();
+    void showError(BaseError error);
 
     /**
      * Shows or hides the content that is available only for logged in users
      * @param loggedIn true if user is logged in
      */
-    void showExtraContent(boolean loggedIn);
-
-    /**
-     * Shows an error if user has no privileged to do export
-     */
-    void showUnauthorizedError();
-
-    /**
-     * Shows the exception when some feature was not implemented
-     * @param exception instance of exception
-     */
-    void showNotImplementedError(NotImplementedException exception);
+    void setLoggedIn(boolean loggedIn);
 
     /**
      * Shows the message on export success

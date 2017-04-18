@@ -1,14 +1,11 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
 
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+
 /**
  * A custom listener of the events connected with export
  */
 public interface ExportListener {
-
-    /**
-     * Called if user has no privileges to do export
-     */
-    void onUnauthorized();
 
     /**
      * Called when data is successfully exported
@@ -17,11 +14,7 @@ public interface ExportListener {
 
     /**
      * Called if during the export an IO Error has occurred
+     * @param error error with information about what's happened
      */
-    void onIOError();
-
-    /**
-     * Called if there is no connection to server
-     */
-    void onConnectionError();
+    void onError(BaseError error);
 }

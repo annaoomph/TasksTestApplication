@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.manager.exporter;
+package com.example.annakocheshkova.testapplication.utils.exporter;
 
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
@@ -15,20 +15,20 @@ public class ExporterFactory {
         LOCAL_TO_FILE,
         REMOTE
     }
+
     /**
      * Gets an instance of the task exporter
      * @param exportType type of export
      * @return instanceof the task exporter
-     * @throws NotImplementedException exception thrown if the import type was not implemented
      */
-    public static Exporter<Task> getTaskExporter(ExportType exportType) throws NotImplementedException {
+    public static Exporter<Task> getTaskExporter(ExportType exportType){
         switch (exportType) {
             case LOCAL_TO_FILE:
                 return new FileExporter<>();
             case REMOTE:
                 return new RemoteExporter<>();
             default:
-                throw new NotImplementedException(exportType.toString());
+                throw new RuntimeException(new NotImplementedException(exportType.toString()));
         }
     }
 }

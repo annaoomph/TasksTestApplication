@@ -1,21 +1,20 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
-import android.content.Context;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
+import com.example.annakocheshkova.testapplication.operation.LoginOperation;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
-import com.example.annakocheshkova.testapplication.utils.configuration.ConfigurationManager;
-import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
-import com.example.annakocheshkova.testapplication.client.BaseHttpClientFactory;
-import com.example.annakocheshkova.testapplication.utils.listener.HttpListener;
+import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.converter.ConverterFactory;
+import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;
-import com.example.annakocheshkova.testapplication.utils.preference.PreferencesFactory;
-import com.example.annakocheshkova.testapplication.utils.preference.PreferencesManager;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
 /**
  * A controller which handles all the actions connected with tasks
  */
-public class TaskController implements UndoListener<Task>, HttpListener {
+public class TaskController implements UndoListener<Task> {
 
     /**
      * A datastore to work with data
@@ -54,17 +53,26 @@ public class TaskController implements UndoListener<Task>, HttpListener {
      */
     public void onViewLoaded() {
         preferencesManager = PreferencesFactory.getPreferencesManager();
-        Context context = MyApplication.getAppContext();
         List<Task> tasks = dataStore.getAllTasks();
         sort(tasks);
         view.showItems(tasks);
-        try {
-            String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
-            BaseHttpClient httpClient = BaseHttpClientFactory.getHttpClient(this);
-            httpClient.doGetRequest(url);
-        } catch (IOException e) {
-            preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, false);
-        }
+        String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
+        Converter<String> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
+        LoginOperation loginOperation = new LoginOperation(url, converter);
+        loginOperation.executeGet(new OperationListener<LoginOperation>() {
+            @Override
+            public void onSuccess(LoginOperation operation) {
+                String token = operation.getToken();
+                preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, true);
+                preferencesManager.setString(PreferencesManager.TOKEN, token);
+                view.showLoginButton(false);
+            }
+
+            @Override
+            public void onFailure(ConnectionError connectionError) {
+                logout();
+            }
+        });
     }
 
     /**
@@ -140,23 +148,6 @@ public class TaskController implements UndoListener<Task>, HttpListener {
         } else {
             view.showLoginScreen();
         }
-    }
-
-    @Override
-    public void onSuccess(String response) {
-        preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, true);
-        preferencesManager.setString(PreferencesManager.TOKEN, response);
-        view.showLoginButton(false);
-    }
-
-    @Override
-    public void onFailure() {
-        logout();
-    }
-
-    @Override
-    public void onUnauthorized() {
-        logout();
     }
 
     private void logout() {

@@ -1,6 +1,6 @@
-package com.example.annakocheshkova.testapplication.manager.exporter;
+package com.example.annakocheshkova.testapplication.utils.exporter;
 
-import com.example.annakocheshkova.testapplication.manager.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 
 import java.util.List;

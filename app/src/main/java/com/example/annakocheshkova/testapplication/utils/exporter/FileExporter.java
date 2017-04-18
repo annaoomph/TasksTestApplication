@@ -1,7 +1,8 @@
-package com.example.annakocheshkova.testapplication.manager.exporter;
+package com.example.annakocheshkova.testapplication.utils.exporter;
 
 import com.example.annakocheshkova.testapplication.manager.FileManager;
-import com.example.annakocheshkova.testapplication.manager.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 
 import java.io.File;
@@ -22,7 +23,7 @@ class FileExporter<T> implements Exporter<T> {
             String formattedData = converter.convert(items);
             File file = new File(path + File.separator + name);
             if (!file.createNewFile())
-                exportListener.onIOError();
+                exportListener.onError(new FileError(FileError.FileErrorType.CREATE_FILE_ERROR));
             else {
                 OutputStream outputStream = new FileOutputStream(file);
                 outputStream.write(formattedData.getBytes());
@@ -30,7 +31,7 @@ class FileExporter<T> implements Exporter<T> {
             }
             exportListener.onSuccess();
         } catch (IOException exception) {
-            exportListener.onIOError();
+            exportListener.onError(new FileError(FileError.FileErrorType.IO_ERROR));
         }
     }
 }

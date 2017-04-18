@@ -35,9 +35,9 @@ public interface TaskView {
 
     /**
      * Shows the login or logout button
-     * @param loggedIn true if user is logged in
+     * @param show true if show login, false if show logout
      */
-    void showLoginButton(boolean loggedIn);
+    void showLoginButton(boolean show);
 
     /**
      * Opens the login view

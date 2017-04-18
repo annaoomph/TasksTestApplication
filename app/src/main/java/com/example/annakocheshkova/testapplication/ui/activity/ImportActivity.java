@@ -108,9 +108,4 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     public String getChosenFilePath() {
         return fileAdapter.getChosenItemPath();
     }
-
-    @Override
-    public void showNotImplementedError(NotImplementedException exception) {
-        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
-    }
 }

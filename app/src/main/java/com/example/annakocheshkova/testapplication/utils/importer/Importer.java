@@ -1,11 +1,8 @@
-package com.example.annakocheshkova.testapplication.manager.importer;
+package com.example.annakocheshkova.testapplication.utils.importer;
 
-import com.example.annakocheshkova.testapplication.manager.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Interface for importing items

@@ -1,5 +1,5 @@
-package com.example.annakocheshkova.testapplication.manager.importer;
-import com.example.annakocheshkova.testapplication.manager.converter.Converter;
+package com.example.annakocheshkova.testapplication.utils.importer;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
 
 import java.io.File;
 import java.io.FileInputStream;

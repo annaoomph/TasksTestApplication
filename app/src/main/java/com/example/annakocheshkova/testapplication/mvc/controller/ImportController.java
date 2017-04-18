@@ -3,14 +3,13 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
-import com.example.annakocheshkova.testapplication.manager.converter.Converter;
-import com.example.annakocheshkova.testapplication.manager.converter.ConverterFactory;
-import com.example.annakocheshkova.testapplication.manager.importer.Importer;
-import com.example.annakocheshkova.testapplication.manager.importer.ImporterFactory;
+import com.example.annakocheshkova.testapplication.utils.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.converter.ConverterFactory;
+import com.example.annakocheshkova.testapplication.utils.importer.Importer;
+import com.example.annakocheshkova.testapplication.utils.importer.ImporterFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,9 +67,6 @@ public class ImportController {
                 }
                 view.showSuccessMessage(tasks.length);
                 view.close();
-            }
-            catch (NotImplementedException exception) {
-                view.showNotImplementedError(exception);
             }
             catch (IOException exception) {
                 view.showCorruptFileError();

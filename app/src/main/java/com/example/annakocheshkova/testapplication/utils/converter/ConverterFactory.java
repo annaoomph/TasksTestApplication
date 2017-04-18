@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.manager.converter;
+package com.example.annakocheshkova.testapplication.utils.converter;
 
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
@@ -18,13 +18,12 @@ public class ConverterFactory {
      * Gets an instance of the converter
      * @param convertType conversion format
      * @return instance of the converter
-     * @throws NotImplementedException exception thrown if the import type was not implemented
      */
-    public static Converter getConverter(ConvertType convertType) throws NotImplementedException{
+    public static Converter getConverter(ConvertType convertType){
         if (convertType == ConvertType.JSON) {
             return new JsonConverter();
         } else {
-            throw new NotImplementedException(convertType.toString());
+            throw new RuntimeException(new NotImplementedException(convertType.toString()));
         }
     }
 }

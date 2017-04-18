@@ -42,10 +42,4 @@ public interface ImportView {
      * @return path
      */
     String getChosenFilePath();
-
-    /**
-     * Shows the exception when some feature was not implemented
-     * @param exception instance of exception
-     */
-    void showNotImplementedError(NotImplementedException exception);
 }
