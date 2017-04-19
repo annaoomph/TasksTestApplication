@@ -26,7 +26,7 @@ public class ImporterFactory {
             case LOCAL_FROM_FILE:
                 return new FileImporter<>();
             case REMOTE:
-                throw new RuntimeException(new NotImplementedException(importType.toString()));
+                return new RemoteImporter<>();
             default:
                 throw new RuntimeException(new NotImplementedException(importType.toString()));
         }

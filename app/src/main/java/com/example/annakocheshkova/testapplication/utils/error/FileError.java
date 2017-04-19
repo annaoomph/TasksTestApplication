@@ -15,7 +15,8 @@ public class FileError implements BaseError {
      */
     public enum FileErrorType {
         IO_ERROR,
-        CREATE_FILE_ERROR
+        CREATE_FILE_ERROR,
+        PARSE_ERROR
     }
 
     /**
@@ -37,6 +38,7 @@ public class FileError implements BaseError {
         switch (fileErrorType) {
             case IO_ERROR: return context.getString(R.string.io_error);
             case CREATE_FILE_ERROR: return context.getString(R.string.create_file_error);
+            case PARSE_ERROR: return context.getString(R.string.corrupt_file_error);
             default: return context.getString(R.string.unexpected_error);
         }
     }

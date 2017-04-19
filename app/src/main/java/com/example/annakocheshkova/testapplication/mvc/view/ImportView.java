@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.error.BaseError;
 
 import java.io.File;
 import java.util.List;
@@ -11,15 +11,22 @@ import java.util.List;
 public interface ImportView {
 
     /**
+     * Returns if the import should be local
+     * @return true if local, false if remote
+     */
+    boolean isLocal();
+
+    /**
      * Shows the available list of files
      * @param files list of files
      */
     void showFiles(List<File> files);
 
     /**
-     * Shows the error if the file is corrupt
+     * Shows the error
+     * @param error error that happened during import
      */
-    void showCorruptFileError();
+    void showError(BaseError error);
 
     /**
      * Shows the error if the file was not chosen
@@ -41,5 +48,11 @@ public interface ImportView {
      * Gets the path to chosen file
      * @return path
      */
-    String getChosenFilePath();
+    String getNameOrPath();
+
+    /**
+     * Shows or hides the content that is available only for logged in users
+     * @param loggedIn true if user is logged in
+     */
+    void setLoggedIn(boolean loggedIn);
 }

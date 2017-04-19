@@ -31,14 +31,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/small_margin"
                 android:buttonTint="@color/colorPrimary"
-                android:text="@string/local_export_label" />
+                android:text="@string/local_label" />
 
             <RadioButton
                 android:id="@+id/remote_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/colorPrimary"
-                android:text="@string/remote_export_label" />
+                android:text="@string/remote_label" />
 
             <TextView
                 android:layout_marginStart="@dimen/small_margin"

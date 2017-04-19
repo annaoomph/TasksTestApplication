@@ -20,8 +20,8 @@
     <string name="no_such_task_error">Sorry, there\'s no such task. Check if it was already deleted.</string>
     <string name="incorrect_time_error">You have chosen the time less than the current time! The task was not created.</string>
     <string name="incorrect_alarm_time_error">You have chosen the time of the alarm less than the current time! The task was not created.</string>
-    <string name="local_export_label">Local</string>
-    <string name="remote_export_label">Remote</string>
+    <string name="local_label">Local</string>
+    <string name="remote_label">Remote</string>
     <string name="filename_hint">Name of the file</string>
     <string name="path_to_server_hint">Path to server</string>
     <string name="export_title">Export</string>
@@ -50,6 +50,7 @@
     <string name="create_file_error">An error creating the file.</string>
     <string name="unexpected_error">An unexpected error.</string>
     <string name="feature_not_implemented">Sorry. Feature %s has not yet been implemented.</string>
+    <string name="url_empty_error">You have not entered url.</string>
 
     <string-array name="drawer_items">
         <item>Import</item>
