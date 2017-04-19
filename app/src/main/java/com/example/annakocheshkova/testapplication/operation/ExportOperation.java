@@ -10,12 +10,26 @@ import java.util.List;
  */
 public class ExportOperation<T> extends BaseOperation<T> {
 
+    /**
+     * Items to be exported
+     */
     private List<T> items;
 
+    /**
+     * Basic constructor. Creates an instance of the operation
+     * @param url url to export items to
+     * @param converter converter for items
+     */
     public ExportOperation(String url, Converter<T> converter) {
         super(url, converter);
     }
 
+    /**
+     * Creates an instance of operation
+     * @param url to export items to
+     * @param converter converter for items
+     * @param items list of data to be exported
+     */
     public ExportOperation(String url, Converter<T> converter, List<T> items) {
         super(url, converter);
         this.items = items;

@@ -3,7 +3,6 @@ package com.example.annakocheshkova.testapplication.client;
 import java.io.IOException;
 
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -18,13 +17,8 @@ class FakeHttpClient implements BaseHttpClient {
     @Override
     public void doGetRequest(String url, Callback callback) {
         try {
-            HttpUrl httpUrl = new HttpUrl.Builder()
-                    .scheme("https")
-                    .host("example.com")
-                    .build();
-
             Request request = new Request.Builder()
-                    .url(httpUrl)
+                    .url(url)
                     .build();
 
             Response okHttpResponse = new Response.Builder()
@@ -39,13 +33,8 @@ class FakeHttpClient implements BaseHttpClient {
     @Override
     public void doPostRequest(String url, String data, MediaType mediaType, Callback callback) {
         try {
-            HttpUrl httpUrl = new HttpUrl.Builder()
-                    .scheme("https")
-                    .host("example.com")
-                    .build();
-
             Request request = new Request.Builder()
-                    .url(httpUrl)
+                    .url(url)
                     .build();
 
             Response okHttpResponse = new Response.Builder()

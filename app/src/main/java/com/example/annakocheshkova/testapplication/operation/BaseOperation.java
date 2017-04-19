@@ -12,9 +12,10 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 /**
- * Base operation for handling http clients
+ * Base operation for handling http requests
+ * @param <T> type of data
  */
-public class BaseOperation<T> implements Callback{
+public class BaseOperation<T> implements Callback {
 
     /**
      * Url to maje requests to
@@ -31,6 +32,9 @@ public class BaseOperation<T> implements Callback{
      */
     Converter<T> converter;
 
+    /**
+     * A listener of request events
+     */
     private OperationListener operationListener;
 
     /**
@@ -43,7 +47,8 @@ public class BaseOperation<T> implements Callback{
     }
 
     /**
-     * Prepares the content for sending it to the client
+     * Prepares the content for sending it to the client.
+     * Base operation doesn't require to have content, so the method should be overridden in those inheritors that use it.
      * @return String with formatted content
      */
     String prepareContent() {
@@ -70,6 +75,10 @@ public class BaseOperation<T> implements Callback{
         httpClient.doGetRequest(url, this);
     }
 
+    /**
+     * Gets the response body
+     * @return full response body
+     */
     String getResponse() {
         return this.requestResponse;
     }

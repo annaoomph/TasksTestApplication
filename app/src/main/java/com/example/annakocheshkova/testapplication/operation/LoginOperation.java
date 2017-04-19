@@ -11,18 +11,17 @@ import java.util.Map;
 public class LoginOperation extends BaseOperation<String> {
 
     /**
-     * username to be sent
+     * Username to be sent
      */
     private String username;
 
     /**
-     * password to be sent
+     * Password to be sent
      */
     private String password;
 
     /**
      * Creates an instance of BaseOperation
-     *
      * @param url  url to make requests to
      */
     public LoginOperation(String url, Converter<String> converter) {
@@ -50,6 +49,10 @@ public class LoginOperation extends BaseOperation<String> {
         return converter.convert(credentials);
     }
 
+    /**
+     * Gets the token from response body
+     * @return token string
+     */
     public String getToken() {
         return this.getResponse();
     }

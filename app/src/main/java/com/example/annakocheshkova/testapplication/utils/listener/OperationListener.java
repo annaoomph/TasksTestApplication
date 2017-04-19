@@ -5,6 +5,7 @@ import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
 
 /**
  * A basic listener for operations events
+ * @param <T> type of operation
  */
 public interface OperationListener<T extends BaseOperation> {
 

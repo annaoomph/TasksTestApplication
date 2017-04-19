@@ -39,6 +39,7 @@ class HttpClient implements BaseHttpClient {
                 .addHeader("Authentication", token)
                 .build();
         client.newCall(request).enqueue(callback);
+        
     }
 
     @Override
