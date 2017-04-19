@@ -16,8 +16,7 @@ class RemoteExporter<T> implements Exporter<T> {
 
     @Override
     public void exportData(List<T> items, String url, String path, Converter<T> converter, final ExportListener exportListener) {
-        ExportOperation<T> exportOperation = new ExportOperation<>(url, converter, items);
-        exportOperation.executePost(new OperationListener<ExportOperation>() {
+        ExportOperation<T> exportOperation = new ExportOperation<>(url, converter, items, new OperationListener<ExportOperation>() {
             @Override
             public void onSuccess(ExportOperation operation) {
                 exportListener.onSuccess();
@@ -25,8 +24,9 @@ class RemoteExporter<T> implements Exporter<T> {
 
             @Override
             public void onFailure(ConnectionError connectionError) {
-               exportListener.onError(connectionError);
+                exportListener.onError(connectionError);
             }
         });
+        exportOperation.execute();
     }
 }

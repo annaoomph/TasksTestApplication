@@ -17,13 +17,13 @@ class JsonConverter<T> implements Converter<T>{
     }
 
     @Override
-    public String convert(Map<T, T> data) {
+    public T[] deconvert(String formattedData, Class<T[]> type) {
         Gson gson = new Gson();
-        return gson.toJson(data);
+        return gson.fromJson(formattedData, type);
     }
 
     @Override
-    public T[] deconvert(String formattedData, Class<T[]> type) {
+    public T deconvertObject(String formattedData, Class<T> type) {
         Gson gson = new Gson();
         return gson.fromJson(formattedData, type);
     }

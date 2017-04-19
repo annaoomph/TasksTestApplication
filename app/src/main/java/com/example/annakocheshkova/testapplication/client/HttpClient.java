@@ -2,9 +2,8 @@ package com.example.annakocheshkova.testapplication.client;
 
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
+import com.example.annakocheshkova.testapplication.utils.listener.HttpCallback;
 
-import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -32,7 +31,7 @@ class HttpClient implements BaseHttpClient {
     }
 
     @Override
-    public void doGetRequest(String url, Callback callback) {
+    public void doGetRequest(String url, HttpCallback callback) {
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
                 .url(url)
@@ -43,12 +42,12 @@ class HttpClient implements BaseHttpClient {
     }
 
     @Override
-    public void doPostRequest(String url, String data, MediaType mediaType, Callback callback) {
+    public void doPostRequest(String url, RequestBody data, HttpCallback callback) {
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authentication", token)
-                .post(RequestBody.create(mediaType, data))
+                .post(data)
                 .build();
         client.newCall(request).enqueue(callback);
     }

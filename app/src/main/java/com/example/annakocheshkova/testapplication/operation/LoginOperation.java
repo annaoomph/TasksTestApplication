@@ -1,9 +1,13 @@
 package com.example.annakocheshkova.testapplication.operation;
-
-import android.util.ArrayMap;
-
+import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import java.util.Map;
+import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
+
+import java.util.Calendar;
+
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 
 /**
  * Class for handling login http operations
@@ -24,8 +28,8 @@ public class LoginOperation extends BaseOperation<String> {
      * Creates an instance of BaseOperation
      * @param url  url to make requests to
      */
-    public LoginOperation(String url, Converter<String> converter) {
-        super(url, converter);
+    public LoginOperation(String url, Converter<String> converter, OperationListener operationListener) {
+        super(url, converter, operationListener);
     }
 
     /**
@@ -34,19 +38,22 @@ public class LoginOperation extends BaseOperation<String> {
      * @param username entered by user
      * @param password entered by user
      */
-    public LoginOperation(String url, String username, String password, Converter<String> converter) {
-        super(url, converter);
+    public LoginOperation(String url, String username, String password, Converter<String> converter, OperationListener operationListener) {
+        super(url, converter, operationListener);
         this.username = username;
         this.password = password;
     }
 
     @Override
-    String prepareContent() {
-        //TODO Search for a ways to do this
-        Map<String, String> credentials = new ArrayMap<>();
-        credentials.put("username", username);
-        credentials.put("password", password);
-        return converter.convert(credentials);
+    RequestBody prepareContent() {
+        if (username == null || password == null) {
+            return null;
+        } else {
+            return new FormBody.Builder()
+                    .add("username", username)
+                    .add("password", password)
+                    .build();
+        }
     }
 
     /**
@@ -54,6 +61,30 @@ public class LoginOperation extends BaseOperation<String> {
      * @return token string
      */
     public String getToken() {
-        return this.getResponse();
+        return responseObject.getToken();
+    }
+
+    /**
+     * Gets the expiration date from response body
+     * @return expiration date in milliseconds
+     */
+    public long getExpirationDate() {
+        return responseObject.getExpirationDate();
+    }
+
+    @Override
+    public void onFakeResponse() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1);
+        responseObject = new BaseResponse("token", calendar.getTimeInMillis(), null);
+        if (username != null && password != null) {
+            if (username.equalsIgnoreCase("admin") && password.equalsIgnoreCase("admin")) {
+                operationListener.onSuccess(this);
+            } else {
+                operationListener.onFailure(new ConnectionError(401));
+            }
+        } else {
+            operationListener.onSuccess(this);
+        }
     }
 }
