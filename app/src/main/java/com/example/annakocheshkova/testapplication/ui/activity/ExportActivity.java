@@ -1,25 +1,19 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
-import android.content.Intent;
 import android.support.annotation.IdRes;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.utils.error.BaseError;
 
-public class ExportActivity extends AppCompatActivity implements ExportView {
+public class ExportActivity extends BaseActivity implements ExportView {
 
     /**
      * Main view controller
@@ -59,15 +53,6 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         exportController.onViewLoaded();
@@ -77,14 +62,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
      * Sets all the content configuration and listeners
      */
     private void setContent() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         exportController = new ExportController(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(R.string.export_title);
-        }
         fileNameText = (EditText)findViewById(R.id.file_name);
         serverText = (EditText)findViewById(R.id.server_path);
         serverText.setVisibility(View.GONE);
@@ -106,7 +84,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         loginLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openLogin();
+                showLoginScreen();
             }
         });
         exportController.onViewLoaded();
@@ -119,9 +97,9 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
         });
     }
 
-    private void openLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+    @Override
+    protected String getToolBarTitle() {
+        return getString(R.string.export_title);
     }
 
     @Override
@@ -146,15 +124,15 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     @Override
     public void showSuccessMessage(String path) {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+            showToast(getString(R.string.file_created) + getNameOrPath());
         } else {
-            Toast.makeText(this, getString(R.string.server_success) + getNameOrPath(), Toast.LENGTH_LONG).show();
+            showToast(getString(R.string.server_success) + getNameOrPath());
         }
     }
 
     @Override
     public void showError(BaseError error) {
-        Toast.makeText(this, error.getErrorMessage(), Toast.LENGTH_LONG).show();
+        showToast(error.getErrorMessage());
     }
 
     @Override

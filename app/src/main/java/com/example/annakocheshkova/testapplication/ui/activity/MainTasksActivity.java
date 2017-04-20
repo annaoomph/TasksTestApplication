@@ -1,23 +1,12 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import com.example.annakocheshkova.testapplication.mvc.controller.TaskController;
 import com.example.annakocheshkova.testapplication.ui.adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
@@ -30,7 +19,7 @@ import java.util.List;
 /**
  * A view of the main activity with list of all the tasks
  */
-public class MainTasksActivity extends AppCompatActivity implements TaskView {
+public class MainTasksActivity extends BaseActivity implements TaskView {
 
     /**
      * Adapter for the recycler view
@@ -38,24 +27,14 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     TaskAdapter taskAdapter;
 
     /**
-     * Button which toggles the drawer (open/close)
-     */
-    ActionBarDrawerToggle drawerToggle;
-
-    /**
-     * Main view with all the contents
-     */
-    View view;
-
-    /**
      * The main controller
      */
     TaskController taskController;
 
     /**
-     * A left-side menu
+     * View with content
      */
-    ListView drawerListView;
+    View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +50,6 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_add) {
@@ -87,76 +59,20 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+    protected boolean useDrawer() {
+        return true;
     }
 
     /**
      * Sets all the content configuration and listeners
      */
     void setContent() {
-        drawerListView = (ListView) findViewById(R.id.left_drawer);
-        RecyclerView listView = (RecyclerView)findViewById(R.id.tasks_view);
-        final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         view = findViewById(R.id.main_content);
+        RecyclerView listView = (RecyclerView)findViewById(R.id.tasks_view);
         taskController = new TaskController(this);
         taskAdapter = new TaskAdapter(taskController);
         listView.setAdapter(taskAdapter);
         taskController.onViewLoaded();
-        drawerListView.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick (AdapterView < ? > parent, View view, int position, long id){
-                drawerLayout.closeDrawer(drawerListView);
-                switch (position) {
-                    case 0: {
-                        Intent intent = new Intent(view.getContext(), ImportActivity.class);
-                        view.getContext().startActivity(intent);
-                        break;
-                    }
-                    case 1: {
-                        Intent intent = new Intent(view.getContext(), ExportActivity.class);
-                        view.getContext().startActivity(intent);
-                        break;
-                    }
-                    case 2: {
-                        taskController.onLoginClicked();
-                        break;
-                    }
-                }
-            }
-        });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.window_title);
-        }
-
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_navigation_drawer, R.string.close_navigation_drawer) {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                super.onDrawerSlide(drawerView, slideOffset);
-            }
-
-            @Override
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-
-        drawerLayout.addDrawerListener(drawerToggle);
         listView.setHasFixedSize(true); //for better performance
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
@@ -204,18 +120,12 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     }
 
     @Override
-    public void showLoginButton(boolean show) {
-        String[] leftDrawerTitles = getResources().getStringArray(R.array.drawer_items);
-        if (!show) {
-            leftDrawerTitles = getResources().getStringArray(R.array.drawer_items_for_logged_in);
-        }
-        drawerListView.setAdapter(new ArrayAdapter<>(this,
-                R.layout.drawer_list_item, leftDrawerTitles));
+    public void showLoginScreen() {
+        super.showLoginScreen();
     }
 
     @Override
-    public void showLoginScreen() {
-        Intent intent = new Intent(view.getContext(), LoginActivity.class);
-        view.getContext().startActivity(intent);
+    protected String getToolBarTitle() {
+        return getString(R.string.window_title);
     }
 }

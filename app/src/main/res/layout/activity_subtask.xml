@@ -5,17 +5,13 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:theme="@style/AppTheme.NoActionBar"
     tools:context=".ui.activity.MainTasksActivity">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/task_detailed_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:scrollbars="vertical" />
 
 </RelativeLayout>

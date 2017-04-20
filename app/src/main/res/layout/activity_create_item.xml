@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    app:theme="@style/AppTheme.NoActionBar"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,16 +9,11 @@
     android:orientation="vertical"
     tools:context=".ui.activity.CreateTaskActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <EditText
         android:id="@+id/name_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        app:theme="@style/EditTextStyle"
         android:ems="10"
         android:hint="@string/name" />
 
@@ -32,7 +28,6 @@
 
         <CheckBox
             android:id="@+id/enable_reminder"
-            app:theme="@style/CheckBoxStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -40,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/set_reminder_checkbox_label"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="@dimen/default_text_size" />
 
         <Spinner android:id="@+id/reminder_spinner"
@@ -115,7 +110,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        app:theme="@style/AppTheme.NoActionBar"
         android:onClick="onAddNewTaskClick"
         android:text="@string/ok_string" />
 </LinearLayout>

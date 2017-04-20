@@ -1,21 +1,15 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ImportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 import java.io.File;
 import java.util.List;
@@ -23,7 +17,7 @@ import java.util.List;
 /**
  * An activity for file import
  */
-public class ImportActivity extends AppCompatActivity implements ImportView{
+public class ImportActivity extends BaseActivity implements ImportView {
 
     /**
      * Main controller for the view
@@ -38,17 +32,8 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_importer);
+        setContentView(R.layout.activity_import);
         setContent();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -56,14 +41,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
      */
     private void setContent() {
         RecyclerView listView = (RecyclerView)findViewById(R.id.files_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         importController = new ImportController(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(getString(R.string.import_label));
-        }
         fileAdapter = new FileAdapter();
         listView.setAdapter(fileAdapter);
         listView.setHasFixedSize(true); //for better performance
@@ -80,18 +58,23 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     }
 
     @Override
+    protected String getToolBarTitle() {
+        return getString(R.string.import_label);
+    }
+
+    @Override
     public void showFiles(List<File> files) {
         fileAdapter.setData(files);
     }
 
     @Override
     public void showCorruptFileError() {
-        Toast.makeText(this, R.string.corrupt_file_error, Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.corrupt_file_error));
     }
 
     @Override
     public void showFileNotChosenError() {
-        Toast.makeText(this, R.string.file_not_chosen_error, Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.file_not_chosen_error));
     }
 
     @Override
@@ -101,7 +84,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
 
     @Override
     public void showSuccessMessage(int numberOfItems) {
-        Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
+        showToast(numberOfItems + getString(R.string.items_added_label));
     }
 
     @Override
