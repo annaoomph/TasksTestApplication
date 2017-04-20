@@ -39,12 +39,13 @@ public class HttpClient {
     /**
      * Makes a GET-request
      * @param url url to make request to
+     * @param params params to url
      * @param callback listens to http events
      */
-    public void doGetRequest(String url, Callback callback) {
+    public void doGetRequest(String url, String params, Callback callback) {
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
-                .url(url)
+                .url(url + params)
                 .addHeader("Authentication", token)
                 .build();
         client.newCall(request).enqueue(callback);

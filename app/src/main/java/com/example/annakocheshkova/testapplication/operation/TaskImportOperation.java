@@ -18,6 +18,11 @@ import okhttp3.RequestBody;
 public class TaskImportOperation extends ImportOperation<Task> {
 
     /**
+     * Id of the current user
+     */
+    private int userId;
+
+    /**
      * Creates an instance of operation
      *
      * @param url to export items to
@@ -25,7 +30,8 @@ public class TaskImportOperation extends ImportOperation<Task> {
      * @param userId id of the user to get the items
      */
     public TaskImportOperation(String url, int userId, OperationListener operationListener) {
-        super(url, userId, operationListener);
+        super(url, operationListener);
+        this.userId = userId;
     }
 
     @Override
@@ -36,8 +42,13 @@ public class TaskImportOperation extends ImportOperation<Task> {
     }
 
     @Override
-    RequestBody prepareContent() {
+    RequestBody preparePostContent() {
         return null;
+    }
+
+    @Override
+    String prepareGetContent() {
+        return "?id="+userId;
     }
 
     @Override

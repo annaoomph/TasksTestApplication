@@ -71,9 +71,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     protected void onResume() {
         super.onResume();
         taskController.onViewLoaded();
-        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
-        showLoginButton(!loggedIn);
+        checkLogin();
     }
 
     @Override
@@ -183,9 +181,7 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
 
-        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
-        showLoginButton(!loggedIn);
+        checkLogin();
     }
 
     @Override
@@ -227,5 +223,11 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     public void showLoginScreen() {
         Intent intent = new Intent(view.getContext(), LoginActivity.class);
         view.getContext().startActivity(intent);
+    }
+
+    private void checkLogin() {
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+        showLoginButton(!loggedIn);
     }
 }

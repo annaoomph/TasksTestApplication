@@ -6,9 +6,6 @@ import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
-import java.util.Calendar;
-import java.util.Locale;
-
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
@@ -54,7 +51,7 @@ public class LoginOperation extends BaseOperation {
     }
 
     @Override
-    RequestBody prepareContent() {
+    RequestBody preparePostContent() {
         if (username == null || password == null) {
             return null;
         } else {
@@ -63,6 +60,11 @@ public class LoginOperation extends BaseOperation {
                     .add("password", password)
                     .build();
         }
+    }
+
+    @Override
+    String prepareGetContent() {
+        return "";
     }
 
     @Override

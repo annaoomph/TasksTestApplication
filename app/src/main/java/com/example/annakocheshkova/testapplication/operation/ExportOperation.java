@@ -39,9 +39,14 @@ public class ExportOperation<T> extends BaseOperation {
     }
 
     @Override
-    RequestBody prepareContent() {
+    RequestBody preparePostContent() {
         Gson gson = new Gson();
         return RequestBody.create(HttpClient.MEDIA_TYPE_JSON, gson.toJson(items));
+    }
+
+    @Override
+    String prepareGetContent() {
+        return "";
     }
 
     @Override

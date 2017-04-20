@@ -18,9 +18,10 @@ abstract class ImportOperation<T> extends BaseOperation {
     /**
      * Creates an instance of operation
      * @param url to export items to
+     * @param operationListener listener of the operation events
      */
-    ImportOperation(String url, int userId, OperationListener operationListener) {
-        super(url + "?id="+userId, operationListener);
+    ImportOperation(String url, OperationListener operationListener) {
+        super(url, operationListener);
     }
 
     /**

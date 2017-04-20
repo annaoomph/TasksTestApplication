@@ -49,7 +49,13 @@ public abstract class BaseOperation implements Callback {
      * Prepares the content for sending it to the client.
      * @return RequestBody with formatted content
      */
-    abstract RequestBody prepareContent();
+    abstract RequestBody preparePostContent();
+
+    /**
+     * Prepares the content for sending it to the client by get-method
+     * @return String with parameters to url
+     */
+    abstract String prepareGetContent();
 
     /**
      * Makes the request
@@ -62,9 +68,9 @@ public abstract class BaseOperation implements Callback {
             HttpClient httpClient = new HttpClient();
             switch (getRequestType()) {
                 case GET:
-                    httpClient.doGetRequest(url, this);
+                    httpClient.doGetRequest(url, prepareGetContent(), this);
                 case POST:
-                    httpClient.doPostRequest(url, prepareContent(), this);
+                    httpClient.doPostRequest(url, preparePostContent(), this);
                 default:
                     throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
             }
