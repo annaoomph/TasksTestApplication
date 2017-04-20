@@ -18,10 +18,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.TaskController;
 import com.example.annakocheshkova.testapplication.ui.adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
-import com.example.annakocheshkova.testapplication.model.Task;
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.utils.component.UndoComponent;
 
@@ -68,6 +71,9 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
     protected void onResume() {
         super.onResume();
         taskController.onViewLoaded();
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+        showLoginButton(!loggedIn);
     }
 
     @Override
@@ -176,6 +182,10 @@ public class MainTasksActivity extends AppCompatActivity implements TaskView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
+
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+        showLoginButton(!loggedIn);
     }
 
     @Override

@@ -1,7 +1,9 @@
 package com.example.annakocheshkova.testapplication.utils.importer;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.error.FileError;
+
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.listener.ImportListener;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,12 +11,11 @@ import java.io.IOException;
 
 /**
  * A class for importing items from file
- * @param <T>
  */
-class FileImporter<T> implements Importer<T> {
+class TaskFileImporter implements Importer<Task> {
 
     @Override
-    public void importData(String pathToFile, Class<T[]> type, Converter<T> converter, ImportListener<T> importListener) {
+    public void importData(String pathToFile, ImportListener<Task> importListener) {
         try {
             File file = new File(pathToFile);
             int length = (int) file.length();
@@ -26,7 +27,8 @@ class FileImporter<T> implements Importer<T> {
                 throw new IOException();
             }
             String fileText = new String(bytes);
-            importListener.onSuccess(converter.deconvert(fileText, type));
+            Gson gson = new Gson();
+            importListener.onSuccess(gson.fromJson(fileText, Task[].class));
         } catch (IOException exception) {
             importListener.onError(new FileError(FileError.FileErrorType.IO_ERROR));
         }

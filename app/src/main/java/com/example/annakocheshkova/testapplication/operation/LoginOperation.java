@@ -1,10 +1,13 @@
 package com.example.annakocheshkova.testapplication.operation;
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
+import com.google.gson.Gson;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -12,7 +15,7 @@ import okhttp3.RequestBody;
 /**
  * Class for handling login http operations
  */
-public class LoginOperation extends BaseOperation<String> {
+public class LoginOperation extends BaseOperation {
 
     /**
      * Username to be sent
@@ -25,11 +28,17 @@ public class LoginOperation extends BaseOperation<String> {
     private String password;
 
     /**
-     * Creates an instance of BaseOperation
-     * @param url  url to make requests to
+     * A response sent by server
      */
-    public LoginOperation(String url, Converter<String> converter, OperationListener operationListener) {
-        super(url, converter, operationListener);
+    private LoginResponse loginResponse;
+
+
+    /**
+     * Creates an instance of LoginOperation by username and password
+     * @param url to visit
+     */
+    LoginOperation(String url, OperationListener operationListener) {
+        super(url, operationListener);
     }
 
     /**
@@ -38,8 +47,8 @@ public class LoginOperation extends BaseOperation<String> {
      * @param username entered by user
      * @param password entered by user
      */
-    public LoginOperation(String url, String username, String password, Converter<String> converter, OperationListener operationListener) {
-        super(url, converter, operationListener);
+    public LoginOperation(String url, String username, String password, OperationListener operationListener) {
+        super(url, operationListener);
         this.username = username;
         this.password = password;
     }
@@ -56,12 +65,32 @@ public class LoginOperation extends BaseOperation<String> {
         }
     }
 
+    @Override
+    void parseResponse(String responseJson) {
+        Gson gson = new Gson();
+        loginResponse = gson.fromJson(responseJson, LoginResponse.class);
+    }
+
+    @Override
+    BaseResponse getBaseResponse() {
+        return loginResponse;
+    }
+
+    @Override
+    RequestType getRequestType() {
+        if (username == null || password == null) {
+            return RequestType.GET;
+        } else {
+            return RequestType.POST;
+        }
+    }
+
     /**
      * Gets the token from response body
      * @return token string
      */
     public String getToken() {
-        return responseObject.getToken();
+        return loginResponse.getToken();
     }
 
     /**
@@ -69,22 +98,12 @@ public class LoginOperation extends BaseOperation<String> {
      * @return expiration date in milliseconds
      */
     public long getExpirationDate() {
-        return responseObject.getExpirationDate();
+        return loginResponse.getExpirationDate();
     }
 
     @Override
     public void onFakeResponse() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1);
-        responseObject = new BaseResponse("token", calendar.getTimeInMillis(), null);
-        if (username != null && password != null) {
-            if (username.equalsIgnoreCase("admin") && password.equalsIgnoreCase("admin")) {
-                operationListener.onSuccess(this);
-            } else {
-                operationListener.onFailure(new ConnectionError(401));
-            }
-        } else {
-            operationListener.onSuccess(this);
-        }
+        String fakeJson = MyApplication.getAppContext().getString(R.string.login_fake_json);
+        handleResponse(fakeJson);
     }
 }

@@ -31,14 +31,14 @@ class SharedPreferencesManager implements PreferencesManager{
     }
 
     @Override
-    public void setBoolean(String prefName, Boolean prefValue) {
+    public void putBoolean(String prefName, Boolean prefValue) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(prefName, prefValue);
         editor.apply();
     }
 
     @Override
-    public void setString(String prefName, String prefValue) {
+    public void putString(String prefName, String prefValue) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(prefName, prefValue);
         editor.apply();
@@ -47,5 +47,29 @@ class SharedPreferencesManager implements PreferencesManager{
     @Override
     public String getString(String prefName) {
         return settings.getString(prefName, "");
+    }
+
+    @Override
+    public long getLong(String prefName) {
+        return settings.getLong(prefName, 0);
+    }
+
+    @Override
+    public void putLong(String prefName, long prefValue) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong(prefName, prefValue);
+        editor.apply();
+    }
+
+    @Override
+    public int getInt(String prefName) {
+        return settings.getInt(prefName, 0);
+    }
+
+    @Override
+    public void putInt(String prefName, int prefValue) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(prefName, prefValue);
+        editor.apply();
     }
 }

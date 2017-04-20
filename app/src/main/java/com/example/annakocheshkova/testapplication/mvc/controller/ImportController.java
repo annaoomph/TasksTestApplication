@@ -5,12 +5,10 @@ import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.converter.ConverterFactory;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.utils.importer.Importer;
 import com.example.annakocheshkova.testapplication.utils.importer.ImporterFactory;
-import com.example.annakocheshkova.testapplication.model.Task;
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 import com.example.annakocheshkova.testapplication.utils.listener.ImportListener;
@@ -62,9 +60,8 @@ public class ImportController implements ImportListener<Task>{
         if (path.length() == 0) {
             view.showFileNotChosenError();
         } else {
-            Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
             Importer<Task> taskImporter = ImporterFactory.getTaskImporter(local ? ImporterFactory.ImportType.LOCAL_FROM_FILE : ImporterFactory.ImportType.REMOTE);
-            taskImporter.importData(path, Task[].class, converter, this);
+            taskImporter.importData(path, this);
         }
     }
 

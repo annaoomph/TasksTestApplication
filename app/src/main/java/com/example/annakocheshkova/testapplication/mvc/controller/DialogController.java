@@ -3,7 +3,7 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.DialogView;
-import com.example.annakocheshkova.testapplication.model.SubTask;
+import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
 import com.example.annakocheshkova.testapplication.utils.listener.OnItemEditedListener;
 
 /**

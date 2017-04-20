@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 
 /**

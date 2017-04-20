@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.LoginController;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 
 public class LoginActivity extends AppCompatActivity implements LoginView{
 

@@ -6,35 +6,29 @@ package com.example.annakocheshkova.testapplication.response;
 public class BaseResponse {
 
     /**
-     * Token string
+     * Code of the response
      */
-    private String token;
+    private int code;
 
     /**
-     * Date of token expiration
+     * Message of error, if there is
      */
-    private long expirationDate;
+    private String message;
 
     /**
-     * Items (if present)
+     * Gets the value of code and returns it     *
+     * @return code
      */
-    private String items;
-
-    public BaseResponse(String token, long expirationDate, String items) {
-        this.token = token;
-        this.expirationDate = expirationDate;
-        this.items = items;
+    public int getCode() {
+        return code;
     }
 
-    public long getExpirationDate() {
-        return expirationDate;
+    /**
+     * Gets the value of message and returns it     *
+     * @return message
+     */
+    public String getMessage() {
+        return message;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public String getItems() {
-        return items;
-    }
 }

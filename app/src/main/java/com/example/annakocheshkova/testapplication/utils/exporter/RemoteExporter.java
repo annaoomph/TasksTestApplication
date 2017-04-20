@@ -1,8 +1,10 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.operation.ExportOperation;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.operation.OperationManager;
+import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 
@@ -15,10 +17,13 @@ import java.util.List;
 class RemoteExporter<T> implements Exporter<T> {
 
     @Override
-    public void exportData(List<T> items, String url, String path, Converter<T> converter, final ExportListener exportListener) {
-        ExportOperation<T> exportOperation = new ExportOperation<>(url, converter, items, new OperationListener<ExportOperation>() {
+    public void exportData(List<T> items, String url, String path, final ExportListener exportListener) {
+        ExportOperation<T> exportOperation = new ExportOperation<>(url, items, new OperationListener<ExportOperation>() {
             @Override
             public void onSuccess(ExportOperation operation) {
+                int userId = operation.getId();
+                PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+                preferencesManager.putInt(PreferencesManager.USER_ID, userId);
                 exportListener.onSuccess();
             }
 
@@ -27,6 +32,7 @@ class RemoteExporter<T> implements Exporter<T> {
                 exportListener.onError(connectionError);
             }
         });
-        exportOperation.execute();
+        OperationManager operationManager = new OperationManager(exportOperation);
+        operationManager.executeOperation();
     }
 }

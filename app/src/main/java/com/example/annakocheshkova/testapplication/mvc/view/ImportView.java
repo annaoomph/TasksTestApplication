@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 
 import java.io.File;
 import java.util.List;

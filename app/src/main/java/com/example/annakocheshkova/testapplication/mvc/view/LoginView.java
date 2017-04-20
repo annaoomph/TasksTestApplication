@@ -1,5 +1,5 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 
 /**
  * An interface for the login activity

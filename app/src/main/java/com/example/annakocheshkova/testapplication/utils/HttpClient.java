@@ -1,9 +1,10 @@
-package com.example.annakocheshkova.testapplication.client;
+package com.example.annakocheshkova.testapplication.utils;
 
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
-import com.example.annakocheshkova.testapplication.utils.listener.HttpCallback;
 
+import okhttp3.Callback;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -11,7 +12,12 @@ import okhttp3.RequestBody;
 /**
  * A client making http calls
  */
-class HttpClient implements BaseHttpClient {
+public class HttpClient {
+
+    /**
+     * Content media type
+     */
+    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
     /**
      * Preferences manager instance
@@ -26,12 +32,16 @@ class HttpClient implements BaseHttpClient {
     /**
      * Creates an instance of HttpClient
      */
-    HttpClient() {
+    public HttpClient() {
         preferencesManager = PreferencesFactory.getPreferencesManager();
     }
 
-    @Override
-    public void doGetRequest(String url, HttpCallback callback) {
+    /**
+     * Makes a GET-request
+     * @param url url to make request to
+     * @param callback listens to http events
+     */
+    public void doGetRequest(String url, Callback callback) {
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
                 .url(url)
@@ -41,8 +51,13 @@ class HttpClient implements BaseHttpClient {
         
     }
 
-    @Override
-    public void doPostRequest(String url, RequestBody data, HttpCallback callback) {
+    /**
+     * Makes a POST-request
+     * @param url url to make request to
+     * @param data data to be sent
+     * @param callback listens to http events
+     */
+    public void doPostRequest(String url, RequestBody data, Callback callback) {
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
                 .url(url)

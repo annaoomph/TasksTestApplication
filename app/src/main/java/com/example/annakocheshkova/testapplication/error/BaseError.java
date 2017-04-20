@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.error;
+package com.example.annakocheshkova.testapplication.error;
 
 /**
  * An interface for different types of errors

@@ -1,9 +1,9 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
 import com.example.annakocheshkova.testapplication.manager.FileManager;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.error.FileError;
+import com.example.annakocheshkova.testapplication.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,10 +17,11 @@ import java.util.List;
 class FileExporter<T> implements Exporter<T> {
 
     @Override
-    public void exportData(List<T> items, String name, String path, Converter<T> converter, ExportListener exportListener) {
+    public void exportData(List<T> items, String name, String path, ExportListener exportListener) {
         try {
             FileManager.createFolder(path);
-            String formattedData = converter.convert(items);
+            Gson gson = new Gson();
+            String formattedData = gson.toJson(items);
             File file = new File(path + File.separator + name);
             if (!file.createNewFile())
                 exportListener.onError(new FileError(FileError.FileErrorType.CREATE_FILE_ERROR));

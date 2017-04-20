@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils.error;
+package com.example.annakocheshkova.testapplication.error;
 
 import android.content.Context;
 
@@ -11,7 +11,7 @@ import com.example.annakocheshkova.testapplication.R;
 public class FileError implements BaseError {
 
     /**
-     * Types of errors
+     * Types of errors connected with files
      */
     public enum FileErrorType {
         IO_ERROR,
@@ -20,7 +20,7 @@ public class FileError implements BaseError {
     }
 
     /**
-     * Error type
+     * File error type
      */
     private FileErrorType fileErrorType;
 

@@ -16,6 +16,16 @@ public interface PreferencesManager {
     String TOKEN = "token";
 
     /**
+     * Name of the expiration date preference
+     */
+    String EXPIRE = "expiration_date";
+
+    /**
+     * Name of the user id preference
+     */
+    String USER_ID = "user_id";
+
+    /**
      * Gets a boolean from application preferences     *
      * @param prefName name of the preference
      * @return value of the preference
@@ -27,14 +37,14 @@ public interface PreferencesManager {
      * @param prefName name of the preference
      * @param prefValue value of the preference
      */
-    void setBoolean(String prefName, Boolean prefValue);
+    void putBoolean(String prefName, Boolean prefValue);
 
     /**
      * Sets the string in the application preferences
      * @param prefName name of the preference
      * @param prefValue value of the preference
      */
-    void setString(String prefName, String prefValue);
+    void putString(String prefName, String prefValue);
 
     /**
      * Gets the string in the application preferences
@@ -42,4 +52,32 @@ public interface PreferencesManager {
      * @return value of the preference
      */
     String getString(String prefName);
+
+    /**
+     * Gets a long value from application preferences
+     * @param prefName name of the preference
+     * @return value of the preference
+     */
+    long getLong(String prefName);
+
+    /**
+     * Sets the long value in the application preferences
+     * @param prefName name of the preference
+     * @param prefValue value of the preference
+     */
+    void putLong(String prefName, long prefValue);
+
+    /**
+     * Gets an int value from application preferences
+     * @param prefName name of the preference
+     * @return value of the preference
+     */
+    int getInt(String prefName);
+
+    /**
+     * Sets the int value in the application preferences
+     * @param prefName name of the preference
+     * @param prefValue value of the preference
+     */
+    void putInt(String prefName, int prefValue);
 }

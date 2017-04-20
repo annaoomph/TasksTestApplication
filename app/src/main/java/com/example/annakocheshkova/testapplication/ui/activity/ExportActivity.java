@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 
 public class ExportActivity extends AppCompatActivity implements ExportView {
 
@@ -159,12 +159,7 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
 
     @Override
     public void setLoggedIn(boolean loggedIn) {
-        if (loggedIn) {
-            serverButton.setEnabled(true);
-            loginLink.setVisibility(View.GONE);
-        } else {
-            serverButton.setEnabled(false);
-            loginLink.setVisibility(View.VISIBLE);
-        }
+        serverButton.setEnabled(loggedIn);
+        loginLink.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
     }
 }

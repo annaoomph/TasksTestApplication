@@ -2,8 +2,8 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.model.SubTask;
-import com.example.annakocheshkova.testapplication.model.Task;
+import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
 import com.example.annakocheshkova.testapplication.utils.listener.OnItemEditedListener;
 import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;

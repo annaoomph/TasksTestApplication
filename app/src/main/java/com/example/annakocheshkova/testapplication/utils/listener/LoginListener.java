@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
 
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.error.ConnectionError;
 
 /**
  * Listens to events connected with login

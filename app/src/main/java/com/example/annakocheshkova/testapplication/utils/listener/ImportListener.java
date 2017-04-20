@@ -1,7 +1,5 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
-
-import java.util.List;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 
 /**
  * A custom listener of the events connected with import

@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
-import com.example.annakocheshkova.testapplication.model.SubTask;
+import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
 
 import java.util.List;
 

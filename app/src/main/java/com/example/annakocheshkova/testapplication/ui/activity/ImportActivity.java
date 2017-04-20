@@ -22,11 +22,9 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ImportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
-import com.example.annakocheshkova.testapplication.utils.error.FileError;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -188,13 +186,8 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
 
     @Override
     public void setLoggedIn(boolean loggedIn) {
-        if (loggedIn) {
-            serverButton.setEnabled(true);
-            loginLink.setVisibility(View.GONE);
-        } else {
-            serverButton.setEnabled(false);
-            loginLink.setVisibility(View.VISIBLE);
-        }
+        serverButton.setEnabled(loggedIn);
+        loginLink.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
     }
 
     @Override

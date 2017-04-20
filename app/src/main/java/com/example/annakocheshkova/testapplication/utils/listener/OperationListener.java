@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
 
 import com.example.annakocheshkova.testapplication.operation.BaseOperation;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.error.ConnectionError;
 
 /**
  * A basic listener for operations events

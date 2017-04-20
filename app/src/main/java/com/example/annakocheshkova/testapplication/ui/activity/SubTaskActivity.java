@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.mvc.controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
-import com.example.annakocheshkova.testapplication.model.SubTask;
+import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.ui.adapter.SubTaskAdapter;

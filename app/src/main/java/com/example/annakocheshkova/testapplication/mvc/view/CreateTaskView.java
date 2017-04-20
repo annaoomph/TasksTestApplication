@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
-import com.example.annakocheshkova.testapplication.model.Task;
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
 
 /**
  * An interface for create item activity

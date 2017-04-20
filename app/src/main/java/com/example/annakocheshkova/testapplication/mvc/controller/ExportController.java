@@ -3,11 +3,9 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.converter.ConverterFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
-import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.utils.exporter.Exporter;
 import com.example.annakocheshkova.testapplication.utils.exporter.ExporterFactory;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
@@ -57,8 +55,7 @@ public class ExportController implements ExportListener {
         String nameOrPath = view.getNameOrPath();
         List<Task> tasks = dataStore.getAllTasks();
         Exporter<Task> taskExporter = ExporterFactory.getTaskExporter(local ? ExporterFactory.ExportType.LOCAL_TO_FILE : ExporterFactory.ExportType.REMOTE);
-        Converter<Task> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
-        taskExporter.exportData(tasks, nameOrPath, FileManager.DEFAULT_PATH, converter, this);
+        taskExporter.exportData(tasks, nameOrPath, FileManager.DEFAULT_PATH, this);
     }
 
     @Override

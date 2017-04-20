@@ -2,8 +2,8 @@ package com.example.annakocheshkova.testapplication.database;
 import java.sql.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.annakocheshkova.testapplication.model.SubTask;
-import com.example.annakocheshkova.testapplication.model.Task;
+import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
+import com.example.annakocheshkova.testapplication.mvc.model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
