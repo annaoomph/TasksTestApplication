@@ -48,13 +48,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Sets all the configuration and listeners
      */
-    @Override
-    public void setContentView(@LayoutRes int layoutResID) {
-        RelativeLayout fullLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
-        FrameLayout activityContainer = (FrameLayout) fullLayout.findViewById(R.id.activity_content);
-        getLayoutInflater().inflate(layoutResID, activityContainer, true);
-        super.setContentView(fullLayout);
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutResId());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (useToolbar()) {
             initToolbar();
@@ -67,19 +65,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        RelativeLayout fullLayout = (RelativeLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
+        FrameLayout activityContainer = (FrameLayout) fullLayout.findViewById(R.id.activity_content);
+        getLayoutInflater().inflate(layoutResID, activityContainer, true);
+        super.setContentView(fullLayout);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_menu, menu);
-        return true;
     }
 
     @Override
@@ -97,6 +96,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             drawerToggle.onConfigurationChanged(newConfig);
         }
     }
+
+    /**
+     * Gets the inner layout resource id
+     * @return resource id
+     */
+    abstract int getLayoutResId();
+
 
     /**
      * Initializes the toolbar

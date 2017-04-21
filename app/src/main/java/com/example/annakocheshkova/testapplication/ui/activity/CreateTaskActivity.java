@@ -96,9 +96,13 @@ public class CreateTaskActivity extends BaseActivity implements CreateTaskView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_item);
         getViews();
         setContent();
+    }
+
+    @Override
+    int getLayoutResId() {
+        return R.layout.activity_create_item;
     }
 
     @Override

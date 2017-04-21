@@ -48,8 +48,12 @@ public class ExportActivity extends BaseActivity implements ExportView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_export);
         setContent();
+    }
+
+    @Override
+    int getLayoutResId() {
+        return R.layout.activity_export;
     }
 
     @Override

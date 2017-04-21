@@ -32,8 +32,12 @@ public class ImportActivity extends BaseActivity implements ImportView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_import);
         setContent();
+    }
+
+    @Override
+    int getLayoutResId() {
+        return R.layout.activity_import;
     }
 
     /**

@@ -20,8 +20,12 @@ public class LoginActivity extends BaseActivity implements LoginView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         setContent();
+    }
+
+    @Override
+    int getLayoutResId() {
+        return R.layout.activity_login;
     }
 
     /**

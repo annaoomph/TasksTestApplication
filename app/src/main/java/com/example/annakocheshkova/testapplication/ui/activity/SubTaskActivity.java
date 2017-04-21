@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.example.annakocheshkova.testapplication.mvc.controller.SubTaskController;
@@ -40,8 +42,12 @@ public class SubTaskActivity extends BaseActivity implements SubTaskView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subtask);
         setContent();
+    }
+
+    @Override
+    int getLayoutResId() {
+        return R.layout.activity_subtask;
     }
 
     @Override
@@ -89,6 +95,13 @@ public class SubTaskActivity extends BaseActivity implements SubTaskView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.custom_menu, menu);
+        return true;
     }
 
     @Override
