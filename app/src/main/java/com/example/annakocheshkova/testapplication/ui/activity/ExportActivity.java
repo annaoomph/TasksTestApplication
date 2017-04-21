@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
@@ -14,6 +15,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
@@ -146,9 +149,9 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     @Override
     public void showSuccessMessage(String path) {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            Toast.makeText(this, getString(R.string.file_created) + getNameOrPath(), Toast.LENGTH_LONG).show();
+            MyApplication.makeToast(this, getString(R.string.file_created) + getNameOrPath());
         } else {
-            Toast.makeText(this, getString(R.string.server_success) + getNameOrPath(), Toast.LENGTH_LONG).show();
+            MyApplication.makeToast(this, getString(R.string.server_success) + getNameOrPath());
         }
     }
 

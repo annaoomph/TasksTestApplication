@@ -3,11 +3,14 @@ package com.example.annakocheshkova.testapplication.utils;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 
+import java.io.IOException;
+
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A client making http calls
@@ -40,31 +43,28 @@ public class HttpClient {
      * Makes a GET-request
      * @param url url to make request to
      * @param params params to url
-     * @param callback listens to http events
      */
-    public void doGetRequest(String url, String params, Callback callback) {
+    public Response doGetRequest(String url, String params) throws IOException {
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
                 .url(url + params)
                 .addHeader("Authentication", token)
                 .build();
-        client.newCall(request).enqueue(callback);
-        
+        return client.newCall(request).execute();
     }
 
     /**
      * Makes a POST-request
      * @param url url to make request to
      * @param data data to be sent
-     * @param callback listens to http events
      */
-    public void doPostRequest(String url, RequestBody data, Callback callback) {
+    public Response doPostRequest(String url, RequestBody data) throws IOException{
         String token = preferencesManager.getString(PreferencesManager.TOKEN);
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authentication", token)
                 .post(data)
                 .build();
-        client.newCall(request).enqueue(callback);
+        return client.newCall(request).execute();
     }
 }

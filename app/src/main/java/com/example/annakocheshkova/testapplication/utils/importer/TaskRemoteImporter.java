@@ -2,7 +2,7 @@ package com.example.annakocheshkova.testapplication.utils.importer;
 
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
 import com.example.annakocheshkova.testapplication.operation.TaskImportOperation;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
@@ -22,7 +22,7 @@ class TaskRemoteImporter implements Importer<Task> {
 
             @Override
             public void onSuccess(TaskImportOperation operation) {
-                    importListener.onSuccess(operation.getItems());
+                importListener.onSuccess(operation.getItems());
             }
 
             @Override
@@ -30,7 +30,7 @@ class TaskRemoteImporter implements Importer<Task> {
                 importListener.onError(connectionError);
             }
         });
-        OperationManager operationManager = new OperationManager(taskImportOperation);
-        operationManager.executeOperation();
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(taskImportOperation);
     }
 }

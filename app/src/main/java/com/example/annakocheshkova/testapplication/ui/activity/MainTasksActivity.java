@@ -24,7 +24,7 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.mvc.controller.TaskController;
 import com.example.annakocheshkova.testapplication.ui.adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.utils.component.UndoComponent;
 

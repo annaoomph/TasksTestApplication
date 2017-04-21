@@ -3,7 +3,7 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 
 import java.util.Calendar;

@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.response;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents the response sent by server on Import
@@ -10,7 +11,7 @@ public class ImportResponse extends BaseResponse{
     /**
      * Imported data
      */
-    private String items;
+    @SerializedName("items") private String items;
 
     /**
      * Gets the value of items and returns it     *

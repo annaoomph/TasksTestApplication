@@ -1,14 +1,8 @@
 package com.example.annakocheshkova.testapplication.operation;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 import okhttp3.RequestBody;
 
@@ -58,7 +52,7 @@ public class TaskImportOperation extends ImportOperation<Task> {
 
     @Override
     public void onFakeResponse() {
-        String fakeJson = MyApplication.getAppContext().getString(R.string.fake_task_import_json);
+        String fakeJson = "{code:200, message:\'\', items:\'[{\"alarm_time\":0,\"id\":0,\"name\":\"TEST\",\"notification\":false,\"time\":0},{\"alarm_time\":0,\"id\":0,\"name\":\"TEST-1\",\"notification\":false,\"time\":0}]\'}";
         handleResponse(fakeJson);
     }
 }

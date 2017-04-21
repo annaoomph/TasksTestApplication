@@ -67,7 +67,7 @@ public class ExportOperation<T> extends BaseOperation {
 
     @Override
     public void onFakeResponse() {
-        String fakeJson = MyApplication.getAppContext().getString(R.string.export_fake_json);
+        String fakeJson = "{code: 200, message:\"\", userId: 11}";
         handleResponse(fakeJson);
     }
 

@@ -1,6 +1,6 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 /**

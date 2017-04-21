@@ -28,8 +28,8 @@ public class LoginManager {
             @Override
             public void onSuccess(LoginOperation operation) {
                 String token = operation.getToken();
-                long expirationDate = operation.getExpirationDate();
-                preferencesManager.putLong(PreferencesManager.EXPIRE, expirationDate);
+                String expirationDate = operation.getExpirationDate();
+                preferencesManager.putString(PreferencesManager.EXPIRE, expirationDate);
                 preferencesManager.putBoolean(PreferencesManager.LOGGED_IN, true);
                 preferencesManager.putString(PreferencesManager.TOKEN, token);
                 loginListener.onSuccess();
@@ -40,8 +40,8 @@ public class LoginManager {
                 loginListener.onFailure(connectionError);
             }
         });
-        OperationManager operationManager = new OperationManager(loginOperation);
-        operationManager.executeOperation();
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(loginOperation);
     }
 
     /**

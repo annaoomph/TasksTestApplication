@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.annakocheshkova.testapplication.mvc.controller.SubTaskController;
-import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
+import com.example.annakocheshkova.testapplication.model.SubTask;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 

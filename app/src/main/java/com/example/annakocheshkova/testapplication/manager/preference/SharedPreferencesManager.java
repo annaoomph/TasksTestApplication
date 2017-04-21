@@ -50,18 +50,6 @@ class SharedPreferencesManager implements PreferencesManager{
     }
 
     @Override
-    public long getLong(String prefName) {
-        return settings.getLong(prefName, 0);
-    }
-
-    @Override
-    public void putLong(String prefName, long prefValue) {
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putLong(prefName, prefValue);
-        editor.apply();
-    }
-
-    @Override
     public int getInt(String prefName) {
         return settings.getInt(prefName, 0);
     }

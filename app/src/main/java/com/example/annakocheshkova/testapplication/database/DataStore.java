@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.database;
 
-import com.example.annakocheshkova.testapplication.mvc.model.SubTask;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.SubTask;
+import com.example.annakocheshkova.testapplication.model.Task;
 import java.util.List;
 
 /**

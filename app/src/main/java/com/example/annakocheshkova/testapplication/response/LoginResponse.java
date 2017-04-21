@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.response;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Represents the response sent by server on login
@@ -10,12 +11,12 @@ public class LoginResponse extends BaseResponse {
     /**
      * Token for user further authorization
      */
-    private String token;
+    @SerializedName("token") private String token;
 
     /**
      * Token expiration date
      */
-    private long expirationDate;
+    @SerializedName("expirationDate") private String expirationDate;
 
     /**
      * Gets the value of token and returns it     *
@@ -29,7 +30,7 @@ public class LoginResponse extends BaseResponse {
      * Gets the value of expiration date and returns it     *
      * @return expiration date
      */
-    public long getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 }

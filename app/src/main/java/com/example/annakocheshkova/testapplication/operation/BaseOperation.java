@@ -16,7 +16,7 @@ import okhttp3.Response;
 /**
  * Base operation for handling http requests
  */
-public abstract class BaseOperation implements Callback {
+public abstract class BaseOperation {
 
     /**
      * Enum with request types
@@ -61,6 +61,8 @@ public abstract class BaseOperation implements Callback {
      * Makes the request
      */
     void execute() {
+        try {Thread.sleep(5000);} catch
+                (InterruptedException e) {}
         boolean fakeRequest = ConfigurationManager.getFakeRequest();
         if (fakeRequest) {
             onFakeResponse();
@@ -68,22 +70,29 @@ public abstract class BaseOperation implements Callback {
             HttpClient httpClient = new HttpClient();
             switch (getRequestType()) {
                 case GET:
-                    httpClient.doGetRequest(url, prepareGetContent(), this);
+                    try {
+                        onResponse(httpClient.doGetRequest(url, prepareGetContent()));
+                    } catch (IOException e) {
+                        operationListener.onFailure(new ConnectionError(500, e.getMessage()));
+                    }
                 case POST:
-                    httpClient.doPostRequest(url, preparePostContent(), this);
+                    try {
+                        httpClient.doPostRequest(url, preparePostContent());
+                    } catch (IOException e) {
+                        operationListener.onFailure(new ConnectionError(500, e.getMessage()));
+                    }
                 default:
                     throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
             }
         }
     }
 
-    @Override
-    public void onFailure(Call call, IOException e) {
-        operationListener.onFailure(new ConnectionError(500, e.getMessage()));
-    }
-
-    @Override
-    public void onResponse(Call call, Response response) throws IOException {
+    /**
+     * Called if responce if delivered
+     * @param response response from the server
+     * @throws IOException parse exception
+     */
+    private void onResponse(Response response) throws IOException {
         if (!response.isSuccessful()) {
             operationListener.onFailure(new ConnectionError(response.code()));
         } else {

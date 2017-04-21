@@ -51,10 +51,6 @@
     <string name="unexpected_error">An unexpected error.</string>
     <string name="feature_not_implemented">Sorry. Feature %s has not yet been implemented.</string>
     <string name="url_empty_error">You have not entered url.</string>
-    <string name="login_fake_json">{code:200, message:\"\", token:\"token\", expirationDate:1492783950947}</string>
-    <string name="export_fake_json">{code: 200, message:\"\", userId: 11}</string>
-    <string name="fake_task_import_json">{code:200, message:\'\', items:\'[{\"alarm_time\":0,\"id\":0,\"name\":\"TEST\",\"notification\":false,\"time\":0},{\"alarm_time\":0,\"id\":0,\"name\":\"TEST-1\",\"notification\":false,\"time\":0}]\'}</string>
-
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>

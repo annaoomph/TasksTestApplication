@@ -54,20 +54,6 @@ public interface PreferencesManager {
     String getString(String prefName);
 
     /**
-     * Gets a long value from application preferences
-     * @param prefName name of the preference
-     * @return value of the preference
-     */
-    long getLong(String prefName);
-
-    /**
-     * Sets the long value in the application preferences
-     * @param prefName name of the preference
-     * @param prefValue value of the preference
-     */
-    void putLong(String prefName, long prefValue);
-
-    /**
      * Gets an int value from application preferences
      * @param prefName name of the preference
      * @return value of the preference

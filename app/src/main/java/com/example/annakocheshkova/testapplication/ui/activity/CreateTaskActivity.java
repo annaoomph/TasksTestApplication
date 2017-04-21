@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.mvc.controller.CreateTaskController;
 import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 

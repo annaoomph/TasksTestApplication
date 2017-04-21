@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.ui.activity.SubTaskActivity;

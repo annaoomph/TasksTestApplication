@@ -32,7 +32,8 @@ class RemoteExporter<T> implements Exporter<T> {
                 exportListener.onError(connectionError);
             }
         });
-        OperationManager operationManager = new OperationManager(exportOperation);
-        operationManager.executeOperation();
+
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(exportOperation);
     }
 }

@@ -8,7 +8,7 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.utils.importer.Importer;
 import com.example.annakocheshkova.testapplication.utils.importer.ImporterFactory;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
 import com.example.annakocheshkova.testapplication.utils.listener.ImportListener;

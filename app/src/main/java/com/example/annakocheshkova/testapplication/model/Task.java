@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.mvc.model;
+package com.example.annakocheshkova.testapplication.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;

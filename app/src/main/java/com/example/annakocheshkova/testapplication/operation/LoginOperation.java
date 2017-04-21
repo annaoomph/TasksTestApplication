@@ -6,6 +6,8 @@ import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
+import java.util.Calendar;
+
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
@@ -97,15 +99,18 @@ public class LoginOperation extends BaseOperation {
 
     /**
      * Gets the expiration date from response body
-     * @return expiration date in milliseconds
+     * @return expiration date in string format
      */
-    public long getExpirationDate() {
+    public String getExpirationDate() {
         return loginResponse.getExpirationDate();
     }
 
     @Override
     public void onFakeResponse() {
-        String fakeJson = MyApplication.getAppContext().getString(R.string.login_fake_json);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1);
+
+        String fakeJson = "{code:200, message:\"\", token:\"token\", expirationDate:\"4/21/17 3:29:17 PM GMT+00:00\"}";
         handleResponse(fakeJson);
     }
 }

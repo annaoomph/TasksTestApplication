@@ -4,7 +4,7 @@ import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
-import com.example.annakocheshkova.testapplication.mvc.model.Task;
+import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.utils.exporter.Exporter;
 import com.example.annakocheshkova.testapplication.utils.exporter.ExporterFactory;
