@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.LoginController;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
@@ -73,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView{
 
     @Override
     public void showError(BaseError error) {
-        Toast.makeText(this, error.getErrorMessage(), Toast.LENGTH_LONG).show();
+        MyApplication.makeToast(error.getErrorMessage());
     }
 
     @Override

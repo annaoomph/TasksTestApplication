@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ImportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
@@ -153,15 +154,15 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
 
     @Override
     public void showError(BaseError error) {
-        Toast.makeText(this, error.getErrorMessage(), Toast.LENGTH_LONG).show();
+        MyApplication.makeToast(error.getErrorMessage());
     }
 
     @Override
     public void showFileNotChosenError() {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            Toast.makeText(this, R.string.file_not_chosen_error, Toast.LENGTH_LONG).show();
+            MyApplication.makeToast(getString(R.string.file_not_chosen_error));
         } else {
-            Toast.makeText(this, R.string.url_empty_error, Toast.LENGTH_LONG).show();
+            MyApplication.makeToast(getString(R.string.url_empty_error));
         }
     }
 
@@ -172,7 +173,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
 
     @Override
     public void showSuccessMessage(int numberOfItems) {
-        Toast.makeText(this, numberOfItems + getString(R.string.items_added_label), Toast.LENGTH_LONG).show();
+        MyApplication.makeToast(numberOfItems + getString(R.string.items_added_label));
     }
 
     @Override

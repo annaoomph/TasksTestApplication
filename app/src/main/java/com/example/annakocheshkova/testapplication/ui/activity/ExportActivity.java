@@ -149,15 +149,15 @@ public class ExportActivity extends AppCompatActivity implements ExportView {
     @Override
     public void showSuccessMessage(String path) {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            MyApplication.makeToast(this, getString(R.string.file_created) + getNameOrPath());
+            MyApplication.makeToast(getString(R.string.file_created) + getNameOrPath());
         } else {
-            MyApplication.makeToast(this, getString(R.string.server_success) + getNameOrPath());
+            MyApplication.makeToast(getString(R.string.server_success) + getNameOrPath());
         }
     }
 
     @Override
     public void showError(BaseError error) {
-        Toast.makeText(this, error.getErrorMessage(), Toast.LENGTH_LONG).show();
+        MyApplication.makeToast(error.getErrorMessage());
     }
 
     @Override

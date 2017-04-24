@@ -22,8 +22,14 @@ public class OperationManager {
      */
     private static final OperationManager operationManager = new OperationManager();
 
+    /**
+     * A queue with all operations to be executed
+     */
     private BlockingQueue<BaseOperation> operationQueue;
 
+    /**
+     * The thread that executes all operations from the queue
+     */
     private final OperationThread operationThread;
 
     /**
@@ -31,15 +37,27 @@ public class OperationManager {
      */
     private PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
 
+    /**
+     * Creates an instance of the Operation Manager
+     */
     private OperationManager() {
         operationThread = new OperationThread();
         operationThread.start();
         operationQueue = new ArrayBlockingQueue<>(1);
     }
+
+    /**
+     * Gets the only instance of operation manager
+     * @return Operation Manager
+     */
     public static OperationManager getInstance() {
         return operationManager;
     }
 
+    /**
+     * Pushes a new operation to the queue
+     * @param baseOperation operation to be executed
+     */
     public void enqueue(BaseOperation baseOperation) {
         operationQueue.offer(baseOperation);
         if (!operationThread.isExecuting) {
@@ -91,13 +109,21 @@ public class OperationManager {
     }
 
 
-
-
+    /**
+     * The thread that executes operations
+     */
     private class OperationThread extends Thread {
 
+        /**
+         * True if the thread is currently working
+         */
         boolean isExecuting;
+
+        /**
+         * Executes operations in line
+         */
         public synchronized  void run(){
-            while (true) { //TODO while true ?
+            while (true) {
                 isExecuting = true;
                 while (!operationQueue.isEmpty()) {
                     BaseOperation baseOperation = operationQueue.poll();
