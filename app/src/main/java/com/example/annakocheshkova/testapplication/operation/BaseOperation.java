@@ -1,12 +1,21 @@
 package com.example.annakocheshkova.testapplication.operation;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
+import com.example.annakocheshkova.testapplication.MyApplication;
+import com.example.annakocheshkova.testapplication.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
+import com.google.gson.JsonParseException;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeoutException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -27,14 +36,29 @@ public abstract class BaseOperation {
     }
 
     /**
-     * Url to maje requests to
+     * Max count of retries for one operation
      */
-    private String url;
+    private static final int maxRetry = 1;
+
+    /**
+     * A time (in ms) to wait before another retry
+     */
+    private static final long retryWait = 5000;
+
+    /**
+     * Current amount of made retries
+     */
+    private int retryCount;
 
     /**
      * A listener of request events
      */
     private OperationListener operationListener;
+
+    /**
+     * Url to maje requests to
+     */
+    private String url;
 
     /**
      * Creates an instance of BaseOperation
@@ -61,34 +85,70 @@ public abstract class BaseOperation {
      * Makes the request
      */
     void execute() {
-        try {Thread.sleep(5000);} catch
-                (InterruptedException e) {}
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         boolean fakeRequest = ConfigurationManager.getFakeRequest();
         if (fakeRequest) {
             onFakeResponse();
         } else {
             HttpClient httpClient = new HttpClient();
-            switch (getRequestType()) {
-                case GET:
-                    try {
+            try {
+                switch (getRequestType()) {
+                    case GET:
                         onResponse(httpClient.doGetRequest(url, prepareGetContent()));
-                    } catch (IOException e) {
-                        operationListener.onFailure(new ConnectionError(e.getMessage()));
-                    }
-                case POST:
-                    try {
-                        httpClient.doPostRequest(url, preparePostContent());
-                    } catch (IOException e) {
-                        operationListener.onFailure(new ConnectionError(e.getMessage()));
-                    }
-                default:
-                    throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
+                        break;
+                    case POST:
+                        onResponse(httpClient.doPostRequest(url, preparePostContent()));
+                        break;
+                    default:
+                        throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
+                }
+            } catch (IllegalArgumentException e) {
+                operationListener.onFailure(new ConnectionError(e.getMessage()));
+            }
+            catch (IOException e) {
+                if (!isNetworkAvailable()) {
+                    retry();
+                } else {
+                    operationListener.onFailure(new ConnectionError(e.getMessage()));
+                }
             }
         }
     }
 
     /**
-     * Called if responce if delivered
+     * Retries to execute the operation after the given time
+     */
+    private void retry() {
+        if (retryCount >= maxRetry) {
+            operationListener.onFailure(new ConnectionError(ConnectionError.ConnectionErrorType.CONNECTION_ERROR));
+        } else {
+            retryCount++;
+            try {
+                Thread.sleep(retryWait);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            execute();
+        }
+    }
+
+    /**
+     * Finds out if the network is available
+     * @return true if yes, false otherwise
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) MyApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    /**
+     * Called if response if delivered
      * @param response response from the server
      * @throws IOException parse exception
      */
@@ -105,12 +165,16 @@ public abstract class BaseOperation {
      * @param responseJson json response string
      */
     void handleResponse(String responseJson) {
-        parseResponse(responseJson);
-        BaseResponse baseResponse = getBaseResponse();
-        if (baseResponse.getCode() != 200) {
-            operationListener.onFailure(new ConnectionError(baseResponse.getCode(), baseResponse.getMessage()));
-        } else {
-            operationListener.onSuccess(this);
+        try {
+            parseResponse(responseJson);
+            BaseResponse baseResponse = getBaseResponse();
+            if (baseResponse.getCode() != 200) {
+                operationListener.onFailure(new ConnectionError(baseResponse.getCode(), baseResponse.getMessage()));
+            } else {
+                operationListener.onSuccess(this);
+            }
+        } catch (JsonParseException exception) {
+            operationListener.onFailure(new FileError(FileError.FileErrorType.PARSE_ERROR));
         }
     }
 
@@ -118,7 +182,7 @@ public abstract class BaseOperation {
      * Parses json and sets the response object
      * @param responseJson json to be parsed
      */
-    abstract void parseResponse(String responseJson);
+    abstract void parseResponse(String responseJson) throws JsonParseException;
 
     /**
      * Gets the response in base format

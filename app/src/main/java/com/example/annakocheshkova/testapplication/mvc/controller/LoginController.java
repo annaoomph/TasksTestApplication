@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
 import android.support.annotation.UiThread;
 
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
@@ -36,8 +37,8 @@ public class LoginController {
             }
 
             @Override
-            public void onFailure(ConnectionError connectionError) {
-                loginView.showError(connectionError);
+            public void onFailure(BaseError baseError) {
+                loginView.showError(baseError);
             }
         });
     }

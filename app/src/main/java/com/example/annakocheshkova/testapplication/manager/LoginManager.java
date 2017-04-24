@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.manager;
 
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
@@ -46,8 +47,8 @@ public class LoginManager {
             }
 
             @Override
-            public void onFailure(ConnectionError connectionError) {
-                loginListener.onFailure(connectionError);
+            public void onFailure(BaseError baseError) {
+                loginListener.onFailure(baseError);
             }
         });
         OperationManager operationManager = OperationManager.getInstance();

@@ -36,7 +36,7 @@
     <string name="import_label">Import</string>
     <string name="db_version_hint">1</string>
     <string name="files_list_title">Choose one of the files:</string>
-    <string name="corrupt_file_error">The file you have chosen is corrupt. You may delete it.</string>
+    <string name="parse_error">Can not parse the received data properly.</string>
     <string name="file_not_chosen_error">You have not chosen any file.</string>
     <string name="items_added_label"> item(s) were added</string>
     <string name="io_server_error">Can not reach server. Please check your connection.</string>

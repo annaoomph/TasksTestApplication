@@ -7,6 +7,7 @@ import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.ExportResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class ExportOperation<T> extends BaseOperation {
     }
 
     @Override
-    void parseResponse(String responseJson) {
+    void parseResponse(String responseJson) throws JsonParseException {
         Gson gson = new Gson();
         exportResponse = gson.fromJson(responseJson, ExportResponse.class);
     }

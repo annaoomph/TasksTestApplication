@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
 
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
 
 /**
@@ -14,8 +15,8 @@ public interface LoginListener {
 
     /**
      * Called when login failed
-     * @param connectionError error that has happened
+     * @param baseError error that has happened
      */
-    void onFailure(ConnectionError connectionError);
+    void onFailure(BaseError baseError);
 
 }

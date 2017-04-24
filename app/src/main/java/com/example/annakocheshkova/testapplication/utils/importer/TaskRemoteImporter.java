@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.utils.importer;
 
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.model.Task;
@@ -26,8 +27,8 @@ class TaskRemoteImporter implements Importer<Task> {
             }
 
             @Override
-            public void onFailure(ConnectionError connectionError) {
-                importListener.onError(connectionError);
+            public void onFailure(BaseError baseError) {
+                importListener.onError(baseError);
             }
         });
         OperationManager operationManager = OperationManager.getInstance();

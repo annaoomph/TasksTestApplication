@@ -1,5 +1,6 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.operation.ExportOperation;
@@ -28,8 +29,8 @@ class RemoteExporter<T> implements Exporter<T> {
             }
 
             @Override
-            public void onFailure(ConnectionError connectionError) {
-                exportListener.onError(connectionError);
+            public void onFailure(BaseError baseError) {
+                exportListener.onError(baseError);
             }
         });
 

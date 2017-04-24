@@ -5,10 +5,8 @@ import com.example.annakocheshkova.testapplication.utils.listener.OperationListe
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;

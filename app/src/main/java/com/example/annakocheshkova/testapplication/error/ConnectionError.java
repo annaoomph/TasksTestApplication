@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 
 /**
  * A basic class describing an error that can happen during the http request
@@ -11,9 +12,18 @@ import com.example.annakocheshkova.testapplication.R;
 public class ConnectionError implements BaseError {
 
     /**
-     * Code of the error
+     * An enum with possible connection error types
      */
-    private int code;
+    public enum ConnectionErrorType {
+        CONNECTION_ERROR,
+        SERVER_ERROR,
+        UNAUTHORIZED_ERROR
+    }
+
+    /**
+     * Type of the error
+     */
+    private ConnectionErrorType type;
 
     /**
      * Message coming with error (if it came, otherwise set to null - the error will load error string itself)
@@ -25,7 +35,22 @@ public class ConnectionError implements BaseError {
      * @param code code of the error
      */
     public ConnectionError(int code) {
-        this.code = code;
+        switch (code) {
+            case 500:
+                this.type = ConnectionErrorType.SERVER_ERROR; break;
+            case 401:
+                this.type = ConnectionErrorType.UNAUTHORIZED_ERROR; break;
+            default:
+                this.type = ConnectionErrorType.CONNECTION_ERROR; break;
+        }
+    }
+
+    /**
+     * Creates an instance of the error
+     * @param type type of the error
+     */
+    public ConnectionError(ConnectionErrorType type) {
+        this.type = type;
     }
 
     /**
@@ -33,7 +58,7 @@ public class ConnectionError implements BaseError {
      * @param message message that came with the error
      */
     public ConnectionError(String message) {
-        this.code = 500;
+        this.type = ConnectionErrorType.SERVER_ERROR;
         this.message = message;
     }
 
@@ -43,20 +68,23 @@ public class ConnectionError implements BaseError {
      * @param message message that came with the error
      */
     public ConnectionError(int code, String message) {
-        this.code = code;
+        this(code);
         this.message = message;
     }
+
     @Override
     public String getErrorMessage() {
         if (message == null) {
             Context context = MyApplication.getAppContext();
-            switch (code) {
-                case 500:
+            switch (type) {
+                case SERVER_ERROR:
                     return context.getString(R.string.error_message_server);
-                case 401:
+                case UNAUTHORIZED_ERROR:
                     return context.getString(R.string.unauthorized_error);
+                case CONNECTION_ERROR:
+                    context.getString(R.string.connection_error);
                 default:
-                    return context.getString(R.string.connection_error);
+                    throw new RuntimeException(new NotImplementedException(type.toString()));
             }
         } else {
             return message;
