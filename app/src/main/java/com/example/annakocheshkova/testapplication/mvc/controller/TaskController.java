@@ -115,17 +115,4 @@ public class TaskController implements UndoListener<Task> {
             }
         });
     }
-
-    /**
-     * Called when user pressed login/logout button
-     */
-    public void onLoginClicked() {
-        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
-        if (loggedIn) {
-            view.showLoginButton(true);
-            LoginManager.logout();
-        } else {
-            view.showLoginScreen();
-        }
-    }
 }

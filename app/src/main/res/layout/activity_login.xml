@@ -7,10 +7,6 @@
     android:orientation="vertical"
     tools:context="com.example.annakocheshkova.testapplication.ui.activity.LoginActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -24,8 +20,7 @@
             android:layout_marginBottom="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:hint="@string/username_hint"
-            app:theme="@style/EditTextStyle" />
+            android:hint="@string/username_hint" />
 
         <EditText
             android:id="@+id/password_text"
@@ -35,8 +30,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            app:theme="@style/EditTextStyle" />
+            android:inputType="textPassword" />
     </LinearLayout>
 
     <Button
@@ -46,6 +40,5 @@
         android:layout_marginBottom="@dimen/small_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
-        android:text="@string/login_label"
-        app:theme="@style/AppTheme.NoActionBar" />
+        android:text="@string/login_label"/>
 </LinearLayout>

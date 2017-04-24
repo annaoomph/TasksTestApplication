@@ -14,6 +14,9 @@
         <item name="android:textColorPrimaryInverse">@color/textColorLight</item>
         <item name="android:textColorHint">@color/textColorHint</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="checkboxStyle">@style/CheckBoxStyle</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="radioButtonStyle">@style/RadioButtonStyle</item>
     </style>
 
     <style name="ButtonStyle" parent="Base.Widget.AppCompat.Button">
@@ -40,11 +43,15 @@
         <item name="android:divider">?android:attr/colorAccent</item>
     </style>
 
-    <style name="EditTextStyle" parent="AppTheme.NoActionBar">
+    <style name="EditTextStyle" parent="Base.Widget.AppCompat.EditText">
         <item name="android:backgroundTint">?android:attr/colorPrimary</item>
     </style>
 
-    <style name="CheckBoxStyle" parent="AppTheme.NoActionBar">
+    <style name="CheckBoxStyle" parent="Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:buttonTint">?android:attr/colorPrimary</item>
+    </style>
+
+    <style name="RadioButtonStyle" parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:buttonTint">?android:attr/colorPrimary</item>
     </style>
 

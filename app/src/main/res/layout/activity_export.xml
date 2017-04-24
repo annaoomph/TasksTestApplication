@@ -7,10 +7,6 @@
     android:orientation="vertical"
     tools:context="com.example.annakocheshkova.testapplication.ui.activity.ExportActivity">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -30,14 +26,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:buttonTint="@color/colorPrimary"
                 android:text="@string/local_label" />
-
             <RadioButton
                 android:id="@+id/remote_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/colorPrimary"
                 android:text="@string/remote_label" />
 
             <TextView
@@ -58,10 +51,7 @@
             android:layout_marginBottom="@dimen/small_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:backgroundTint="@color/colorPrimary"
-            android:hint="@string/filename_hint"
-            android:textColor="@color/textColorPrimary"
-            android:textColorHint="@color/textColorHint" />
+            android:hint="@string/filename_hint" />
 
         <EditText
             android:id="@+id/server_path"
@@ -70,10 +60,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginBottom="@dimen/small_margin"
-            android:backgroundTint="@color/colorPrimary"
-            android:hint="@string/path_to_server_hint"
-            android:textColor="@color/textColorPrimary"
-            android:textColorHint="@color/textColorHint" />
+            android:hint="@string/path_to_server_hint" />
     </LinearLayout>
 
     <Button
@@ -81,7 +68,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        android:text="@string/export_title"
-        app:theme="@style/AppTheme.NoActionBar" />
+        android:text="@string/export_title" />
 
 </LinearLayout>

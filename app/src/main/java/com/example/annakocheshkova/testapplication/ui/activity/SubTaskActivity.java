@@ -2,17 +2,14 @@ package com.example.annakocheshkova.testapplication.ui.activity;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 import com.example.annakocheshkova.testapplication.mvc.controller.SubTaskController;
 import com.example.annakocheshkova.testapplication.mvc.view.SubTaskView;
 import com.example.annakocheshkova.testapplication.model.SubTask;
@@ -20,13 +17,12 @@ import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.ui.adapter.SubTaskAdapter;
 import com.example.annakocheshkova.testapplication.utils.component.UndoComponent;
-
 import java.util.List;
 
 /**
  * An activity that displays list of all the subtasks
  */
-public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
+public class SubTaskActivity extends BaseActivity implements SubTaskView {
 
     /**
      * Adapter for the recycler view
@@ -46,15 +42,17 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subtask);
         setContent();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_menu, menu);
-        return true;
+    int getLayoutResId() {
+        return R.layout.activity_subtask;
+    }
+
+    @Override
+    protected String getToolBarTitle() {
+        return "";
     }
 
     @Override
@@ -74,14 +72,8 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
      */
     void setContent() {
         RecyclerView listView = (RecyclerView)findViewById(R.id.task_detailed_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         subTaskController = new SubTaskController(this);
         mainView = findViewById(R.id.content);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
         subTaskAdapter = new SubTaskAdapter(subTaskController);
         listView.setAdapter(subTaskAdapter);
         subTaskController.onViewLoaded(getIntent().getIntExtra("id", -1));
@@ -103,6 +95,13 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.custom_menu, menu);
+        return true;
     }
 
     @Override
@@ -140,7 +139,7 @@ public class SubTaskActivity extends AppCompatActivity implements SubTaskView {
 
     @Override
     public void showNoSuchTaskError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.no_such_task_error), Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.no_such_task_error));
         finish();
     }
 }

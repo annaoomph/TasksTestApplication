@@ -4,10 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -16,12 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.mvc.controller.CreateTaskController;
 import com.example.annakocheshkova.testapplication.mvc.view.CreateTaskView;
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 
 import java.text.DateFormat;
@@ -32,17 +26,12 @@ import java.util.Date;
 /**
  * A view of the activity, which allows user to create a new task
  */
-public class CreateTaskActivity extends AppCompatActivity implements CreateTaskView {
+public class CreateTaskActivity extends BaseActivity implements CreateTaskView {
 
     /**
      * Controller of the view
      */
     CreateTaskController createTaskController;
-
-    /**
-     * Toolbar with menu
-     */
-    Toolbar toolbar;
 
     /**
      * EditText with name of the task
@@ -107,9 +96,13 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_item);
         getViews();
         setContent();
+    }
+
+    @Override
+    int getLayoutResId() {
+        return R.layout.activity_create_item;
     }
 
     @Override
@@ -121,15 +114,6 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
                 return new TimePickerDialog(this, onTimeSetListener, chosenHour, chosenMinute, false);
         }
         return null;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -165,11 +149,9 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
     void getViews() {
         dateDisplay = (EditText) findViewById(R.id.date_display);
         timeDisplay = (EditText) findViewById(R.id.time_display);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         nameText = (EditText)this.findViewById(R.id.name_edittext);
         reminderCheckBox = (CheckBox)this.findViewById(R.id.enable_reminder);
         spinner = (Spinner)findViewById(R.id.reminder_spinner);
-        setSupportActionBar(toolbar);
     }
 
     /**
@@ -177,21 +159,6 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
      */
     void setContent() {
         createTaskController = new CreateTaskController(this);
-        int id = getIntent().getIntExtra("id", -1);
-        ActionBar actionBar = getSupportActionBar();
-        if (id > 0) {
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.edit_item_title);
-            }
-        } else {
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.enter_new_title);
-            }
-        }
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
         ImageButton setDate = (ImageButton)findViewById(R.id.set_date);
         ImageButton setTime = (ImageButton)findViewById(R.id.set_time);
 
@@ -239,7 +206,20 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
-        createTaskController.onViewLoaded(id);
+        createTaskController.onViewLoaded(getId());
+    }
+
+    @Override
+    protected String getToolBarTitle() {
+        return getString((getId() > 0) ? R.string.edit_item_title : R.string.enter_new_title);
+    }
+
+    /**
+     * Returns the task id
+     * @return task id
+     */
+    private int getId() {
+        return getIntent().getIntExtra("id", -1);
     }
 
     /**
@@ -297,12 +277,12 @@ public class CreateTaskActivity extends AppCompatActivity implements CreateTaskV
 
     @Override
     public void showWrongTimeError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_time_error), Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.incorrect_time_error));
     }
 
     @Override
     public void showWrongAlarmTimeError() {
-        Toast.makeText(this, MyApplication.getAppContext().getString(R.string.incorrect_alarm_time_error), Toast.LENGTH_LONG).show();
+        showToast(getString(R.string.incorrect_alarm_time_error));
     }
 
     @Override

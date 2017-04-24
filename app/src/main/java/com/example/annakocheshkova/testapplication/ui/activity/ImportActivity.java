@@ -2,13 +2,9 @@ package com.example.annakocheshkova.testapplication.ui.activity;
 
 import android.content.Intent;
 import android.support.annotation.IdRes;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
@@ -24,14 +19,13 @@ import com.example.annakocheshkova.testapplication.mvc.controller.ImportControll
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
 import com.example.annakocheshkova.testapplication.error.BaseError;
-
 import java.io.File;
 import java.util.List;
 
 /**
  * An activity for file import
  */
-public class ImportActivity extends AppCompatActivity implements ImportView{
+public class ImportActivity extends BaseActivity implements ImportView {
 
     /**
      * Main controller for the view
@@ -71,17 +65,12 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_importer);
         setContent();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
+    int getLayoutResId() {
+        return R.layout.activity_import;
     }
 
     @Override
@@ -95,14 +84,7 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
      */
     private void setContent() {
         RecyclerView listView = (RecyclerView)findViewById(R.id.files_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         importController = new ImportController(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(getString(R.string.import_label));
-        }
         fileAdapter = new FileAdapter();
         listView.setAdapter(fileAdapter);
         listView.setHasFixedSize(true); //for better performance
@@ -145,6 +127,11 @@ public class ImportActivity extends AppCompatActivity implements ImportView{
     private void openLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected String getToolBarTitle() {
+        return getString(R.string.import_label);
     }
 
     @Override
