@@ -47,7 +47,7 @@ public class ImportController implements ImportListener<Task>{
         List<File> files = FileManager.getFilesInFolder(FileManager.DEFAULT_PATH);
         view.showFiles(files);
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        Boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+        Boolean loggedIn = preferencesManager.getLoggedIn();
         view.setLoggedIn(loggedIn);
     }
 

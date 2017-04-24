@@ -73,13 +73,13 @@ public abstract class BaseOperation {
                     try {
                         onResponse(httpClient.doGetRequest(url, prepareGetContent()));
                     } catch (IOException e) {
-                        operationListener.onFailure(new ConnectionError(500, e.getMessage()));
+                        operationListener.onFailure(new ConnectionError(e.getMessage()));
                     }
                 case POST:
                     try {
                         httpClient.doPostRequest(url, preparePostContent());
                     } catch (IOException e) {
-                        operationListener.onFailure(new ConnectionError(500, e.getMessage()));
+                        operationListener.onFailure(new ConnectionError(e.getMessage()));
                     }
                 default:
                     throw new RuntimeException(new NotImplementedException(getRequestType().toString()));

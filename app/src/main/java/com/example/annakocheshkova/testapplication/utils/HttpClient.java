@@ -45,7 +45,7 @@ public class HttpClient {
      * @param params params to url
      */
     public Response doGetRequest(String url, String params) throws IOException {
-        String token = preferencesManager.getString(PreferencesManager.TOKEN);
+        String token = preferencesManager.getToken();
         Request request = new Request.Builder()
                 .url(url + params)
                 .addHeader("Authentication", token)
@@ -59,7 +59,7 @@ public class HttpClient {
      * @param data data to be sent
      */
     public Response doPostRequest(String url, RequestBody data) throws IOException{
-        String token = preferencesManager.getString(PreferencesManager.TOKEN);
+        String token = preferencesManager.getToken();
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authentication", token)

@@ -5,12 +5,8 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
-
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.Date;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A class that manages all operations
@@ -18,14 +14,19 @@ import java.util.concurrent.BlockingQueue;
 public class OperationManager {
 
     /**
+     * A monitor for the threads to communicate
+     */
+    private static final Object monitor = new Object();
+
+    /**
      * An operation manager one and only instance
      */
     private static final OperationManager operationManager = new OperationManager();
 
     /**
-     * A queue with all operations to be executed
+     * A thread-safe queue with all operations to be executed
      */
-    private BlockingQueue<BaseOperation> operationQueue;
+    private ConcurrentLinkedQueue<BaseOperation> operationQueue;
 
     /**
      * The thread that executes all operations from the queue
@@ -43,7 +44,7 @@ public class OperationManager {
     private OperationManager() {
         operationThread = new OperationThread();
         operationThread.start();
-        operationQueue = new ArrayBlockingQueue<>(1);
+        operationQueue = new ConcurrentLinkedQueue<>();
     }
 
     /**
@@ -61,8 +62,8 @@ public class OperationManager {
     public void enqueue(BaseOperation baseOperation) {
         operationQueue.offer(baseOperation);
         if (!operationThread.isExecuting) {
-            synchronized (operationThread) {
-                operationThread.notify();
+            synchronized (monitor) {
+                monitor.notifyAll();
             }
         }
     }
@@ -71,15 +72,9 @@ public class OperationManager {
      * Executes the operation and checks if the token is valid
      */
     private void executeOperation(BaseOperation baseOperation) {
-        String expirationDateString = preferencesManager.getString(PreferencesManager.EXPIRE);
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // 3 specifies the dd/mm/yy date format; 0 specifies the standard GMT time format
-        Date expirationDate;
-        try {
-            expirationDate = dateFormat.parse(expirationDateString);
-        } catch (ParseException e) {
-            expirationDate = new Date();
-        }
-        if (expirationDate.compareTo(new Date()) < 0) {
+        Date expirationDate = preferencesManager.getExpirationDate();
+        Date currentDate = new Date();// TODO What was wrong here
+        if ((expirationDate == null || expirationDate.compareTo(currentDate) < 0) && baseOperation.getClass() != LoginOperation.class) {
             reLogin();
         }
         baseOperation.execute();
@@ -95,14 +90,14 @@ public class OperationManager {
             public void onSuccess(LoginOperation operation) {
                 String token = operation.getToken();
                 String expirationDate = operation.getExpirationDate();
-                preferencesManager.putString(PreferencesManager.EXPIRE, expirationDate);
-                preferencesManager.putBoolean(PreferencesManager.LOGGED_IN, true);
-                preferencesManager.putString(PreferencesManager.TOKEN, token);
+                LoginManager loginManager = LoginManager.getInstance();
+                loginManager.saveLoginData(token, expirationDate);
             }
 
             @Override
             public void onFailure(ConnectionError connectionError) {
-                LoginManager.logout();
+                LoginManager loginManager = LoginManager.getInstance();
+                loginManager.logout();
             }
         });
         loginOperation.execute();
@@ -122,7 +117,7 @@ public class OperationManager {
         /**
          * Executes operations in line
          */
-        public synchronized  void run(){
+        public void run(){
             while (true) {
                 isExecuting = true;
                 while (!operationQueue.isEmpty()) {
@@ -131,7 +126,9 @@ public class OperationManager {
                 }
                 isExecuting = false;
                 try {
-                    this.wait();
+                    synchronized (monitor) {
+                        monitor.wait();
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

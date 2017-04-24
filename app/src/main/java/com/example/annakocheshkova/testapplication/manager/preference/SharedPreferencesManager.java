@@ -3,6 +3,12 @@ package com.example.annakocheshkova.testapplication.manager.preference;
 import android.content.SharedPreferences;
 import com.example.annakocheshkova.testapplication.MyApplication;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * A manager for shared preferences
  */
@@ -26,38 +32,58 @@ class SharedPreferencesManager implements PreferencesManager{
     }
 
     @Override
-    public boolean getBoolean(String prefName) {
-        return settings.getBoolean(prefName, false);
-    }
-
-    @Override
-    public void putBoolean(String prefName, Boolean prefValue) {
+    public void setLoggedIn(boolean loggedIn) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(prefName, prefValue);
+        editor.putBoolean(LOGGED_IN, loggedIn);
         editor.apply();
     }
 
     @Override
-    public void putString(String prefName, String prefValue) {
+    public boolean getLoggedIn() {
+        return settings.getBoolean(LOGGED_IN, false);
+    }
+
+    @Override
+    public void setToken(String token) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(prefName, prefValue);
+        editor.putString(TOKEN, token);
         editor.apply();
     }
 
     @Override
-    public String getString(String prefName) {
-        return settings.getString(prefName, "");
+    public String getToken() {
+        return settings.getString(TOKEN, "");
     }
 
     @Override
-    public int getInt(String prefName) {
-        return settings.getInt(prefName, 0);
-    }
-
-    @Override
-    public void putInt(String prefName, int prefValue) {
+    public void setUserId(int id) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putInt(prefName, prefValue);
+        editor.putInt(USER_ID, id);
         editor.apply();
+    }
+
+    @Override
+    public int getUserId() {
+        return settings.getInt(USER_ID, 0);
+    }
+
+    @Override
+    public void setExpirationDate(String date) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(EXPIRE, date);
+        editor.apply();
+    }
+
+    @Override
+    public Date getExpirationDate() {
+        String dateString = settings.getString(EXPIRE, "");
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
+        Date expirationDate;
+        try {
+            expirationDate = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            expirationDate = null;
+        }
+        return expirationDate;
     }
 }

@@ -43,7 +43,7 @@ public class ExportController implements ExportListener {
      */
     public void onViewLoaded() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        Boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+        Boolean loggedIn = preferencesManager.getLoggedIn();
         view.setLoggedIn(loggedIn);
     }
 

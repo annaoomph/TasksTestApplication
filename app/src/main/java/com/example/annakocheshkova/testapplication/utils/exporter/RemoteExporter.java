@@ -23,7 +23,7 @@ class RemoteExporter<T> implements Exporter<T> {
             public void onSuccess(ExportOperation operation) {
                 int userId = operation.getId();
                 PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-                preferencesManager.putInt(PreferencesManager.USER_ID, userId);
+                preferencesManager.setUserId(userId);
                 exportListener.onSuccess();
             }
 

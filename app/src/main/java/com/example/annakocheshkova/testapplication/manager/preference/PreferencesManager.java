@@ -1,5 +1,7 @@
 package com.example.annakocheshkova.testapplication.manager.preference;
 
+import java.util.Date;
+
 /**
  * Manages all the preferences operations
  */
@@ -26,44 +28,50 @@ public interface PreferencesManager {
     String USER_ID = "user_id";
 
     /**
-     * Gets a boolean from application preferences     *
-     * @param prefName name of the preference
-     * @return value of the preference
+     * Sets the value of the logged in boolean
+     * @param loggedIn value to be set
      */
-    boolean getBoolean(String prefName);
+    void setLoggedIn(boolean loggedIn);
 
     /**
-     * Sets the boolean in the application preferences
-     * @param prefName name of the preference
-     * @param prefValue value of the preference
+     * Gets the value of the logged in boolean
+      * @return value
      */
-    void putBoolean(String prefName, Boolean prefValue);
+    boolean getLoggedIn();
 
     /**
-     * Sets the string in the application preferences
-     * @param prefName name of the preference
-     * @param prefValue value of the preference
+     * Sets the value of the token string
+     * @param token value to be set
      */
-    void putString(String prefName, String prefValue);
+    void setToken(String token);
 
     /**
-     * Gets the string in the application preferences
-     * @param prefName name of the preference
-     * @return value of the preference
+     * Gets the value of the token string
+     * @return value
      */
-    String getString(String prefName);
+    String getToken();
 
     /**
-     * Gets an int value from application preferences
-     * @param prefName name of the preference
-     * @return value of the preference
+     * Sets the value of the use id integer
+     * @param id value to be set
      */
-    int getInt(String prefName);
+    void setUserId(int id);
 
     /**
-     * Sets the int value in the application preferences
-     * @param prefName name of the preference
-     * @param prefValue value of the preference
+     * Gets the value of the user id integer
+     * @return value
      */
-    void putInt(String prefName, int prefValue);
+    int getUserId();
+
+    /**
+     * Sets the value of the expiration date string
+     * @param date value to be set
+     */
+    void setExpirationDate(String date);
+
+    /**
+     * Gets the value of the expiration date string and returns it converted to date format
+     * @return expiration date
+     */
+    Date getExpirationDate();
 }

@@ -12,16 +12,16 @@ import com.example.annakocheshkova.testapplication.error.ConnectionError;
 public interface OperationListener<T extends BaseOperation> {
 
     /**
-     * Called on successful request
+     * Called on successful request.
+     * Be careful when updating ui in this method. You should always call activity.runOnUIThread or use Handler.
      * @param baseOperation instance of baseOperation to get the results
      */
-    @UiThread
     void onSuccess(T baseOperation);
 
     /**
      * Called on failure of request
+     * Be careful when updating ui in this method. You should always call activity.runOnUIThread or use Handler.
      * @param connectionError defines what has happened
      */
-    @UiThread
     void onFailure(ConnectionError connectionError);
 }

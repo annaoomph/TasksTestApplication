@@ -1,12 +1,14 @@
 package com.example.annakocheshkova.testapplication.operation;
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -108,9 +110,11 @@ public class LoginOperation extends BaseOperation {
     @Override
     public void onFakeResponse() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1);
-
-        String fakeJson = "{code:200, message:\"\", token:\"token\", expirationDate:\"4/21/17 3:29:17 PM GMT+00:00\"}";
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
+        Date fakeDate = new Date(calendar.getTimeInMillis());
+        String fakeDateString = dateFormat.format(fakeDate);
+        String fakeJson = "{code:200, message:\"\", token:\"fake_token\", expirationDate:\"" + fakeDateString + "\"}";
         handleResponse(fakeJson);
     }
 }

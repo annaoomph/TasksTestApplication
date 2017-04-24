@@ -30,6 +30,15 @@ public class ConnectionError implements BaseError {
 
     /**
      * Creates an instance of the error by the code and message
+     * @param message message that came with the error
+     */
+    public ConnectionError(String message) {
+        this.code = 500;
+        this.message = message;
+    }
+
+    /**
+     * Creates an instance of the error by the code and message
      * @param code code of the error
      * @param message message that came with the error
      */
@@ -37,7 +46,6 @@ public class ConnectionError implements BaseError {
         this.code = code;
         this.message = message;
     }
-
     @Override
     public String getErrorMessage() {
         if (message == null) {

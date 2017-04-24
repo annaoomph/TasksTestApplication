@@ -17,7 +17,7 @@ class TaskRemoteImporter implements Importer<Task> {
     @Override
     public void importData(String path, final ImportListener<Task> importListener) {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        int userId = preferencesManager.getInt(PreferencesManager.USER_ID);
+        int userId = preferencesManager.getUserId();
         TaskImportOperation taskImportOperation = new TaskImportOperation(path, userId, new OperationListener<TaskImportOperation>() {
 
             @Override

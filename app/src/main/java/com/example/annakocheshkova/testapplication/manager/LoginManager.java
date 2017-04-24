@@ -15,13 +15,25 @@ import com.example.annakocheshkova.testapplication.utils.listener.OperationListe
 public class LoginManager {
 
     /**
+     * A login manager one and only instance
+     */
+    private static final LoginManager loginManager = new LoginManager();
+
+    /**
+     * Gets the only instance of operation manager
+     * @return Operation Manager
+     */
+    public static LoginManager getInstance() {
+        return loginManager;
+    }
+
+    /**
      * Tries to login with the given credentials
      * @param username name of the user
      * @param password user's password
      * @param loginListener listener of login events
      */
-    public static void login(String username, String password, final LoginListener loginListener) {
-        final PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+    public void login(String username, String password, final LoginListener loginListener) {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
         final LoginOperation loginOperation = new LoginOperation(url, username, password, new OperationListener<LoginOperation>() {
 
@@ -29,9 +41,7 @@ public class LoginManager {
             public void onSuccess(LoginOperation operation) {
                 String token = operation.getToken();
                 String expirationDate = operation.getExpirationDate();
-                preferencesManager.putString(PreferencesManager.EXPIRE, expirationDate);
-                preferencesManager.putBoolean(PreferencesManager.LOGGED_IN, true);
-                preferencesManager.putString(PreferencesManager.TOKEN, token);
+                saveLoginData(token, expirationDate);
                 loginListener.onSuccess();
             }
 
@@ -47,9 +57,17 @@ public class LoginManager {
     /**
      * Clears all data about login in preferences
      */
-    public static void logout() {
+    public void logout() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        preferencesManager.putBoolean(PreferencesManager.LOGGED_IN, false);
-        preferencesManager.putString(PreferencesManager.TOKEN, "");
+        preferencesManager.setLoggedIn(false);
+        preferencesManager.setExpirationDate("");
+        preferencesManager.setToken("");
+    }
+
+    public void saveLoginData(String token, String expirationDate) {
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        preferencesManager.setExpirationDate(expirationDate);
+        preferencesManager.setToken(token);
+        preferencesManager.setLoggedIn(true);
     }
 }

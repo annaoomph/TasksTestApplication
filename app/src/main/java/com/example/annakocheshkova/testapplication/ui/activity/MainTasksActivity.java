@@ -149,7 +149,7 @@ public class MainTasksActivity extends BaseActivity implements TaskView {
 
     private void checkLogin() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+        boolean loggedIn = preferencesManager.getLoggedIn();
         showLoginButton(!loggedIn);
     }
 }
