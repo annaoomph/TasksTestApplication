@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.operation;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
+import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
@@ -36,7 +37,7 @@ public class LoginOperation extends BaseOperation {
      * Creates an instance of LoginOperation by username and password
      * @param url to visit
      */
-    LoginOperation(String url, OperationListener operationListener) {
+    public LoginOperation(String url, OperationListener operationListener) {
         super(url, operationListener);
     }
 
@@ -89,30 +90,13 @@ public class LoginOperation extends BaseOperation {
         }
     }
 
-    /**
-     * Gets the token from response body
-     * @return token string
-     */
-    public String getToken() {
-        return loginResponse.getToken();
-    }
-
-    /**
-     * Gets the expiration date from response body
-     * @return expiration date in string format
-     */
-    public String getExpirationDate() {
-        return loginResponse.getExpirationDate();
-    }
-
     @Override
     public void onFakeResponse() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
-        Date fakeDate = new Date(calendar.getTimeInMillis());
-        String fakeDateString = dateFormat.format(fakeDate);
-        String fakeJson = "{code:200, message:\"\", token:\"fake_token\", expirationDate:\"" + fakeDateString + "\"}";
-        handleResponse(fakeJson);
+        Date date = new Date(calendar.getTimeInMillis());
+        String dateString = DateParser.parse(date);
+        String json = "{code:200, message:\"\", token:\"fake_token\", userName:\"Anna\", expirationDate:\"" + dateString + "\"}";
+        handleResponse(json);
     }
 }

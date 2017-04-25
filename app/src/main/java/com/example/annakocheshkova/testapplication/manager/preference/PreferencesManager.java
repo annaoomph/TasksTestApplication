@@ -64,14 +64,14 @@ public interface PreferencesManager {
     int getUserId();
 
     /**
-     * Sets the value of the expiration date string
+     * Sets the value of the expiration date in ms
      * @param date value to be set
      */
-    void setExpirationDate(String date);
+    void setExpirationDate(long date);
 
     /**
-     * Gets the value of the expiration date string and returns it converted to date format
-     * @return expiration date
+     * Gets the value of the expiration date
+     * @return expiration date in ms
      */
-    Date getExpirationDate();
+    long getExpirationDate();
 }

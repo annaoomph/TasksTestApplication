@@ -10,36 +10,17 @@ import java.util.Date;
 public class DateParser {
 
     /**
-     * Instance of dateParser
-     */
-    private final static DateParser dateParser  = new DateParser();
-
-    /**
      * The date format we are using
      */
-    private DateFormat dateFormat;
-
-    /**
-     * Creates the instance of date parser
-     */
-    private DateParser() {
-        dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
-    }
-
-    /**
-     * Gets the instance of date parser
-     * @return instance of date parser
-     */
-    public static DateParser getInstance() {
-        return dateParser;
-    }
+    private static DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0);
 
     /**
      * Converts String to date
      * @param dateString string with date
+     * @param dateFormat date formatter
      * @return date in Date format
      */
-    public Date parse(String dateString) {
+    public static Date parse(String dateString, DateFormat dateFormat) {
         if (dateString == null) {
             return null;
         } else {
@@ -53,12 +34,26 @@ public class DateParser {
         }
     }
 
+    public static Date parse(String dateString) {
+        return parse(dateString, dateFormat);
+    }
+
+    /**
+     * Converts date to string
+     * @param date date in Date format
+     * @param dateFormat date formatter
+     * @return date in string format
+     */
+    public static String parse(Date date, DateFormat dateFormat) {
+        return dateFormat.format(date);
+    }
+
     /**
      * Converts date to string
      * @param date date in Date format
      * @return date in string format
      */
-    public String parse(Date date) {
-        return dateFormat.format(date);
+    public static String parse(Date date) {
+        return parse(date, dateFormat);
     }
 }

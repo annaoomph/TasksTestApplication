@@ -1,15 +1,9 @@
 package com.example.annakocheshkova.testapplication.operation;
 import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.LoginManager;
-import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
-import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
-import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
-import com.example.annakocheshkova.testapplication.utils.DateParser;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
-import java.util.Date;
+import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A class that manages all operations
@@ -49,7 +43,13 @@ public class OperationManager {
     /**
      * Current amount of made retries
      */
-    private int retryCount = 1;
+    private int retryCount;
+
+    /**
+     * A boolean, set to true if last attempt to relogin (for the operation first in queue) has failed.
+     * Shows that another relogin is not necessary.
+     */
+    private boolean lastReloginFailed;
 
     /**
      * Creates an instance of the Operation Manager
@@ -88,16 +88,30 @@ public class OperationManager {
     /**
      * Executes the operation and checks if the token is valid
      * @param baseOperation operation to be executed
+     * @return true if the operation has been executed properly and therefore should be removed from the queue, false otherwise
      */
-    private void executeOperation(BaseOperation baseOperation) {
+    private boolean executeOperation(BaseOperation baseOperation) {
         if (LoginManager.getInstance().needRelogin() && !(baseOperation instanceof LoginOperation)) {
-            LoginManager.getInstance().reLogin();
-            return;
+            if (lastReloginFailed) {
+                lastReloginFailed = false;
+            } else {
+                LoginManager.getInstance().reLogin();
+                return false;
+            }
         }
         if (!baseOperation.execute()) {
-            retry(baseOperation);
+            if (!NetworkUtil.isNetworkAvailable()) {
+                retryCount = 1;
+                retry(baseOperation);
+            } else {
+                if (baseOperation instanceof LoginOperation) {
+                    lastReloginFailed = true;
+                }
+                BaseError error = new ConnectionError(baseOperation.getException().getMessage());
+                baseOperation.getListener().onFailure(error);
+            }
         }
-        operationQueue.remove(baseOperation);
+        return true;
     }
 
     /**
@@ -106,6 +120,9 @@ public class OperationManager {
      */
     private void retry(BaseOperation baseOperation) {
         if (retryCount >= maxTry) {
+            if (baseOperation instanceof LoginOperation) {
+                lastReloginFailed = true;
+            }
             baseOperation.getListener().onFailure(new ConnectionError(ConnectionError.ConnectionErrorType.CONNECTION_ERROR));
         } else {
             retryCount++;
@@ -133,12 +150,14 @@ public class OperationManager {
         /**
          * Executes operations in line
          */
-        public void run(){
+        public void run() {
             while (true) {
                 isExecuting = true;
                 while (!operationQueue.isEmpty()) {
                     BaseOperation baseOperation = operationQueue.peek();
-                    executeOperation(baseOperation);
+                    if (executeOperation(baseOperation)) {
+                        operationQueue.remove(baseOperation);
+                    }
                 }
                 isExecuting = false;
                 try {

@@ -1,7 +1,10 @@
 package com.example.annakocheshkova.testapplication.response;
 
+import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Date;
 
 /**
  * Represents the response sent by server on login
@@ -33,10 +36,10 @@ public class LoginResponse extends BaseResponse {
 
     /**
      * Gets the value of expiration date and returns it
-     * @return expiration date
+     * @return expiration date in ms
      */
-    public String getExpirationDate() {
-        return expirationDate;
+    public Date getExpirationDate() {
+        return DateParser.parse(expirationDate);
     }
 
     /**

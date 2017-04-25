@@ -1,32 +1,22 @@
 package com.example.annakocheshkova.testapplication.operation;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
-import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
  * Base operation for handling http requests
  */
-public abstract class BaseOperation {
+abstract class BaseOperation {
 
     /**
      * Enum with request types
@@ -45,6 +35,11 @@ public abstract class BaseOperation {
      * Url to maje requests to
      */
     private String url;
+
+    /**
+     * Exception that has been thrown if there was an error
+     */
+    private Exception exception;
 
     /**
      * Creates an instance of BaseOperation
@@ -69,7 +64,7 @@ public abstract class BaseOperation {
 
     /**
      * Makes the request
-     * @return true if the operation is executed and properly handled; false if retry is needed
+     * @return true if the operation is successfully executed, false otherwise
      */
     boolean execute() {
         try {
@@ -94,17 +89,23 @@ public abstract class BaseOperation {
                         throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
                 }
             } catch (IllegalArgumentException e) {
-                operationListener.onFailure(new ConnectionError(e.getMessage()));
+                exception = e;
+                return false;
             }
             catch (IOException e) {
-                if (!NetworkUtil.isNetworkAvailable()) {
-                   return false;
-                } else {
-                    operationListener.onFailure(new ConnectionError(e.getMessage()));
-                }
+                exception = e;
+                return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Gets the exception
+     * @return exception
+     */
+    Exception getException() {
+        return exception;
     }
 
     /**
@@ -139,7 +140,7 @@ public abstract class BaseOperation {
             if (baseResponse.getCode() != 200) {
                 operationListener.onFailure(new ConnectionError(baseResponse.getCode(), baseResponse.getMessage()));
             } else {
-                operationListener.onSuccess(this);
+                operationListener.onSuccess(getBaseResponse());
             }
         } catch (JsonParseException exception) {
             operationListener.onFailure(new FileError(FileError.FileErrorType.PARSE_ERROR));

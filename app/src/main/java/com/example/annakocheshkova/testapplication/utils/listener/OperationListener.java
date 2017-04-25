@@ -1,23 +1,20 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
 
-import android.support.annotation.UiThread;
-
 import com.example.annakocheshkova.testapplication.error.BaseError;
-import com.example.annakocheshkova.testapplication.operation.BaseOperation;
-import com.example.annakocheshkova.testapplication.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.response.BaseResponse;
 
 /**
  * A basic listener for operations events
  * @param <T> type of operation
  */
-public interface OperationListener<T extends BaseOperation> {
+public interface OperationListener<T extends BaseResponse> {
 
     /**
      * Called on successful request.
      * Be careful when updating ui in this method. You should always call activity.runOnUIThread or use Handler.
-     * @param baseOperation instance of baseOperation to get the results
+     * @param baseResponse instance of baseResponse to get the results
      */
-    void onSuccess(T baseOperation);
+    void onSuccess(T baseResponse);
 
     /**
      * Called on failure of request

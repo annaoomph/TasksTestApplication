@@ -6,6 +6,7 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.operation.LoginOperation;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
+import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
@@ -38,13 +39,11 @@ public class LoginManager {
      */
     public void login(String username, String password, final LoginListener loginListener) {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
-        final LoginOperation loginOperation = new LoginOperation(url, username, password, new OperationListener<LoginOperation>() {
+        final LoginOperation loginOperation = new LoginOperation(url, username, password, new OperationListener<LoginResponse>() {
 
             @Override
-            public void onSuccess(LoginOperation operation) {
-                String token = operation.getToken();
-                String expirationDate = operation.getExpirationDate();
-                saveLoginData(token, expirationDate);
+            public void onSuccess(LoginResponse response) {
+                saveLoginData(response);
                 loginListener.onSuccess();
             }
 
@@ -63,32 +62,31 @@ public class LoginManager {
     public void logout() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
         preferencesManager.setLoggedIn(false);
-        preferencesManager.setExpirationDate(null);
+        preferencesManager.setExpirationDate(0);
         preferencesManager.setToken(null);
     }
 
     /**
      * Saves the data if the user has just logged in
-     * @param token user token
-     * @param expirationDate token expiration date
+     * @param response response with all the available information
      */
-    private void saveLoginData(String token, String expirationDate) {
+    private void saveLoginData(LoginResponse response) {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        preferencesManager.setExpirationDate(expirationDate);
-        preferencesManager.setToken(token);
+        preferencesManager.setExpirationDate(response.getExpirationDate().getTime());
+        preferencesManager.setToken(response.getToken());
         preferencesManager.setLoggedIn(true);
     }
 
     /**
-     * Checks if the token has expired aready
+     * Checks if the token has expired already
      * @return true if we need to relogin, false if not
      */
     public boolean needRelogin() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        String expirationDateString = preferencesManager.getExpirationDate();
-        Date expirationDate = DateParser.getInstance().parse(expirationDateString);
+        long expirationDateMs = preferencesManager.getExpirationDate();
+        Date expirationDate = new Date(expirationDateMs);
         Date currentDate = new Date();
-        return (expirationDate == null || expirationDate.compareTo(currentDate) < 0);
+        return (expirationDate.compareTo(currentDate) < 0);
     }
 
     /**
@@ -97,12 +95,10 @@ public class LoginManager {
     public void reLogin() {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
         OperationManager operationManager = OperationManager.getInstance();
-        LoginOperation loginOperation = new LoginOperation(url, new OperationListener<LoginOperation>() {
+        LoginOperation loginOperation = new LoginOperation(url, new OperationListener<LoginResponse>() {
             @Override
-            public void onSuccess(LoginOperation operation) {
-                String token = operation.getToken();
-                String expirationDate = operation.getExpirationDate();
-                saveLoginData(token, expirationDate);
+            public void onSuccess(LoginResponse response) {
+                saveLoginData(response);
             }
 
             @Override

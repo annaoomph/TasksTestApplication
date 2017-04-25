@@ -3,12 +3,6 @@ package com.example.annakocheshkova.testapplication.manager.preference;
 import android.content.SharedPreferences;
 import com.example.annakocheshkova.testapplication.MyApplication;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 /**
  * A manager for shared preferences
  */
@@ -68,22 +62,14 @@ class SharedPreferencesManager implements PreferencesManager{
     }
 
     @Override
-    public void setExpirationDate(String date) {
+    public void setExpirationDate(long date) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(EXPIRE, date);
+        editor.putLong(EXPIRE, date);
         editor.apply();
     }
 
     @Override
-    public Date getExpirationDate() {
-        String dateString = settings.getString(EXPIRE, "");
-        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
-        Date expirationDate;
-        try {
-            expirationDate = dateFormat.parse(dateString);
-        } catch (ParseException e) {
-            expirationDate = null;
-        }
-        return expirationDate;
+    public long getExpirationDate() {
+        return settings.getLong(EXPIRE, 0);
     }
 }
