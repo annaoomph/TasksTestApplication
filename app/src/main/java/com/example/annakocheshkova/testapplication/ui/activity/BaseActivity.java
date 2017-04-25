@@ -224,8 +224,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Completes logout
      */
     private void logout() {
-        LoginManager loginManager = LoginManager.getInstance();
-        loginManager.logout();
+        LoginManager.getInstance().logout();
         showLoginButton(true);
     }
 

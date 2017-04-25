@@ -8,6 +8,7 @@ import com.example.annakocheshkova.testapplication.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
+import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
@@ -34,21 +35,6 @@ public abstract class BaseOperation {
         POST,
         GET
     }
-
-    /**
-     * Max count of retries for one operation
-     */
-    private static final int maxRetry = 1;
-
-    /**
-     * A time (in ms) to wait before another retry
-     */
-    private static final long retryWait = 5000;
-
-    /**
-     * Current amount of made retries
-     */
-    private int retryCount;
 
     /**
      * A listener of request events
@@ -83,8 +69,9 @@ public abstract class BaseOperation {
 
     /**
      * Makes the request
+     * @return true if the operation is executed and properly handled; false if retry is needed
      */
-    void execute() {
+    boolean execute() {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
@@ -110,41 +97,22 @@ public abstract class BaseOperation {
                 operationListener.onFailure(new ConnectionError(e.getMessage()));
             }
             catch (IOException e) {
-                if (!isNetworkAvailable()) {
-                    retry();
+                if (!NetworkUtil.isNetworkAvailable()) {
+                   return false;
                 } else {
                     operationListener.onFailure(new ConnectionError(e.getMessage()));
                 }
             }
         }
+        return true;
     }
 
     /**
-     * Retries to execute the operation after the given time
+     * Gets the instance of operation listener
+     * @return operation listener
      */
-    private void retry() {
-        if (retryCount >= maxRetry) {
-            operationListener.onFailure(new ConnectionError(ConnectionError.ConnectionErrorType.CONNECTION_ERROR));
-        } else {
-            retryCount++;
-            try {
-                Thread.sleep(retryWait);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            execute();
-        }
-    }
-
-    /**
-     * Finds out if the network is available
-     * @return true if yes, false otherwise
-     */
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) MyApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    OperationListener getListener() {
+        return operationListener;
     }
 
     /**

@@ -6,9 +6,11 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.operation.LoginOperation;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
-import com.example.annakocheshkova.testapplication.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
+
+import java.util.Date;
 
 /**
  * Manages all the operations connected with login
@@ -61,14 +63,53 @@ public class LoginManager {
     public void logout() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
         preferencesManager.setLoggedIn(false);
-        preferencesManager.setExpirationDate("");
-        preferencesManager.setToken("");
+        preferencesManager.setExpirationDate(null);
+        preferencesManager.setToken(null);
     }
 
-    public void saveLoginData(String token, String expirationDate) {
+    /**
+     * Saves the data if the user has just logged in
+     * @param token user token
+     * @param expirationDate token expiration date
+     */
+    private void saveLoginData(String token, String expirationDate) {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
         preferencesManager.setExpirationDate(expirationDate);
         preferencesManager.setToken(token);
         preferencesManager.setLoggedIn(true);
+    }
+
+    /**
+     * Checks if the token has expired aready
+     * @return true if we need to relogin, false if not
+     */
+    public boolean needRelogin() {
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        String expirationDateString = preferencesManager.getExpirationDate();
+        Date expirationDate = DateParser.getInstance().parse(expirationDateString);
+        Date currentDate = new Date();
+        return (expirationDate == null || expirationDate.compareTo(currentDate) < 0);
+    }
+
+    /**
+     * Tries to relogin with the previous token
+     */
+    public void reLogin() {
+        String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
+        OperationManager operationManager = OperationManager.getInstance();
+        LoginOperation loginOperation = new LoginOperation(url, new OperationListener<LoginOperation>() {
+            @Override
+            public void onSuccess(LoginOperation operation) {
+                String token = operation.getToken();
+                String expirationDate = operation.getExpirationDate();
+                saveLoginData(token, expirationDate);
+            }
+
+            @Override
+            public void onFailure(BaseError baseError) {
+                logout();
+            }
+        });
+        operationManager.enqueue(loginOperation);
     }
 }

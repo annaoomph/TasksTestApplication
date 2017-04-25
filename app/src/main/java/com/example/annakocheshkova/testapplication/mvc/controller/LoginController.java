@@ -29,8 +29,7 @@ public class LoginController {
      * Called when user clicked login
      */
     public void onLoginClicked(){
-        LoginManager loginManager = LoginManager.getInstance();
-        loginManager.login(loginView.getUsername(), loginView.getPassword(), new LoginListener() {
+        LoginManager.getInstance().login(loginView.getUsername(), loginView.getPassword(), new LoginListener() {
             @Override
             public void onSuccess() {
                 loginView.close();

@@ -5,8 +5,10 @@ import com.example.annakocheshkova.testapplication.manager.configuration.Configu
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -27,7 +29,7 @@ public class OperationManager {
     /**
      * A thread-safe queue with all operations to be executed
      */
-    private ConcurrentLinkedQueue<BaseOperation> operationQueue;
+    private ConcurrentLinkedDeque<BaseOperation> operationQueue;
 
     /**
      * The thread that executes all operations from the queue
@@ -35,9 +37,19 @@ public class OperationManager {
     private final OperationThread operationThread;
 
     /**
-     * Application preferences manager
+     * Max count of tries for one operation
      */
-    private PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+    private static final int maxTry = 3;
+
+    /**
+     * A time (in ms) to wait before another retry
+     */
+    private static final long retryWait = 5000;
+
+    /**
+     * Current amount of made retries
+     */
+    private int retryCount = 1;
 
     /**
      * Creates an instance of the Operation Manager
@@ -45,7 +57,7 @@ public class OperationManager {
     private OperationManager() {
         operationThread = new OperationThread();
         operationThread.start();
-        operationQueue = new ConcurrentLinkedQueue<>();
+        operationQueue = new ConcurrentLinkedDeque<>();
     }
 
     /**
@@ -61,7 +73,11 @@ public class OperationManager {
      * @param baseOperation operation to be executed
      */
     public void enqueue(BaseOperation baseOperation) {
-        operationQueue.offer(baseOperation);
+        if (baseOperation instanceof LoginOperation) {
+            operationQueue.offerFirst(baseOperation);
+        } else {
+            operationQueue.offerLast(baseOperation);
+        }
         if (!operationThread.isExecuting) {
             synchronized (monitor) {
                 monitor.notifyAll();
@@ -71,39 +87,38 @@ public class OperationManager {
 
     /**
      * Executes the operation and checks if the token is valid
+     * @param baseOperation operation to be executed
      */
     private void executeOperation(BaseOperation baseOperation) {
-        Date expirationDate = preferencesManager.getExpirationDate();
-        Date currentDate = new Date();// TODO What was wrong here
-        if ((expirationDate == null || expirationDate.compareTo(currentDate) < 0) && baseOperation.getClass() != LoginOperation.class) {
-            reLogin();
+        if (LoginManager.getInstance().needRelogin() && !(baseOperation instanceof LoginOperation)) {
+            LoginManager.getInstance().reLogin();
+            return;
         }
-        baseOperation.execute();
+        if (!baseOperation.execute()) {
+            retry(baseOperation);
+        }
+        operationQueue.remove(baseOperation);
     }
 
     /**
-     * Gets the new token when the previous one has expired
+     * Retries to execute the operation after the given time
+     * @param baseOperation operation to retry executing
      */
-    private void reLogin() {
-        String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
-        LoginOperation loginOperation = new LoginOperation(url, new OperationListener<LoginOperation>() {
-            @Override
-            public void onSuccess(LoginOperation operation) {
-                String token = operation.getToken();
-                String expirationDate = operation.getExpirationDate();
-                LoginManager loginManager = LoginManager.getInstance();
-                loginManager.saveLoginData(token, expirationDate);
+    private void retry(BaseOperation baseOperation) {
+        if (retryCount >= maxTry) {
+            baseOperation.getListener().onFailure(new ConnectionError(ConnectionError.ConnectionErrorType.CONNECTION_ERROR));
+        } else {
+            retryCount++;
+            try {
+                Thread.sleep(retryWait);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-
-            @Override
-            public void onFailure(BaseError baseError) {
-                LoginManager loginManager = LoginManager.getInstance();
-                loginManager.logout();
+            if (!baseOperation.execute()) {
+                retry(baseOperation);
             }
-        });
-        loginOperation.execute();
+        }
     }
-
 
     /**
      * The thread that executes operations
@@ -122,7 +137,7 @@ public class OperationManager {
             while (true) {
                 isExecuting = true;
                 while (!operationQueue.isEmpty()) {
-                    BaseOperation baseOperation = operationQueue.poll();
+                    BaseOperation baseOperation = operationQueue.peek();
                     executeOperation(baseOperation);
                 }
                 isExecuting = false;

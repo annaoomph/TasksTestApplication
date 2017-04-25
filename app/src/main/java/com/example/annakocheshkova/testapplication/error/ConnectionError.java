@@ -82,7 +82,7 @@ public class ConnectionError implements BaseError {
                 case UNAUTHORIZED_ERROR:
                     return context.getString(R.string.unauthorized_error);
                 case CONNECTION_ERROR:
-                    context.getString(R.string.connection_error);
+                    return context.getString(R.string.connection_error);
                 default:
                     throw new RuntimeException(new NotImplementedException(type.toString()));
             }

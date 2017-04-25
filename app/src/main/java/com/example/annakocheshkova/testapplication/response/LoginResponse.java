@@ -19,7 +19,12 @@ public class LoginResponse extends BaseResponse {
     @SerializedName("expirationDate") private String expirationDate;
 
     /**
-     * Gets the value of token and returns it     *
+     * User name
+     */
+    @SerializedName("userName") private String userName;
+
+    /**
+     * Gets the value of token and returns it
      * @return token
      */
     public String getToken() {
@@ -27,10 +32,18 @@ public class LoginResponse extends BaseResponse {
     }
 
     /**
-     * Gets the value of expiration date and returns it     *
+     * Gets the value of expiration date and returns it
      * @return expiration date
      */
     public String getExpirationDate() {
         return expirationDate;
+    }
+
+    /**
+     * Gets the value of user name and returns it
+     * @return user name
+     */
+    public String getUserName() {
+        return userName;
     }
 }
