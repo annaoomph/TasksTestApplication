@@ -55,4 +55,10 @@ public interface ImportView {
      * @param loggedIn true if user is logged in
      */
     void setLoggedIn(boolean loggedIn);
+
+    /**
+     * Gets the date of export, if it was chosen
+     * @return date of export
+     */
+    String getExportDate();
 }

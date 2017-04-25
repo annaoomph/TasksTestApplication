@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.operation;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.ExportResponse;
@@ -9,6 +8,8 @@ import com.example.annakocheshkova.testapplication.utils.listener.OperationListe
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.RequestBody;
@@ -68,15 +69,18 @@ public class ExportOperation<T> extends BaseOperation {
 
     @Override
     public void onFakeResponse() {
-        String fakeJson = "{code: 200, message:\"\", userId: 11}";
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(calendar.getTimeInMillis());
+        String dateString = DateParser.getInstance().parse(date);
+        String fakeJson = "{code: 200, message:\"\", exportDate: \"" + dateString + "\"}";
         handleResponse(fakeJson);
     }
 
     /**
-     * gets the is of the user sent by server
-     * @return id
+     * Gets the export date value from response
+     * @return export date
      */
-    public int getId() {
-        return exportResponse.getUserId();
+    public String getExportDate() {
+        return exportResponse.getExportDate();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.response;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -9,15 +8,15 @@ import com.google.gson.annotations.SerializedName;
 public class ExportResponse extends BaseResponse {
 
     /**
-     * Id of the current user (needed later to import data)
+     * Date of export (needed later to import data)
      */
-    @SerializedName("userId") private int userId;
+    @SerializedName("exportDate") private String exportDate;
 
     /**
-     * Gets the value of id and returns it     *
-     * @return id
+     * Gets the value of export date and returns it
+     * @return export date
      */
-    public int getUserId() {
-        return userId;
+    public String getExportDate() {
+        return exportDate;
     }
 }

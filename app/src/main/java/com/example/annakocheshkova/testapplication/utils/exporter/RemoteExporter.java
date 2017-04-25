@@ -5,7 +5,6 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.operation.ExportOperation;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
-import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 
@@ -22,9 +21,9 @@ class RemoteExporter<T> implements Exporter<T> {
         ExportOperation<T> exportOperation = new ExportOperation<>(url, items, new OperationListener<ExportOperation>() {
             @Override
             public void onSuccess(ExportOperation operation) {
-                int userId = operation.getId();
+                String exportDate = operation.getExportDate();
                 PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-                preferencesManager.setUserId(userId);
+                preferencesManager.addExportDate(exportDate);
                 exportListener.onSuccess();
             }
 

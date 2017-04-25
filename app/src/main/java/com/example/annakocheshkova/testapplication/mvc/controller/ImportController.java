@@ -47,7 +47,7 @@ public class ImportController implements ImportListener<Task>{
         List<File> files = FileManager.getFilesInFolder(FileManager.DEFAULT_PATH);
         view.showFiles(files);
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        Boolean loggedIn = preferencesManager.getLoggedIn();
+        boolean loggedIn = preferencesManager.getLoggedIn();
         view.setLoggedIn(loggedIn);
     }
 
@@ -57,11 +57,12 @@ public class ImportController implements ImportListener<Task>{
     public void onImport() {
         boolean local = view.isLocal();
         String path = view.getNameOrPath();
+        String date = view.getExportDate();
         if (path.length() == 0) {
             view.showFileNotChosenError();
         } else {
             Importer<Task> taskImporter = ImporterFactory.getTaskImporter(local ? ImporterFactory.ImportType.LOCAL_FROM_FILE : ImporterFactory.ImportType.REMOTE);
-            taskImporter.importData(path, this);
+            taskImporter.importData(path, date, this);
         }
     }
 

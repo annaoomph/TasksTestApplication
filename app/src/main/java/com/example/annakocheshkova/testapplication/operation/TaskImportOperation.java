@@ -12,20 +12,20 @@ import okhttp3.RequestBody;
 public class TaskImportOperation extends ImportOperation<Task> {
 
     /**
-     * Id of the current user
+     * Date of export
      */
-    private int userId;
+     private String date;
 
     /**
      * Creates an instance of operation
      *
      * @param url to export items to
      * @param operationListener listener of import events
-     * @param userId id of the user to get the items
+     * @param date date of export
      */
-    public TaskImportOperation(String url, int userId, OperationListener operationListener) {
+    public TaskImportOperation(String url, String date, OperationListener operationListener) {
         super(url, operationListener);
-        this.userId = userId;
+        this.date = date;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TaskImportOperation extends ImportOperation<Task> {
 
     @Override
     String prepareGetContent() {
-        return "?id="+userId;
+        return "?exportDate=" + date;
     }
 
     @Override

@@ -1,12 +1,9 @@
 package com.example.annakocheshkova.testapplication.utils.importer;
 
 import com.example.annakocheshkova.testapplication.error.BaseError;
-import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
-import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
 import com.example.annakocheshkova.testapplication.operation.TaskImportOperation;
-import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.ImportListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 
@@ -16,10 +13,8 @@ import com.example.annakocheshkova.testapplication.utils.listener.OperationListe
 class TaskRemoteImporter implements Importer<Task> {
 
     @Override
-    public void importData(String path, final ImportListener<Task> importListener) {
-        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        int userId = preferencesManager.getUserId();
-        TaskImportOperation taskImportOperation = new TaskImportOperation(path, userId, new OperationListener<TaskImportOperation>() {
+    public void importData(String path, String date, final ImportListener<Task> importListener) {
+        TaskImportOperation taskImportOperation = new TaskImportOperation(path, date, new OperationListener<TaskImportOperation>() {
 
             @Override
             public void onSuccess(TaskImportOperation operation) {
