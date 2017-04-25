@@ -34,6 +34,11 @@ public class DateParser {
         }
     }
 
+    /**
+     * Converts string to date, using a default formatter stored in this class
+     * @param dateString string with date
+     * @return date in Date format
+     */
     public static Date parse(String dateString) {
         return parse(dateString, dateFormat);
     }
@@ -49,7 +54,7 @@ public class DateParser {
     }
 
     /**
-     * Converts date to string
+     * Converts date to string, using a default formatter stored in this class
      * @param date date in Date format
      * @return date in string format
      */

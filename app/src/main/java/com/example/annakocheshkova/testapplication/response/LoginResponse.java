@@ -1,9 +1,7 @@
 package com.example.annakocheshkova.testapplication.response;
 
 import com.example.annakocheshkova.testapplication.utils.DateParser;
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 
 /**
@@ -27,6 +25,11 @@ public class LoginResponse extends BaseResponse {
     @SerializedName("userName") private String userName;
 
     /**
+     * User id
+     */
+    @SerializedName("userId") private int userId;
+
+    /**
      * Gets the value of token and returns it
      * @return token
      */
@@ -35,8 +38,17 @@ public class LoginResponse extends BaseResponse {
     }
 
     /**
+     * Gets the value of userId and returns it
+     * @return userId
+     */
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
      * Gets the value of expiration date and returns it
      * @return expiration date in ms
+
      */
     public Date getExpirationDate() {
         return DateParser.parse(expirationDate);

@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 
 /**
  * Class for handling import http operations
- * @param <T> type of data to be exported
+ * @param <T> type of data to be imported
  */
 abstract class ImportOperation<T> extends BaseOperation {
 
@@ -16,8 +16,8 @@ abstract class ImportOperation<T> extends BaseOperation {
     ImportResponse importResponse;
 
     /**
-     * Creates an instance of operation
-     * @param url to export items to
+     * Creates an instance of the operation
+     * @param url url to export items to
      * @param operationListener listener of the operation events
      */
     ImportOperation(String url, OperationListener operationListener) {

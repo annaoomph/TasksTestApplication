@@ -1,7 +1,5 @@
 package com.example.annakocheshkova.testapplication.manager.preference;
 
-import java.util.Date;
-
 /**
  * Manages all the preferences operations
  */

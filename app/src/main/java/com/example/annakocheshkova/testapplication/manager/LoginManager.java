@@ -7,7 +7,6 @@ import com.example.annakocheshkova.testapplication.manager.preference.Preference
 import com.example.annakocheshkova.testapplication.operation.LoginOperation;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
-import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 
@@ -75,10 +74,11 @@ public class LoginManager {
         preferencesManager.setExpirationDate(response.getExpirationDate().getTime());
         preferencesManager.setToken(response.getToken());
         preferencesManager.setLoggedIn(true);
+        preferencesManager.setUserId(response.getUserId());
     }
 
     /**
-     * Checks if the token has expired already
+     * Checks if the token has already expired
      * @return true if we need to relogin, false if not
      */
     public boolean needRelogin() {
@@ -90,7 +90,7 @@ public class LoginManager {
     }
 
     /**
-     * Tries to relogin with the previous token
+     * Tries to relogin with the previous token and get the new one
      */
     public void reLogin() {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);

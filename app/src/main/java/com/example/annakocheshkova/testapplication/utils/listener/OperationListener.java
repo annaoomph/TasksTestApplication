@@ -5,7 +5,7 @@ import com.example.annakocheshkova.testapplication.response.BaseResponse;
 
 /**
  * A basic listener for operations events
- * @param <T> type of operation
+ * @param <T> type of response needed
  */
 public interface OperationListener<T extends BaseResponse> {
 

@@ -14,7 +14,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Base operation for handling http requests
+ * Base operation that makes http request
  */
 abstract class BaseOperation {
 
@@ -32,7 +32,7 @@ abstract class BaseOperation {
     private OperationListener operationListener;
 
     /**
-     * Url to maje requests to
+     * Url to make requests to
      */
     private String url;
 
@@ -44,6 +44,7 @@ abstract class BaseOperation {
     /**
      * Creates an instance of BaseOperation
      * @param url url to make requests to
+     * @param operationListener listener of the operation's events
      */
     BaseOperation(String url, OperationListener operationListener) {
         this.operationListener = operationListener;
@@ -58,13 +59,13 @@ abstract class BaseOperation {
 
     /**
      * Prepares the content for sending it to the client by get-method
-     * @return String with parameters to url
+     * @return String with additional parameters to url
      */
     abstract String prepareGetContent();
 
     /**
-     * Makes the request
-     * @return true if the operation is successfully executed, false otherwise
+     * Makes the request itself
+     * @return true if the operation has been successfully executed, false otherwise
      */
     boolean execute() {
         try {
@@ -117,9 +118,9 @@ abstract class BaseOperation {
     }
 
     /**
-     * Called if response if delivered
+     * Called if response has been delivered
      * @param response response from the server
-     * @throws IOException parse exception
+     * @throws IOException possible exception
      */
     private void onResponse(Response response) throws IOException {
         if (!response.isSuccessful()) {
@@ -130,7 +131,7 @@ abstract class BaseOperation {
     }
 
     /**
-     * Takes the response string and responds depending on the information sent by the server
+     * Takes the response string, parses it and calles the listener with an error or the given response
      * @param responseJson json response string
      */
     void handleResponse(String responseJson) {
@@ -150,6 +151,7 @@ abstract class BaseOperation {
     /**
      * Parses json and sets the response object
      * @param responseJson json to be parsed
+     * @throws JsonParseException exception during parsing the json
      */
     abstract void parseResponse(String responseJson) throws JsonParseException;
 

@@ -86,7 +86,7 @@ public class OperationManager {
     }
 
     /**
-     * Executes the operation and checks if the token is valid
+     * Executes the operation and checks if the token is valid, performs relogin if necessary
      * @param baseOperation operation to be executed
      * @return true if the operation has been executed properly and therefore should be removed from the queue, false otherwise
      */
@@ -115,7 +115,7 @@ public class OperationManager {
     }
 
     /**
-     * Retries to execute the operation after the given time
+     * Retries to execute the operation after the given time and the given amount of times
      * @param baseOperation operation to retry executing
      */
     private void retry(BaseOperation baseOperation) {
@@ -138,7 +138,7 @@ public class OperationManager {
     }
 
     /**
-     * The thread that executes operations
+     * A background thread that executes operations
      */
     private class OperationThread extends Thread {
 
@@ -148,7 +148,7 @@ public class OperationManager {
         boolean isExecuting;
 
         /**
-         * Executes operations in line
+         * Executes operations from the queue
          */
         public void run() {
             while (true) {

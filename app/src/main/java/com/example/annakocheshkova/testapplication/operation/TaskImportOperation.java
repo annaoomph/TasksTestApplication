@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import okhttp3.RequestBody;
 
 /**
- * Class for handling tasks import http operations
+ * Class for sending tasks import http requests
  */
 public class TaskImportOperation extends ImportOperation<Task> {
 
@@ -18,10 +18,9 @@ public class TaskImportOperation extends ImportOperation<Task> {
 
     /**
      * Creates an instance of operation
-     *
      * @param url to export items to
      * @param operationListener listener of import events
-     * @param userId id of the user to get the items
+     * @param userId id of the user
      */
     public TaskImportOperation(String url, int userId, OperationListener operationListener) {
         super(url, operationListener);

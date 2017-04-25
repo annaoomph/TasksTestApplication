@@ -1,10 +1,7 @@
 package com.example.annakocheshkova.testapplication.operation;
 
-import com.example.annakocheshkova.testapplication.MyApplication;
-import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
-import com.example.annakocheshkova.testapplication.response.ExportResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -14,7 +11,7 @@ import java.util.List;
 import okhttp3.RequestBody;
 
 /**
- * Class for handling export http operations
+ * Class for sending export http requests
  * @param <T> type of data to be exported
  */
 public class ExportOperation<T> extends BaseOperation {
@@ -27,12 +24,13 @@ public class ExportOperation<T> extends BaseOperation {
     /**
      * Custom response for export
      */
-    private ExportResponse exportResponse;
+    private BaseResponse exportResponse;
 
     /**
      * Creates an instance of operation
      * @param url to export items to
      * @param items list of data to be exported
+     * @param operationListener listener of the operation's events
      */
     public ExportOperation(String url, List<T> items, OperationListener operationListener) {
         super(url, operationListener);
@@ -53,7 +51,7 @@ public class ExportOperation<T> extends BaseOperation {
     @Override
     void parseResponse(String responseJson) throws JsonParseException {
         Gson gson = new Gson();
-        exportResponse = gson.fromJson(responseJson, ExportResponse.class);
+        exportResponse = gson.fromJson(responseJson, BaseResponse.class);
     }
 
     @Override
@@ -70,13 +68,5 @@ public class ExportOperation<T> extends BaseOperation {
     public void onFakeResponse() {
         String fakeJson = "{code: 200, message:\"\", userId: 11}";
         handleResponse(fakeJson);
-    }
-
-    /**
-     * gets the is of the user sent by server
-     * @return id
-     */
-    public int getId() {
-        return exportResponse.getUserId();
     }
 }

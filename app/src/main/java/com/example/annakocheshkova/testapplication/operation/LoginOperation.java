@@ -4,8 +4,6 @@ import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
-
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -13,17 +11,17 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 /**
- * Class for handling login http operations
+ * Class for sending login http requests
  */
 public class LoginOperation extends BaseOperation {
 
     /**
-     * Username to be sent
+     * Username to be sent (null if there is no)
      */
     private String username;
 
     /**
-     * Password to be sent
+     * Password to be sent (null if there is no)
      */
     private String password;
 
@@ -32,10 +30,10 @@ public class LoginOperation extends BaseOperation {
      */
     private LoginResponse loginResponse;
 
-
     /**
-     * Creates an instance of LoginOperation by username and password
+     * Creates an instance of LoginOperation
      * @param url to visit
+     * @param operationListener listener of the operation's events
      */
     public LoginOperation(String url, OperationListener operationListener) {
         super(url, operationListener);
