@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.manager.preference;
 
 import java.util.Date;
-import java.util.Set;
 
 /**
  * Manages all the preferences operations
@@ -26,7 +25,7 @@ public interface PreferencesManager {
     /**
      * Name of the user id preference
      */
-    String EXPORT_DATES = "export_dates";
+    String USER_ID = "user_id";
 
     /**
      * Sets the value of the logged in boolean
@@ -53,16 +52,16 @@ public interface PreferencesManager {
     String getToken();
 
     /**
-     * Add the export date
-     * @param date date to be saved
+     * Sets the value of the use id integer
+     * @param id value to be set
      */
-    void addExportDate(String date);
+    void setUserId(int id);
 
     /**
-     * Gets the list of export dates
-     * @return values
+     * Gets the value of the user id integer
+     * @return value
      */
-    Set<String> getExportDates();
+    int getUserId();
 
     /**
      * Sets the value of the expiration date string
@@ -71,8 +70,8 @@ public interface PreferencesManager {
     void setExpirationDate(String date);
 
     /**
-     * Gets the value of the expiration date string and returns it
+     * Gets the value of the expiration date string and returns it converted to date format
      * @return expiration date
      */
-    String getExpirationDate();
+    Date getExpirationDate();
 }

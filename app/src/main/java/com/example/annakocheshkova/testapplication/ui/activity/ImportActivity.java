@@ -19,10 +19,7 @@ import com.example.annakocheshkova.testapplication.mvc.controller.ImportControll
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
 import com.example.annakocheshkova.testapplication.error.BaseError;
-import com.example.annakocheshkova.testapplication.utils.DateParser;
-
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -179,15 +176,6 @@ public class ImportActivity extends BaseActivity implements ImportView {
     public void setLoggedIn(boolean loggedIn) {
         serverButton.setEnabled(loggedIn);
         loginLink.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
-    }
-
-    @Override
-    public String getExportDate() {
-        if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            return null;
-        } else {
-            return DateParser.getInstance().parse(new Date()); //TODO adapter for dates dateAdapter.getChosenDate();
-        }
     }
 
     @Override

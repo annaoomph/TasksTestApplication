@@ -16,7 +16,7 @@ import java.io.IOException;
 class TaskFileImporter implements Importer<Task> {
 
     @Override
-    public void importData(String pathToFile, String date, ImportListener<Task> importListener) {
+    public void importData(String pathToFile, ImportListener<Task> importListener) {
         try {
             File file = new File(pathToFile);
             int length = (int) file.length();

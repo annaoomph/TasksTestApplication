@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.operation;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
-import com.example.annakocheshkova.testapplication.utils.DateParser;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
@@ -37,7 +36,7 @@ public class LoginOperation extends BaseOperation {
      * Creates an instance of LoginOperation by username and password
      * @param url to visit
      */
-    public LoginOperation(String url, OperationListener operationListener) {
+    LoginOperation(String url, OperationListener operationListener) {
         super(url, operationListener);
     }
 
@@ -110,9 +109,10 @@ public class LoginOperation extends BaseOperation {
     public void onFakeResponse() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
-        Date date = new Date(calendar.getTimeInMillis());
-        String dateString = DateParser.getInstance().parse(date);
-        String json = "{code:200, message:\"\", token:\"fake_token\", userName:\"Anna\", expirationDate:\"" + dateString + "\"}";
-        handleResponse(json);
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
+        Date fakeDate = new Date(calendar.getTimeInMillis());
+        String fakeDateString = dateFormat.format(fakeDate);
+        String fakeJson = "{code:200, message:\"\", token:\"fake_token\", expirationDate:\"" + fakeDateString + "\"}";
+        handleResponse(fakeJson);
     }
 }

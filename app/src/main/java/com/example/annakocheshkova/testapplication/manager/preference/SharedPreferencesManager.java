@@ -1,11 +1,13 @@
 package com.example.annakocheshkova.testapplication.manager.preference;
 
 import android.content.SharedPreferences;
-import android.support.v4.util.ArraySet;
-
 import com.example.annakocheshkova.testapplication.MyApplication;
 
-import java.util.Set;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A manager for shared preferences
@@ -50,24 +52,19 @@ class SharedPreferencesManager implements PreferencesManager{
 
     @Override
     public String getToken() {
-        return settings.getString(TOKEN, null);
+        return settings.getString(TOKEN, "");
     }
 
     @Override
-    public void addExportDate(String date) {
-        Set<String> exportDates = settings.getStringSet(EXPORT_DATES, null);
-        if (exportDates == null) {
-            exportDates = new ArraySet<>();
-        }
-        exportDates.add(date);
+    public void setUserId(int id) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putStringSet(EXPORT_DATES, exportDates);
+        editor.putInt(USER_ID, id);
         editor.apply();
     }
 
     @Override
-    public Set<String> getExportDates() {
-        return settings.getStringSet(EXPORT_DATES, new ArraySet<String>());
+    public int getUserId() {
+        return settings.getInt(USER_ID, 0);
     }
 
     @Override
@@ -78,7 +75,15 @@ class SharedPreferencesManager implements PreferencesManager{
     }
 
     @Override
-    public String getExpirationDate() {
-        return settings.getString(EXPIRE, null);
+    public Date getExpirationDate() {
+        String dateString = settings.getString(EXPIRE, "");
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(3, 0); // dd/MM/yyyy hh:mm g
+        Date expirationDate;
+        try {
+            expirationDate = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            expirationDate = null;
+        }
+        return expirationDate;
     }
 }

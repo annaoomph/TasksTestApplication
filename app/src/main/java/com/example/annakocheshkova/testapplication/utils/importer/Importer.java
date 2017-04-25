@@ -11,7 +11,6 @@ public interface Importer<T> {
      * Imports items
      * @param path path to data locally or on server
      * @param importListener listener of import events
-     * @param date date of export (if needed)
      */
-    void importData(String path, String date, ImportListener<T> importListener);
+    void importData(String path, ImportListener<T> importListener);
 }
