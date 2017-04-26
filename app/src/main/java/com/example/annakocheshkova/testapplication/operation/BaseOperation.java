@@ -1,12 +1,13 @@
 package com.example.annakocheshkova.testapplication.operation;
 
+import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.error.FileError;
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
+import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
 import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
 import com.example.annakocheshkova.testapplication.error.ConnectionError;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.JsonParseException;
 
 import java.io.IOException;
@@ -27,27 +28,20 @@ abstract class BaseOperation {
     }
 
     /**
-     * A listener of request events
-     */
-    private OperationListener operationListener;
-
-    /**
      * Url to make requests to
      */
     private String url;
 
     /**
-     * Exception that has been thrown if there was an error
+     * Error that has been thrown if there was an error
      */
-    private Exception exception;
+    private BaseError error;
 
     /**
      * Creates an instance of BaseOperation
      * @param url url to make requests to
-     * @param operationListener listener of the operation's events
      */
-    BaseOperation(String url, OperationListener operationListener) {
-        this.operationListener = operationListener;
+    BaseOperation(String url) {
         this.url = url;
     }
 
@@ -75,76 +69,75 @@ abstract class BaseOperation {
         }
         boolean fakeRequest = ConfigurationManager.getFakeRequest();
         if (fakeRequest) {
-            onFakeResponse();
+            return onFakeResponse();
         } else {
             HttpClient httpClient = new HttpClient();
             try {
                 switch (getRequestType()) {
                     case GET:
-                        onResponse(httpClient.doGetRequest(url, prepareGetContent()));
-                        break;
+                        return onResponse(httpClient.doGetRequest(url, prepareGetContent()));
                     case POST:
-                        onResponse(httpClient.doPostRequest(url, preparePostContent()));
-                        break;
+                        return onResponse(httpClient.doPostRequest(url, preparePostContent()));
                     default:
                         throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
                 }
             } catch (IllegalArgumentException e) {
-                exception = e;
+                //TODO Ask if this is right
+                if (NetworkUtil.isNetworkAvailable()) {
+                    error = new ConnectionError(e.getMessage());
+                } else {
+                    error = new ConnectionError(ConnectionError.ConnectionErrorType.CONNECTION_ERROR);
+                }
                 return false;
             }
             catch (IOException e) {
-                exception = e;
+                error = new ConnectionError(e.getMessage());
                 return false;
             }
         }
-        return true;
     }
 
     /**
-     * Gets the exception
-     * @return exception
+     * Gets the error
+     * @return error
      */
-    Exception getException() {
-        return exception;
-    }
-
-    /**
-     * Gets the instance of operation listener
-     * @return operation listener
-     */
-    OperationListener getListener() {
-        return operationListener;
+    BaseError getError() {
+        return error;
     }
 
     /**
      * Called if response has been delivered
      * @param response response from the server
      * @throws IOException possible exception
+     * @return true if response is successful, false otherwise
      */
-    private void onResponse(Response response) throws IOException {
+    private boolean onResponse(Response response) throws IOException {
         if (!response.isSuccessful()) {
-            operationListener.onFailure(new ConnectionError(response.code()));
+            error = new ConnectionError(response.code());
+            return false;
         } else {
-            handleResponse(response.body().string());
+            return handleResponse(response.body().string());
         }
     }
 
     /**
-     * Takes the response string, parses it and calles the listener with an error or the given response
+     * Takes the response string, parses it and calls the listener with an error or the given response
      * @param responseJson json response string
+     * @return true if parsed response is successful, false otherwise
      */
-    void handleResponse(String responseJson) {
+    boolean handleResponse(String responseJson) {
         try {
             parseResponse(responseJson);
             BaseResponse baseResponse = getBaseResponse();
             if (baseResponse.getCode() != 200) {
-                operationListener.onFailure(new ConnectionError(baseResponse.getCode(), baseResponse.getMessage()));
+                error = new ConnectionError(baseResponse.getCode(), baseResponse.getMessage());
+                return false;
             } else {
-                operationListener.onSuccess(getBaseResponse());
+                return true;
             }
         } catch (JsonParseException exception) {
-            operationListener.onFailure(new FileError(FileError.FileErrorType.PARSE_ERROR));
+            error = new FileError(FileError.FileErrorType.PARSE_ERROR);
+            return false;
         }
     }
 
@@ -170,5 +163,5 @@ abstract class BaseOperation {
     /**
      * Sends fake data
      */
-    public abstract void onFakeResponse();
+    public abstract boolean onFakeResponse();
 }

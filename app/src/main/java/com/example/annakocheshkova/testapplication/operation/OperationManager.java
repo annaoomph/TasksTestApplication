@@ -1,9 +1,10 @@
 package com.example.annakocheshkova.testapplication.operation;
-import com.example.annakocheshkova.testapplication.error.BaseError;
-import com.example.annakocheshkova.testapplication.manager.LoginManager;
-import com.example.annakocheshkova.testapplication.error.ConnectionError;
-import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import android.util.ArrayMap;
+
+import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * A class that manages all operations
@@ -23,7 +24,7 @@ public class OperationManager {
     /**
      * A thread-safe queue with all operations to be executed
      */
-    private ConcurrentLinkedDeque<BaseOperation> operationQueue;
+    private ConcurrentLinkedQueue<BaseOperation> operationQueue;
 
     /**
      * The thread that executes all operations from the queue
@@ -31,25 +32,9 @@ public class OperationManager {
     private final OperationThread operationThread;
 
     /**
-     * Max count of tries for one operation
+     * A map of listeners for operations
      */
-    private static final int maxTry = 3;
-
-    /**
-     * A time (in ms) to wait before another retry
-     */
-    private static final long retryWait = 5000;
-
-    /**
-     * Current amount of made retries
-     */
-    private int retryCount;
-
-    /**
-     * A boolean, set to true if last attempt to relogin (for the operation first in queue) has failed.
-     * Shows that another relogin is not necessary.
-     */
-    private boolean lastReloginFailed;
+    private Map<BaseOperation, OperationListener> listeners;
 
     /**
      * Creates an instance of the Operation Manager
@@ -57,7 +42,8 @@ public class OperationManager {
     private OperationManager() {
         operationThread = new OperationThread();
         operationThread.start();
-        operationQueue = new ConcurrentLinkedDeque<>();
+        operationQueue = new ConcurrentLinkedQueue<>();
+        listeners = new ArrayMap<>();
     }
 
     /**
@@ -72,12 +58,9 @@ public class OperationManager {
      * Pushes a new operation to the queue
      * @param baseOperation operation to be executed
      */
-    public void enqueue(BaseOperation baseOperation) {
-        if (baseOperation instanceof LoginOperation) {
-            operationQueue.offerFirst(baseOperation);
-        } else {
-            operationQueue.offerLast(baseOperation);
-        }
+    public void enqueue(BaseOperation baseOperation, OperationListener operationListener) {
+        listeners.put(baseOperation, operationListener);
+        operationQueue.offer(baseOperation);
         if (!operationThread.isExecuting) {
             synchronized (monitor) {
                 monitor.notifyAll();
@@ -88,53 +71,41 @@ public class OperationManager {
     /**
      * Executes the operation and checks if the token is valid, performs relogin if necessary
      * @param baseOperation operation to be executed
-     * @return true if the operation has been executed properly and therefore should be removed from the queue, false otherwise
      */
-    private boolean executeOperation(BaseOperation baseOperation) {
-        if (LoginManager.getInstance().needRelogin() && !(baseOperation instanceof LoginOperation)) {
-            if (lastReloginFailed) {
-                lastReloginFailed = false;
-            } else {
-                LoginManager.getInstance().reLogin();
-                return false;
+    private void executeOperation(BaseOperation baseOperation) {
+        if (!(baseOperation instanceof LoginOperation)) {
+            if (!LoginManager.getInstance().tryRelogin(listeners.get(baseOperation))) {
+                return;
             }
         }
-        if (!baseOperation.execute()) {
-            if (!NetworkUtil.isNetworkAvailable()) {
-                retryCount = 1;
-                retry(baseOperation);
+        if (baseOperation.execute()) {
+            success(baseOperation);
+        } else {
+            OperationRetryComponent operationRetryComponent = new OperationRetryComponent();
+            if (operationRetryComponent.send(baseOperation)) {
+                success(baseOperation);
             } else {
-                if (baseOperation instanceof LoginOperation) {
-                    lastReloginFailed = true;
-                }
-                BaseError error = new ConnectionError(baseOperation.getException().getMessage());
-                baseOperation.getListener().onFailure(error);
+                error(baseOperation);
             }
         }
-        return true;
     }
 
     /**
-     * Retries to execute the operation after the given time and the given amount of times
-     * @param baseOperation operation to retry executing
+     * Performs some action on successful execution
+     * @param operation executed operation
      */
-    private void retry(BaseOperation baseOperation) {
-        if (retryCount >= maxTry) {
-            if (baseOperation instanceof LoginOperation) {
-                lastReloginFailed = true;
-            }
-            baseOperation.getListener().onFailure(new ConnectionError(ConnectionError.ConnectionErrorType.CONNECTION_ERROR));
-        } else {
-            retryCount++;
-            try {
-                Thread.sleep(retryWait);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            if (!baseOperation.execute()) {
-                retry(baseOperation);
-            }
-        }
+    private void success(BaseOperation operation) {
+        OperationListener listener = listeners.get(operation);
+        listener.onSuccess(operation.getBaseResponse());
+    }
+
+    /**
+     * Performs some action on failed execution
+     * @param operation operation that has not been executed
+     */
+    private void error(BaseOperation operation) {
+        OperationListener listener = listeners.get(operation);
+        listener.onFailure(operation.getError());
     }
 
     /**
@@ -154,10 +125,8 @@ public class OperationManager {
             while (true) {
                 isExecuting = true;
                 while (!operationQueue.isEmpty()) {
-                    BaseOperation baseOperation = operationQueue.peek();
-                    if (executeOperation(baseOperation)) {
-                        operationQueue.remove(baseOperation);
-                    }
+                    BaseOperation baseOperation = operationQueue.poll();
+                    executeOperation(baseOperation);
                 }
                 isExecuting = false;
                 try {

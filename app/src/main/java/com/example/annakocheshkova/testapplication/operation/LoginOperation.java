@@ -2,7 +2,6 @@ package com.example.annakocheshkova.testapplication.operation;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.DateParser;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,7 +12,7 @@ import okhttp3.RequestBody;
 /**
  * Class for sending login http requests
  */
-public class LoginOperation extends BaseOperation {
+class LoginOperation extends BaseOperation {
 
     /**
      * Username to be sent (null if there is no)
@@ -33,10 +32,9 @@ public class LoginOperation extends BaseOperation {
     /**
      * Creates an instance of LoginOperation
      * @param url to visit
-     * @param operationListener listener of the operation's events
      */
-    public LoginOperation(String url, OperationListener operationListener) {
-        super(url, operationListener);
+    LoginOperation(String url) {
+        super(url);
     }
 
     /**
@@ -45,8 +43,8 @@ public class LoginOperation extends BaseOperation {
      * @param username entered by user
      * @param password entered by user
      */
-    public LoginOperation(String url, String username, String password, OperationListener operationListener) {
-        super(url, operationListener);
+    LoginOperation(String url, String username, String password) {
+        super(url);
         this.username = username;
         this.password = password;
     }
@@ -89,12 +87,20 @@ public class LoginOperation extends BaseOperation {
     }
 
     @Override
-    public void onFakeResponse() {
+    public boolean onFakeResponse() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
         Date date = new Date(calendar.getTimeInMillis());
         String dateString = DateParser.parse(date);
         String json = "{code:200, message:\"\", token:\"fake_token\", userName:\"Anna\", expirationDate:\"" + dateString + "\"}";
-        handleResponse(json);
+        return handleResponse(json);
+    }
+
+    /**
+     * Gets the instance of Login response
+     * @return login response
+     */
+    LoginResponse getLoginResponse() {
+        return loginResponse;
     }
 }

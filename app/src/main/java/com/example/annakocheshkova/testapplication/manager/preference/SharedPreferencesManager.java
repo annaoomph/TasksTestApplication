@@ -72,4 +72,28 @@ class SharedPreferencesManager implements PreferencesManager{
     public long getExpirationDate() {
         return settings.getLong(EXPIRE, 0);
     }
+
+    @Override
+    public int getMaxTry() {
+        return settings.getInt(MAX_TRY, 3);
+    }
+
+    @Override
+    public void setMaxTry(int maxTry) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt(MAX_TRY, maxTry);
+        editor.apply();
+    }
+
+    @Override
+    public long getRetryWait() {
+        return settings.getLong(RETRY_WAIT, 5000);
+    }
+
+    @Override
+    public void setRetryWait(long retryWait) {
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putLong(RETRY_WAIT, retryWait);
+        editor.apply();
+    }
 }

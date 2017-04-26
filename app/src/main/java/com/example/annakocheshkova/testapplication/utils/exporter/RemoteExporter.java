@@ -17,7 +17,10 @@ class RemoteExporter<T> implements Exporter<T> {
 
     @Override
     public void exportData(List<T> items, String url, String path, final ExportListener exportListener) {
-        ExportOperation<T> exportOperation = new ExportOperation<>(url, items, new OperationListener<BaseResponse>() {
+        ExportOperation<T> exportOperation = new ExportOperation<>(url, items);
+
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(exportOperation, new OperationListener<BaseResponse>() {
             @Override
             public void onSuccess(BaseResponse response) {
                 exportListener.onSuccess();
@@ -28,8 +31,5 @@ class RemoteExporter<T> implements Exporter<T> {
                 exportListener.onError(baseError);
             }
         });
-
-        OperationManager operationManager = OperationManager.getInstance();
-        operationManager.enqueue(exportOperation);
     }
 }

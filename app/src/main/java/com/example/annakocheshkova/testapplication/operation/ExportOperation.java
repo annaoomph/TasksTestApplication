@@ -30,10 +30,9 @@ public class ExportOperation<T> extends BaseOperation {
      * Creates an instance of operation
      * @param url to export items to
      * @param items list of data to be exported
-     * @param operationListener listener of the operation's events
      */
-    public ExportOperation(String url, List<T> items, OperationListener operationListener) {
-        super(url, operationListener);
+    public ExportOperation(String url, List<T> items) {
+        super(url);
         this.items = items;
     }
 
@@ -65,8 +64,8 @@ public class ExportOperation<T> extends BaseOperation {
     }
 
     @Override
-    public void onFakeResponse() {
+    public boolean onFakeResponse() {
         String fakeJson = "{code: 200, message:\"\", userId: 11}";
-        handleResponse(fakeJson);
+        return handleResponse(fakeJson);
     }
 }

@@ -20,7 +20,9 @@ class TaskRemoteImporter implements Importer<Task> {
     public void importData(String path, final ImportListener<Task> importListener) {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
         int userId = preferencesManager.getUserId();
-        TaskImportOperation taskImportOperation = new TaskImportOperation(path, userId, new OperationListener<ImportResponse>() {
+        TaskImportOperation taskImportOperation = new TaskImportOperation(path, userId);
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(taskImportOperation, new OperationListener<ImportResponse>() {
 
             @Override
             public void onSuccess(ImportResponse response) {
@@ -33,7 +35,5 @@ class TaskRemoteImporter implements Importer<Task> {
                 importListener.onError(baseError);
             }
         });
-        OperationManager operationManager = OperationManager.getInstance();
-        operationManager.enqueue(taskImportOperation);
     }
 }

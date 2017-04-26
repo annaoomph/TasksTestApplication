@@ -1,10 +1,8 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
-import android.support.annotation.UiThread;
 
 import com.example.annakocheshkova.testapplication.error.BaseError;
-import com.example.annakocheshkova.testapplication.manager.LoginManager;
+import com.example.annakocheshkova.testapplication.operation.LoginManager;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
-import com.example.annakocheshkova.testapplication.error.ConnectionError;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 
 /**

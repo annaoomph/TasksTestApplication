@@ -1,11 +1,9 @@
-package com.example.annakocheshkova.testapplication.manager;
+package com.example.annakocheshkova.testapplication.operation;
 
 import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
-import com.example.annakocheshkova.testapplication.operation.LoginOperation;
-import com.example.annakocheshkova.testapplication.operation.OperationManager;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
@@ -38,7 +36,9 @@ public class LoginManager {
      */
     public void login(String username, String password, final LoginListener loginListener) {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
-        final LoginOperation loginOperation = new LoginOperation(url, username, password, new OperationListener<LoginResponse>() {
+        final LoginOperation loginOperation = new LoginOperation(url, username, password);
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(loginOperation, new OperationListener<LoginResponse>() {
 
             @Override
             public void onSuccess(LoginResponse response) {
@@ -51,8 +51,6 @@ public class LoginManager {
                 loginListener.onFailure(baseError);
             }
         });
-        OperationManager operationManager = OperationManager.getInstance();
-        operationManager.enqueue(loginOperation);
     }
 
     /**
@@ -81,7 +79,7 @@ public class LoginManager {
      * Checks if the token has already expired
      * @return true if we need to relogin, false if not
      */
-    public boolean needRelogin() {
+    private boolean needRelogin() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
         long expirationDateMs = preferencesManager.getExpirationDate();
         Date expirationDate = new Date(expirationDateMs);
@@ -89,23 +87,37 @@ public class LoginManager {
         return (expirationDate.compareTo(currentDate) < 0);
     }
 
+
+    /** Performs relogin if necessary
+     * @param operationListener listener that should be notified if relogin failed
+     * @return false if relogin has failed and therefore the following operation should not be executed;
+     * true if relogin has been successful or not needed at all, says it's ok for the operation to execute.
+     */
+    boolean tryRelogin(OperationListener operationListener) {
+        return !needRelogin() || reLogin(operationListener);
+    }
+
     /**
      * Tries to relogin with the previous token and get the new one
+     * @param operationListener listener that should be notified if relogin has failed
+     * @return true if relogin has executed successfully, false otherwise
      */
-    public void reLogin() {
+    private boolean reLogin(OperationListener operationListener) {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
-        OperationManager operationManager = OperationManager.getInstance();
-        LoginOperation loginOperation = new LoginOperation(url, new OperationListener<LoginResponse>() {
-            @Override
-            public void onSuccess(LoginResponse response) {
-                saveLoginData(response);
-            }
-
-            @Override
-            public void onFailure(BaseError baseError) {
+        LoginOperation loginOperation = new LoginOperation(url);
+        if (loginOperation.execute()) {
+            saveLoginData(loginOperation.getLoginResponse());
+            return true;
+        } else {
+            OperationRetryComponent operationRetryComponent = new OperationRetryComponent();
+            if (operationRetryComponent.send(loginOperation)) {
+                saveLoginData(loginOperation.getLoginResponse());
+                return true;
+            } else {
                 logout();
+                operationListener.onFailure(loginOperation.getError());
+                return false;
             }
-        });
-        operationManager.enqueue(loginOperation);
+        }
     }
 }

@@ -19,11 +19,10 @@ public class TaskImportOperation extends ImportOperation<Task> {
     /**
      * Creates an instance of operation
      * @param url to export items to
-     * @param operationListener listener of import events
      * @param userId id of the user
      */
-    public TaskImportOperation(String url, int userId, OperationListener operationListener) {
-        super(url, operationListener);
+    public TaskImportOperation(String url, int userId) {
+        super(url);
         this.userId = userId;
     }
 
@@ -50,8 +49,8 @@ public class TaskImportOperation extends ImportOperation<Task> {
     }
 
     @Override
-    public void onFakeResponse() {
+    public boolean onFakeResponse() {
         String fakeJson = "{code:200, message:\'\', items:\'[{\"alarm_time\":0,\"id\":0,\"name\":\"TEST\",\"notification\":false,\"time\":0},{\"alarm_time\":0,\"id\":0,\"name\":\"TEST-1\",\"notification\":false,\"time\":0}]\'}";
-        handleResponse(fakeJson);
+        return handleResponse(fakeJson);
     }
 }

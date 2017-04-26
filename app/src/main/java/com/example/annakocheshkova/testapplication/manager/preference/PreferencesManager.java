@@ -25,6 +25,10 @@ public interface PreferencesManager {
      */
     String USER_ID = "user_id";
 
+    String MAX_TRY = "max_try";
+
+    String RETRY_WAIT = "retry_wait";
+
     /**
      * Sets the value of the logged in boolean
      * @param loggedIn value to be set
@@ -72,4 +76,12 @@ public interface PreferencesManager {
      * @return expiration date in ms
      */
     long getExpirationDate();
+
+    int getMaxTry();
+
+    void setMaxTry(int maxTry);
+
+    long getRetryWait();
+
+    void setRetryWait(long retryWait);
 }

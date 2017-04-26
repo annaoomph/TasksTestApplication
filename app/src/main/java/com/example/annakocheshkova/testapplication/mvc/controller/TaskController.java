@@ -2,7 +2,6 @@ package com.example.annakocheshkova.testapplication.mvc.controller;
 
 import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
-import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
