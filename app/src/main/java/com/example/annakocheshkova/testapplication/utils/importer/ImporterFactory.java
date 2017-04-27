@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.importer;
 
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.exception.NotImplementedException;
 
 /**
  * A factory to get the importer instance we need
@@ -24,9 +24,9 @@ public class ImporterFactory {
     public static Importer<Task> getTaskImporter(ImportType importType) {
         switch (importType) {
             case LOCAL_FROM_FILE:
-                return new FileImporter<>();
+                return new TaskFileImporter();
             case REMOTE:
-                throw new RuntimeException(new NotImplementedException(importType.toString()));
+                return new TaskRemoteImporter();
             default:
                 throw new RuntimeException(new NotImplementedException(importType.toString()));
         }

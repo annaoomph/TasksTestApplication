@@ -20,15 +20,14 @@
     <string name="no_such_task_error">Sorry, there\'s no such task. Check if it was already deleted.</string>
     <string name="incorrect_time_error">You have chosen the time less than the current time! The task was not created.</string>
     <string name="incorrect_alarm_time_error">You have chosen the time of the alarm less than the current time! The task was not created.</string>
-    <string name="local_export_label">Local</string>
-    <string name="remote_export_label">Remote</string>
+    <string name="local_label">Local</string>
+    <string name="remote_label">Remote</string>
     <string name="filename_hint">Name of the file</string>
     <string name="path_to_server_hint">Path to server</string>
     <string name="export_title">Export</string>
     <string name="no_connection_error">There\'s no connection to server. Please make sure that you have turned on internet on your phone.</string>
     <string name="remote_not_enabled"><u>Log in to enable</u></string>
     <string name="wrong_path_error">The path to file is wrong!</string>
-    <string name="io_error">An error has occurred during writing to file. Please try again later.</string>
     <string name="file_created">The file was created in:</string>
     <string name="folder_name">Tasks</string>
     <string name="open_folder_checkbox_label">Open folder after creation</string>
@@ -36,7 +35,7 @@
     <string name="import_label">Import</string>
     <string name="db_version_hint">1</string>
     <string name="files_list_title">Choose one of the files:</string>
-    <string name="corrupt_file_error">The file you have chosen is corrupt. You may delete it.</string>
+    <string name="parse_error">Can not parse the received data properly.</string>
     <string name="file_not_chosen_error">You have not chosen any file.</string>
     <string name="items_added_label"> item(s) were added</string>
     <string name="io_server_error">Can not reach server. Please check your connection.</string>
@@ -48,9 +47,12 @@
     <string name="unauthorized_error">Wrong credentials.</string>
     <string name="connection_error">Connection error. Please check your connection to the internet.</string>
     <string name="create_file_error">An error creating the file.</string>
+    <string name="read_file_error">An error reading the file. </string>
     <string name="unexpected_error">An unexpected error.</string>
     <string name="feature_not_implemented">Sorry. Feature %s has not yet been implemented.</string>
-
+    <string name="url_empty_error">You have not entered url.</string>
+    <string name="cant_connect_msg">Can not connect to:</string>
+    <string name="error_server">Error connecting to server. Code:</string>
     <string-array name="drawer_items">
         <item>Import</item>
         <item>Export</item>

@@ -9,8 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.R;
+import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 
@@ -143,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     }
                     case 2: {
                         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-                        boolean loggedIn = preferencesManager.getBoolean(PreferencesManager.LOGGED_IN);
+                        boolean loggedIn = preferencesManager.getLoggedIn();
                         if (loggedIn) {
                             logout();
                         } else {
@@ -222,9 +221,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Completes logout
      */
     private void logout() {
-        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, false);
-        preferencesManager.setString(PreferencesManager.TOKEN, "");
+        LoginManager.getInstance().logout();
         showLoginButton(true);
     }
 

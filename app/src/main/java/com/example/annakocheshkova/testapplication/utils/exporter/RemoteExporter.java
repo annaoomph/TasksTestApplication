@@ -1,8 +1,8 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
 import com.example.annakocheshkova.testapplication.operation.ExportOperation;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
+import com.example.annakocheshkova.testapplication.operation.OperationManager;
+import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 
@@ -15,17 +15,19 @@ import java.util.List;
 class RemoteExporter<T> implements Exporter<T> {
 
     @Override
-    public void exportData(List<T> items, String url, String path, Converter<T> converter, final ExportListener exportListener) {
-        ExportOperation<T> exportOperation = new ExportOperation<>(url, converter, items);
-        exportOperation.executePost(new OperationListener<ExportOperation>() {
+    public void exportData(List<T> items, String url, String path, final ExportListener exportListener) {
+        ExportOperation<T> exportOperation = new ExportOperation<>(url, items);
+
+        OperationManager operationManager = OperationManager.getInstance();
+        operationManager.enqueue(exportOperation, new OperationListener<BaseResponse>() {
             @Override
-            public void onSuccess(ExportOperation operation) {
+            public void onSuccess(BaseResponse response) {
                 exportListener.onSuccess();
             }
 
             @Override
-            public void onFailure(ConnectionError connectionError) {
-               exportListener.onError(connectionError);
+            public void onFailure(Exception exception) {
+                exportListener.onError(exception);
             }
         });
     }

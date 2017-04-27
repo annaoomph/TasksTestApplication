@@ -1,14 +1,15 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
 
 /**
- * A custom listener of the events connected with export
+ * A custom listener of the events connected with import
  */
-public interface ExportListener {
+public interface ImportListener<T> {
 
     /**
-     * Called when data is successfully exported
+     * Called when data is successfully imported
+     * @param data imported data
      */
-    void onSuccess();
+    void onSuccess(T[] data);
 
     /**
      * Called if during the export an IO Error has occurred

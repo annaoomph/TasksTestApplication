@@ -6,40 +6,74 @@ package com.example.annakocheshkova.testapplication.manager.preference;
 public interface PreferencesManager {
 
     /**
-     * Name of the logged in boolean in the preferences
+     * Sets the value of the logged in boolean
+     * @param loggedIn value to be set
      */
-    String LOGGED_IN = "loggedIn";
+    void setLoggedIn(boolean loggedIn);
 
     /**
-     * Name of the token string in the preferences
+     * Gets the value of the logged in boolean
+      * @return value
      */
-    String TOKEN = "token";
+    boolean getLoggedIn();
 
     /**
-     * Gets a boolean from application preferences     *
-     * @param prefName name of the preference
-     * @return value of the preference
+     * Sets the value of the token string
+     * @param token value to be set
      */
-    boolean getBoolean(String prefName);
+    void setToken(String token);
 
     /**
-     * Sets the boolean in the application preferences
-     * @param prefName name of the preference
-     * @param prefValue value of the preference
+     * Gets the value of the token string
+     * @return value
      */
-    void setBoolean(String prefName, Boolean prefValue);
+    String getToken();
 
     /**
-     * Sets the string in the application preferences
-     * @param prefName name of the preference
-     * @param prefValue value of the preference
+     * Sets the value of the use id integer
+     * @param id value to be set
      */
-    void setString(String prefName, String prefValue);
+    void setUserId(int id);
 
     /**
-     * Gets the string in the application preferences
-     * @param prefName name of the preference
-     * @return value of the preference
+     * Gets the value of the user id integer
+     * @return value
      */
-    String getString(String prefName);
+    int getUserId();
+
+    /**
+     * Sets the value of the expiration date in ms
+     * @param date value to be set
+     */
+    void setExpirationDate(long date);
+
+    /**
+     * Gets the value of the expiration date
+     * @return expiration date in ms
+     */
+    long getExpirationDate();
+
+    /**
+     * Get the value of max operation try attempts count
+     * @return max try count
+     */
+    int getMaxOperationsTryCount();
+
+    /**
+     * Sets the value of max operation try attempts count
+     * @param maxTry max try count
+     */
+    void setMaxOperationsTryCount(int maxTry);
+
+    /**
+     * Gets the value of interval between retries
+     * @return interval in ms
+     */
+    long getIntervalBetweenRetries();
+
+    /**
+     * Sets the value of interval between retries
+     * @param retryWait interval in ms
+     */
+    void setIntervalBetweenRetries(long retryWait);
 }

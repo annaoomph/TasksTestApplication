@@ -9,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
+import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 import com.example.annakocheshkova.testapplication.mvc.controller.TaskController;
 import com.example.annakocheshkova.testapplication.ui.adapter.TaskAdapter;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
@@ -45,6 +48,12 @@ public class MainTasksActivity extends BaseActivity implements TaskView {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        taskController.onViewLoaded();
+        checkLogin();
+    }
+
     int getLayoutResId() {
         return R.layout.activity_tasks;
     }
@@ -54,12 +63,6 @@ public class MainTasksActivity extends BaseActivity implements TaskView {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.custom_menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        taskController.onViewLoaded();
     }
 
     @Override
@@ -105,6 +108,8 @@ public class MainTasksActivity extends BaseActivity implements TaskView {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(listView);
+
+        checkLogin();
     }
 
     @Override
@@ -142,4 +147,9 @@ public class MainTasksActivity extends BaseActivity implements TaskView {
         return getString(R.string.window_title);
     }
 
+    private void checkLogin() {
+        PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
+        boolean loggedIn = preferencesManager.getLoggedIn();
+        showLoginButton(!loggedIn);
+    }
 }

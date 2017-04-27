@@ -1,14 +1,19 @@
 package com.example.annakocheshkova.testapplication.operation;
 
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
+import com.example.annakocheshkova.testapplication.utils.HttpClient;
+import com.example.annakocheshkova.testapplication.response.BaseResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 
 import java.util.List;
 
+import okhttp3.RequestBody;
+
 /**
- * Class for handling export http operations
+ * Class for sending export http requests
  * @param <T> type of data to be exported
  */
-public class ExportOperation<T> extends BaseOperation<T> {
+public class ExportOperation<T> extends BaseOperation {
 
     /**
      * Items to be exported
@@ -16,28 +21,49 @@ public class ExportOperation<T> extends BaseOperation<T> {
     private List<T> items;
 
     /**
-     * Basic constructor. Creates an instance of the operation
-     * @param url url to export items to
-     * @param converter converter for items
+     * Custom response for export
      */
-    public ExportOperation(String url, Converter<T> converter) {
-        super(url, converter);
-    }
+    private BaseResponse exportResponse;
 
     /**
      * Creates an instance of operation
      * @param url to export items to
-     * @param converter converter for items
      * @param items list of data to be exported
      */
-    public ExportOperation(String url, Converter<T> converter, List<T> items) {
-        super(url, converter);
+    public ExportOperation(String url, List<T> items) {
+        super(url);
         this.items = items;
     }
 
     @Override
-    String prepareContent() {
-        return converter.convert(items);
+    RequestBody preparePostContent() {
+        Gson gson = new Gson();
+        return RequestBody.create(HttpClient.MEDIA_TYPE_JSON, gson.toJson(items));
     }
 
+    @Override
+    String prepareGetContent() {
+        return "";
+    }
+
+    @Override
+    void parseResponse(String responseJson) throws JsonParseException {
+        Gson gson = new Gson();
+        exportResponse = gson.fromJson(responseJson, BaseResponse.class);
+    }
+
+    @Override
+    BaseResponse getBaseResponse() {
+        return exportResponse;
+    }
+
+    @Override
+    RequestType getRequestType() {
+        return RequestType.POST;
+    }
+
+    @Override
+    public String getFakeResponseJson() {
+        return "{code: 200, message:\"\", userId: 11}";
+    }
 }

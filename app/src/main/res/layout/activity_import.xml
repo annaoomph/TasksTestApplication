@@ -6,25 +6,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    app:theme="@style/AppTheme.NoActionBar"
     tools:context="com.example.annakocheshkova.testapplication.ui.activity.ImportActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/small_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:text="@string/files_list_title" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/files_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
         android:layout_weight="1.0"
-        android:scrollbars="vertical" />
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radio_button_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:checkedButton="@+id/local_button"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/local_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:text="@string/local_label" />
+
+            <RadioButton
+                android:id="@+id/remote_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remote_label" />
+
+            <TextView
+                android:id="@+id/login_link_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:layout_marginStart="@dimen/small_margin"
+                android:background="@android:color/transparent"
+                android:text="@string/remote_not_enabled"
+                android:visibility="gone" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/local_import"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/files_list_title" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/files_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_weight="1.0"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/server_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:hint="@string/path_to_server_hint" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/import_button"
@@ -32,5 +89,4 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         android:text="@string/import_label" />
-
 </LinearLayout>

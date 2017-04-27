@@ -8,10 +8,12 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.utils.ExceptionUtils;
 
 public class ExportActivity extends BaseActivity implements ExportView {
 
@@ -128,25 +130,20 @@ public class ExportActivity extends BaseActivity implements ExportView {
     @Override
     public void showSuccessMessage(String path) {
         if (radioGroup.getCheckedRadioButtonId() == R.id.local_button) {
-            showToast(getString(R.string.file_created) + getNameOrPath());
+            MyApplication.makeToast(getString(R.string.file_created) + getNameOrPath());
         } else {
-            showToast(getString(R.string.server_success) + getNameOrPath());
+            MyApplication.makeToast(getString(R.string.server_success) + getNameOrPath());
         }
     }
 
     @Override
-    public void showError(BaseError error) {
-        showToast(error.getErrorMessage());
+    public void showError(Exception exception) {
+       MyApplication.makeToast(ExceptionUtils.getReadableMessage(exception));
     }
 
     @Override
     public void setLoggedIn(boolean loggedIn) {
-        if (loggedIn) {
-            serverButton.setEnabled(true);
-            loginLink.setVisibility(View.GONE);
-        } else {
-            serverButton.setEnabled(false);
-            loginLink.setVisibility(View.VISIBLE);
-        }
+        serverButton.setEnabled(loggedIn);
+        loginLink.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
     }
 }

@@ -5,10 +5,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.LoginController;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
-import com.example.annakocheshkova.testapplication.utils.error.BaseError;
+import com.example.annakocheshkova.testapplication.utils.ExceptionUtils;
 
 public class LoginActivity extends BaseActivity implements LoginView{
 
@@ -60,8 +61,8 @@ public class LoginActivity extends BaseActivity implements LoginView{
     }
 
     @Override
-    public void showError(BaseError error) {
-        showToast(error.getErrorMessage());
+    public void showError(Exception exception) {
+        MyApplication.makeToast(ExceptionUtils.getReadableMessage(exception));
     }
 
     @Override

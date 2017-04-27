@@ -4,13 +4,7 @@ import com.example.annakocheshkova.testapplication.database.DataStore;
 import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
 import com.example.annakocheshkova.testapplication.mvc.view.TaskView;
-import com.example.annakocheshkova.testapplication.operation.LoginOperation;
 import com.example.annakocheshkova.testapplication.receiver.ReminderAlarmManager;
-import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.converter.ConverterFactory;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.example.annakocheshkova.testapplication.utils.listener.UndoListener;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
@@ -56,23 +50,6 @@ public class TaskController implements UndoListener<Task> {
         List<Task> tasks = dataStore.getAllTasks();
         sort(tasks);
         view.showItems(tasks);
-        String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
-        Converter<String> converter = ConverterFactory.getConverter(ConverterFactory.ConvertType.JSON);
-        LoginOperation loginOperation = new LoginOperation(url, converter);
-        loginOperation.executeGet(new OperationListener<LoginOperation>() {
-            @Override
-            public void onSuccess(LoginOperation operation) {
-                String token = operation.getToken();
-                preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, true);
-                preferencesManager.setString(PreferencesManager.TOKEN, token);
-                view.showLoginButton(false);
-            }
-
-            @Override
-            public void onFailure(ConnectionError connectionError) {
-                logout();
-            }
-        });
     }
 
     /**
@@ -136,11 +113,5 @@ public class TaskController implements UndoListener<Task> {
                 }
             }
         });
-    }
-
-    private void logout() {
-        preferencesManager.setBoolean(PreferencesManager.LOGGED_IN, false);
-        preferencesManager.setString(PreferencesManager.TOKEN, "");
-        view.showLoginButton(true);
     }
 }

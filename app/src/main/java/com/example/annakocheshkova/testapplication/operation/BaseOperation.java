@@ -1,100 +1,187 @@
 package com.example.annakocheshkova.testapplication.operation;
-import com.example.annakocheshkova.testapplication.client.BaseHttpClient;
-import com.example.annakocheshkova.testapplication.client.HttpClientFactory;
-import com.example.annakocheshkova.testapplication.utils.converter.Converter;
-import com.example.annakocheshkova.testapplication.utils.error.ConnectionError;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
+
+import com.example.annakocheshkova.testapplication.utils.HttpClient;
+import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
+import com.example.annakocheshkova.testapplication.response.BaseResponse;
+import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
+import com.example.annakocheshkova.testapplication.utils.exception.BadResponseException;
+import com.example.annakocheshkova.testapplication.utils.exception.ConnectionException;
+import com.example.annakocheshkova.testapplication.utils.exception.NoInternetException;
+import com.example.annakocheshkova.testapplication.utils.exception.NotImplementedException;
+import com.google.gson.JsonParseException;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
- * Base operation for handling http requests
- * @param <T> type of data
+ * Base operation that makes http request
  */
-public class BaseOperation<T> implements Callback {
+abstract class BaseOperation {
 
     /**
-     * Url to maje requests to
+     * Enum with request types
+     */
+    enum RequestType {
+        POST,
+        GET
+    }
+
+    /**
+     * Url to make requests to
      */
     private String url;
 
     /**
-     * Response returned by the request
+     * Exception that has been thrown if there was an error
      */
-    private String requestResponse;
-
-    /**
-     * Converter to prepare data
-     */
-    Converter<T> converter;
-
-    /**
-     * A listener of request events
-     */
-    private OperationListener operationListener;
+    private Exception exception;
 
     /**
      * Creates an instance of BaseOperation
      * @param url url to make requests to
      */
-    BaseOperation(String url, Converter<T> converter) {
+    BaseOperation(String url) {
         this.url = url;
-        this.converter = converter;
     }
 
     /**
      * Prepares the content for sending it to the client.
-     * Base operation doesn't require to have content, so the method should be overridden in those inheritors that use it.
-     * @return String with formatted content
+     * @return RequestBody with formatted content
      */
-    String prepareContent() {
-        return "";
+    abstract RequestBody preparePostContent();
+
+    /**
+     * Prepares the content for sending it to the client by get-method
+     * @return String with additional parameters to url
+     */
+    abstract String prepareGetContent();
+
+    /**
+     * Makes the request itself
+     * @return true if the operation has been successfully executed, false otherwise
+     */
+    boolean execute() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Response response = getResponse();
+            String responseJson = retrieveDataFromResponse(response);
+            handleResponse(responseJson);
+        } catch (BadResponseException e) {
+            exception = e;
+        } catch (IllegalArgumentException | IOException | JsonParseException e) {
+            if (!NetworkUtil.isNetworkAvailable()) {
+                exception = new NoInternetException();
+            } else {
+                exception = new ConnectionException(url, e);
+            }
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Makes the post request
-     * @param operationListener listens to request events
+     * Gets the response whether fake or real
+     * @return response
+     * @throws IllegalArgumentException exception if one of the arguments is not valid
+     * @throws IOException exception during making a request
      */
-    public void executePost(final OperationListener operationListener) {
-        this.operationListener = operationListener;
-        BaseHttpClient httpClient = HttpClientFactory.getHttpClient();
-        httpClient.doPostRequest(url, prepareContent(), BaseHttpClient.MEDIA_TYPE_JSON, this);
-    }
-
-    /**
-     * Makes the get request
-     * @param operationListener listens to request events
-     */
-    public void executeGet(final OperationListener operationListener) {
-        this.operationListener = operationListener;
-        BaseHttpClient httpClient = HttpClientFactory.getHttpClient();
-        httpClient.doGetRequest(url, this);
-    }
-
-    /**
-     * Gets the response body
-     * @return full response body
-     */
-    String getResponse() {
-        return this.requestResponse;
-    }
-
-    @Override
-    public void onFailure(Call call, IOException e) {
-        operationListener.onFailure(new ConnectionError(500));
-    }
-
-    @Override
-    public void onResponse(Call call, Response response) throws IOException {
-        if (!response.isSuccessful()) {
-            operationListener.onFailure(new ConnectionError(response.code()));
+    Response getResponse() throws IllegalArgumentException, IOException {
+        boolean fakeRequest = ConfigurationManager.getFakeRequest();
+        if (fakeRequest) {
+            String json = getFakeResponseJson();
+            HttpUrl httpUrl = new HttpUrl.Builder()
+                    .scheme("https")
+                    .host("http://example.com")
+                    .build();
+            Request request = new Request.Builder()
+                    .url(httpUrl)
+                    .build();
+            return new Response.Builder()
+                    .request(request)
+                    .protocol(Protocol.HTTP_1_1)
+                    .body(ResponseBody.create(HttpClient.MEDIA_TYPE_JSON, json))
+                    .code(200).build();
         } else {
-            requestResponse =  response.body().string();
-            operationListener.onSuccess(this);
+            HttpClient httpClient = new HttpClient();
+            switch (getRequestType()) {
+                case GET:
+                    return httpClient.doGetRequest(url, prepareGetContent());
+                case POST:
+                    return httpClient.doPostRequest(url, preparePostContent());
+                default:
+                    throw new RuntimeException(new NotImplementedException(getRequestType().toString()));
+            }
         }
     }
+
+    /**
+     * Tries to get the response body string
+     * @param response response itself
+     * @return response body string
+     * @throws IOException exception during reading body
+     * @throws BadResponseException exception if the response is not successful
+     */
+    private String retrieveDataFromResponse(Response response) throws IOException, BadResponseException {
+        if (!response.isSuccessful()) {
+            throw new BadResponseException(response.code(), response.message());
+        } else {
+            return response.body().string();
+        }
+    }
+
+    /**
+     * Takes the response string, parses it and calls the listener with an error or the given response
+     * @param responseJson json response string
+     * @throws JsonParseException Exception during parsing the json string
+     * @throws BadResponseException exception if the response is not successful
+     */
+    private void handleResponse(String responseJson) throws JsonParseException, BadResponseException {
+        parseResponse(responseJson);
+        BaseResponse baseResponse = getBaseResponse();
+        if (baseResponse.getCode() != 200) {
+            throw new BadResponseException(baseResponse.getCode(), baseResponse.getMessage());
+        }
+    }
+
+    /**
+     * Gets the exception
+     * @return exception
+     */
+    public Exception getException() {
+        return exception;
+    }
+
+    /**
+     * Parses json and sets the response object
+     * @param responseJson json to be parsed
+     * @throws JsonParseException exception during parsing the json
+     */
+    abstract void parseResponse(String responseJson) throws JsonParseException;
+
+    /**
+     * Gets the response in base format
+     * @return response
+     */
+    abstract BaseResponse getBaseResponse();
+
+    /**
+     * Gets the request type
+     * @return type of the request
+     */
+    abstract RequestType getRequestType();
+
+    /**
+     * Prepares fake data
+     */
+    abstract String getFakeResponseJson();
 }
