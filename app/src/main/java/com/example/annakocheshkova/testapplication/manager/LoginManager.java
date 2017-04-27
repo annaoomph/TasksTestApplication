@@ -1,9 +1,11 @@
-package com.example.annakocheshkova.testapplication.operation;
+package com.example.annakocheshkova.testapplication.manager;
 
-import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.manager.configuration.ConfigurationManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
+import com.example.annakocheshkova.testapplication.operation.LoginOperation;
+import com.example.annakocheshkova.testapplication.operation.OperationManager;
+import com.example.annakocheshkova.testapplication.operation.OperationRetryComponent;
 import com.example.annakocheshkova.testapplication.response.LoginResponse;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
@@ -47,8 +49,8 @@ public class LoginManager {
             }
 
             @Override
-            public void onFailure(BaseError baseError) {
-                loginListener.onFailure(baseError);
+            public void onFailure(Exception exception) {
+                loginListener.onFailure(exception);
             }
         });
     }
@@ -93,7 +95,7 @@ public class LoginManager {
      * @return false if relogin has failed and therefore the following operation should not be executed;
      * true if relogin has been successful or not needed at all, says it's ok for the operation to execute.
      */
-    boolean tryRelogin(OperationListener operationListener) {
+    public boolean tryRelogin(OperationListener operationListener) {
         return !needRelogin() || reLogin(operationListener);
     }
 
@@ -105,19 +107,16 @@ public class LoginManager {
     private boolean reLogin(OperationListener operationListener) {
         String url = ConfigurationManager.getConfigValue(ConfigurationManager.SERVER_URL);
         LoginOperation loginOperation = new LoginOperation(url);
-        if (loginOperation.execute()) {
+        OperationRetryComponent operationRetryComponent = new OperationRetryComponent();
+        if (operationRetryComponent.execute(loginOperation)) {
             saveLoginData(loginOperation.getLoginResponse());
             return true;
         } else {
-            OperationRetryComponent operationRetryComponent = new OperationRetryComponent();
-            if (operationRetryComponent.send(loginOperation)) {
-                saveLoginData(loginOperation.getLoginResponse());
-                return true;
-            } else {
-                logout();
-                operationListener.onFailure(loginOperation.getError());
-                return false;
+            logout();
+            if (operationListener != null) {
+                operationListener.onFailure(loginOperation.getException());
             }
+            return false;
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.annakocheshkova.testapplication.utils;
+package com.example.annakocheshkova.testapplication.utils.exception;
 
 import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.R;

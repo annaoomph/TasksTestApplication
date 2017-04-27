@@ -1,6 +1,7 @@
 package com.example.annakocheshkova.testapplication.operation;
 import android.util.ArrayMap;
 
+import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 
 import java.util.Map;
@@ -78,15 +79,12 @@ public class OperationManager {
                 return;
             }
         }
-        if (baseOperation.execute()) {
+
+        OperationRetryComponent operationRetryComponent = new OperationRetryComponent();
+        if (operationRetryComponent.execute(baseOperation)) {
             success(baseOperation);
         } else {
-            OperationRetryComponent operationRetryComponent = new OperationRetryComponent();
-            if (operationRetryComponent.send(baseOperation)) {
-                success(baseOperation);
-            } else {
-                error(baseOperation);
-            }
+            error(baseOperation);
         }
     }
 
@@ -96,7 +94,10 @@ public class OperationManager {
      */
     private void success(BaseOperation operation) {
         OperationListener listener = listeners.get(operation);
-        listener.onSuccess(operation.getBaseResponse());
+        if (listener != null) {
+            listener.onSuccess(operation.getBaseResponse());
+        }
+        listeners.remove(operation);
     }
 
     /**
@@ -105,7 +106,10 @@ public class OperationManager {
      */
     private void error(BaseOperation operation) {
         OperationListener listener = listeners.get(operation);
-        listener.onFailure(operation.getError());
+        if (listener != null) {
+            listener.onFailure(operation.getException());
+        }
+        listeners.remove(operation);
     }
 
     /**

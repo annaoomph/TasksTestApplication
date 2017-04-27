@@ -1,6 +1,5 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
-import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.operation.ExportOperation;
 import com.example.annakocheshkova.testapplication.operation.OperationManager;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
@@ -27,8 +26,8 @@ class RemoteExporter<T> implements Exporter<T> {
             }
 
             @Override
-            public void onFailure(BaseError baseError) {
-                exportListener.onError(baseError);
+            public void onFailure(Exception exception) {
+                exportListener.onError(exception);
             }
         });
     }

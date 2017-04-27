@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.operation.LoginManager;
+import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
 

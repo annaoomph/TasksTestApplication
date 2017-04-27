@@ -13,7 +13,7 @@ import com.example.annakocheshkova.testapplication.MyApplication;
 import com.example.annakocheshkova.testapplication.mvc.controller.ExportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ExportView;
 import com.example.annakocheshkova.testapplication.R;
-import com.example.annakocheshkova.testapplication.error.BaseError;
+import com.example.annakocheshkova.testapplication.utils.ExceptionUtils;
 
 public class ExportActivity extends BaseActivity implements ExportView {
 
@@ -137,8 +137,8 @@ public class ExportActivity extends BaseActivity implements ExportView {
     }
 
     @Override
-    public void showError(BaseError error) {
-        MyApplication.makeToast(error.getErrorMessage());
+    public void showError(Exception exception) {
+       MyApplication.makeToast(ExceptionUtils.getReadableMessage(exception));
     }
 
     @Override

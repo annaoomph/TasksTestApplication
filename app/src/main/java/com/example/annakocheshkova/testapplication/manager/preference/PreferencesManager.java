@@ -6,30 +6,6 @@ package com.example.annakocheshkova.testapplication.manager.preference;
 public interface PreferencesManager {
 
     /**
-     * Name of the logged in boolean in the preferences
-     */
-    String LOGGED_IN = "loggedIn";
-
-    /**
-     * Name of the token string in the preferences
-     */
-    String TOKEN = "token";
-
-    /**
-     * Name of the expiration date preference
-     */
-    String EXPIRE = "expiration_date";
-
-    /**
-     * Name of the user id preference
-     */
-    String USER_ID = "user_id";
-
-    String MAX_TRY = "max_try";
-
-    String RETRY_WAIT = "retry_wait";
-
-    /**
      * Sets the value of the logged in boolean
      * @param loggedIn value to be set
      */
@@ -77,11 +53,27 @@ public interface PreferencesManager {
      */
     long getExpirationDate();
 
-    int getMaxTry();
+    /**
+     * Get the value of max operation try attempts count
+     * @return max try count
+     */
+    int getMaxOperationsTryCount();
 
-    void setMaxTry(int maxTry);
+    /**
+     * Sets the value of max operation try attempts count
+     * @param maxTry max try count
+     */
+    void setMaxOperationsTryCount(int maxTry);
 
-    long getRetryWait();
+    /**
+     * Gets the value of interval between retries
+     * @return interval in ms
+     */
+    long getIntervalBetweenRetries();
 
-    void setRetryWait(long retryWait);
+    /**
+     * Sets the value of interval between retries
+     * @param retryWait interval in ms
+     */
+    void setIntervalBetweenRetries(long retryWait);
 }

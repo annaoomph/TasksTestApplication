@@ -2,7 +2,6 @@ package com.example.annakocheshkova.testapplication.operation;
 
 import com.example.annakocheshkova.testapplication.utils.HttpClient;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
@@ -64,8 +63,7 @@ public class ExportOperation<T> extends BaseOperation {
     }
 
     @Override
-    public boolean onFakeResponse() {
-        String fakeJson = "{code: 200, message:\"\", userId: 11}";
-        return handleResponse(fakeJson);
+    public String getFakeResponseJson() {
+        return "{code: 200, message:\"\", userId: 11}";
     }
 }

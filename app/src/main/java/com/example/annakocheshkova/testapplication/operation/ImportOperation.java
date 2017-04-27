@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.operation;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 import com.example.annakocheshkova.testapplication.response.ImportResponse;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
 /**

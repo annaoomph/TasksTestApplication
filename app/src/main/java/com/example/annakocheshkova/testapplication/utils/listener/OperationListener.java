@@ -1,6 +1,4 @@
 package com.example.annakocheshkova.testapplication.utils.listener;
-
-import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.response.BaseResponse;
 
 /**
@@ -19,7 +17,7 @@ public interface OperationListener<T extends BaseResponse> {
     /**
      * Called on failure of request
      * Be careful when updating ui in this method. You should always call activity.runOnUIThread or use Handler.
-     * @param baseError defines what has happened
+     * @param exception defines what has happened
      */
-    void onFailure(BaseError baseError);
+    void onFailure(Exception exception);
 }

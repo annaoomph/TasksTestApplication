@@ -18,7 +18,8 @@ import com.example.annakocheshkova.testapplication.R;
 import com.example.annakocheshkova.testapplication.mvc.controller.ImportController;
 import com.example.annakocheshkova.testapplication.mvc.view.ImportView;
 import com.example.annakocheshkova.testapplication.ui.adapter.FileAdapter;
-import com.example.annakocheshkova.testapplication.error.BaseError;
+import com.example.annakocheshkova.testapplication.utils.ExceptionUtils;
+
 import java.io.File;
 import java.util.List;
 
@@ -140,8 +141,8 @@ public class ImportActivity extends BaseActivity implements ImportView {
     }
 
     @Override
-    public void showError(BaseError error) {
-        MyApplication.makeToast(error.getErrorMessage());
+    public void showError(Exception exception) {
+        MyApplication.makeToast(ExceptionUtils.getReadableMessage(exception));
     }
 
     @Override

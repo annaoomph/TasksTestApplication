@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
 import com.example.annakocheshkova.testapplication.manager.FileManager;
-import com.example.annakocheshkova.testapplication.error.FileError;
+import com.example.annakocheshkova.testapplication.utils.exception.CreateFileException;
 import com.example.annakocheshkova.testapplication.utils.listener.ExportListener;
 import com.google.gson.Gson;
 
@@ -23,8 +23,9 @@ class FileExporter<T> implements Exporter<T> {
             Gson gson = new Gson();
             String formattedData = gson.toJson(items);
             File file = new File(path + File.separator + name);
-            if (!file.createNewFile())
-                exportListener.onError(new FileError(FileError.FileErrorType.CREATE_FILE_ERROR));
+            if (!file.createNewFile()) {
+               exportListener.onError(new CreateFileException(file));
+            }
             else {
                 OutputStream outputStream = new FileOutputStream(file);
                 outputStream.write(formattedData.getBytes());
@@ -32,7 +33,7 @@ class FileExporter<T> implements Exporter<T> {
             }
             exportListener.onSuccess();
         } catch (IOException exception) {
-            exportListener.onError(new FileError(FileError.FileErrorType.IO_ERROR));
+            exportListener.onError(new CreateFileException(exception));
         }
     }
 }

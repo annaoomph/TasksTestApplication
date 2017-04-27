@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.importer;
 
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.error.FileError;
+import com.example.annakocheshkova.testapplication.utils.exception.ReadFileException;
 import com.example.annakocheshkova.testapplication.utils.listener.ImportListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -17,8 +17,8 @@ class TaskFileImporter implements Importer<Task> {
 
     @Override
     public void importData(String pathToFile, ImportListener<Task> importListener) {
+        File file = new File(pathToFile);
         try {
-            File file = new File(pathToFile);
             int length = (int) file.length();
             byte[] bytes = new byte[length];
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -30,11 +30,10 @@ class TaskFileImporter implements Importer<Task> {
             String fileText = new String(bytes);
             Gson gson = new Gson();
             importListener.onSuccess(gson.fromJson(fileText, Task[].class));
+        } catch (JsonParseException e) {
+            importListener.onError(e);
         } catch (IOException exception) {
-            importListener.onError(new FileError(FileError.FileErrorType.IO_ERROR));
-        }
-        catch (JsonParseException exception) {
-            importListener.onError(new FileError(FileError.FileErrorType.PARSE_ERROR));
+            importListener.onError(new ReadFileException(file, exception));
         }
     }
 }

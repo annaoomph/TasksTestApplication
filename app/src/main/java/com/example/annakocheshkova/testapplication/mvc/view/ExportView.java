@@ -1,7 +1,5 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
 
-import com.example.annakocheshkova.testapplication.error.BaseError;
-
 /**
  * An interface for the Export Activity
  */
@@ -26,9 +24,9 @@ public interface ExportView {
 
     /**
      * Shows the error
-     * @param error to be shown
+     * @param exception to be shown
      */
-    void showError(BaseError error);
+    void showError(Exception exception);
 
     /**
      * Shows or hides the content that is available only for logged in users

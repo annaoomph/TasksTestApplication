@@ -1,7 +1,5 @@
 package com.example.annakocheshkova.testapplication.mvc.controller;
-
-import com.example.annakocheshkova.testapplication.error.BaseError;
-import com.example.annakocheshkova.testapplication.operation.LoginManager;
+import com.example.annakocheshkova.testapplication.manager.LoginManager;
 import com.example.annakocheshkova.testapplication.mvc.view.LoginView;
 import com.example.annakocheshkova.testapplication.utils.listener.LoginListener;
 
@@ -34,8 +32,8 @@ public class LoginController {
             }
 
             @Override
-            public void onFailure(BaseError baseError) {
-                loginView.showError(baseError);
+            public void onFailure(Exception exception) {
+                loginView.showError(exception);
             }
         });
     }

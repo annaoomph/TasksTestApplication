@@ -7,17 +7,17 @@ import com.example.annakocheshkova.testapplication.utils.NetworkUtil;
 /**
  * A component to retry executing operations
  */
-class OperationRetryComponent {
+public class OperationRetryComponent {
 
     /**
      * Max count of tries for one operation
      */
-    private static int maxTry;
+    private int maxTry;
 
     /**
      * A time (in ms) to wait before another retry
      */
-    private static long retryWait;
+    private long retryWait;
 
     /**
      * Current amount of made retries
@@ -27,42 +27,42 @@ class OperationRetryComponent {
     /**
      * Creates an instance of retry component
      */
-    OperationRetryComponent() {
+    public OperationRetryComponent() {
         PreferencesManager preferencesManager = PreferencesFactory.getPreferencesManager();
-        maxTry = preferencesManager.getMaxTry();
-        retryWait = preferencesManager.getRetryWait();
+        maxTry = preferencesManager.getMaxOperationsTryCount();
+        retryWait = preferencesManager.getIntervalBetweenRetries();
     }
 
     /**
-     * Send an operation for the retry
-     * @param baseOperation operation
-     * @return true if after a series of retries operation has been executed successfully, false otherwise
+     * Checks if retry is necessary
+     * @return true if yes, false otherwise
      */
-    boolean send(BaseOperation baseOperation) {
-        if (!NetworkUtil.isNetworkAvailable()) {
-            retryCount = 1;
-            return retry(baseOperation);
-        } else {
-            return false;
-        }
+    public boolean needRetry() {
+        return !NetworkUtil.isNetworkAvailable() && retryCount < maxTry;
     }
 
     /**
-     * Retries to execute the operation after the given time and the given amount of times
-     * @param baseOperation operation to retry executing
+     * Tries to execute the operation and retry executing, if needed, after the given time and the given amount of times
+     * @param baseOperation operation to execute
      * @return true if the operation has been executed, false otherwise
      */
-    private boolean retry(BaseOperation baseOperation) {
-        if (retryCount >= maxTry) {
-            return false;
+    public boolean execute(BaseOperation baseOperation) {
+        if (baseOperation.execute()) {
+            return true;
         } else {
-            retryCount++;
-            try {
-                Thread.sleep(retryWait);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            retryCount = 1;
+            while (needRetry()) {
+                try {
+                    Thread.sleep(retryWait);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                if (baseOperation.execute()) {
+                    return true;
+                }
+                retryCount++;
             }
-            return baseOperation.execute() || retry(baseOperation);
         }
+        return false;
     }
 }

@@ -1,7 +1,6 @@
 package com.example.annakocheshkova.testapplication.operation;
 
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.utils.listener.OperationListener;
 import com.google.gson.Gson;
 
 import okhttp3.RequestBody;
@@ -49,8 +48,7 @@ public class TaskImportOperation extends ImportOperation<Task> {
     }
 
     @Override
-    public boolean onFakeResponse() {
-        String fakeJson = "{code:200, message:\'\', items:\'[{\"alarm_time\":0,\"id\":0,\"name\":\"TEST\",\"notification\":false,\"time\":0},{\"alarm_time\":0,\"id\":0,\"name\":\"TEST-1\",\"notification\":false,\"time\":0}]\'}";
-        return handleResponse(fakeJson);
+    public String getFakeResponseJson() {
+        return "{code:200, message:\'\', items:\'[{\"alarm_time\":0,\"id\":0,\"name\":\"TEST\",\"notification\":false,\"time\":0},{\"alarm_time\":0,\"id\":0,\"name\":\"TEST-1\",\"notification\":false,\"time\":0}]\'}";
     }
 }

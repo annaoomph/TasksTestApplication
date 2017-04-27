@@ -1,7 +1,4 @@
 package com.example.annakocheshkova.testapplication.mvc.view;
-
-import com.example.annakocheshkova.testapplication.error.BaseError;
-
 import java.io.File;
 import java.util.List;
 
@@ -24,9 +21,9 @@ public interface ImportView {
 
     /**
      * Shows the error
-     * @param error error that happened during import
+     * @param exception error that happened during import
      */
-    void showError(BaseError error);
+    void showError(Exception exception);
 
     /**
      * Shows the error if the file was not chosen

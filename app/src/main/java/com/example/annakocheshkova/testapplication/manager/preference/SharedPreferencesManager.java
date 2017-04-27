@@ -9,6 +9,36 @@ import com.example.annakocheshkova.testapplication.MyApplication;
 class SharedPreferencesManager implements PreferencesManager{
 
     /**
+     * Name of the logged in boolean in the preferences
+     */
+    private String LOGGED_IN = "loggedIn";
+
+    /**
+     * Name of the token string in the preferences
+     */
+    private String TOKEN = "token";
+
+    /**
+     * Name of the expiration date preference
+     */
+    private String EXPIRE = "expiration_date";
+
+    /**
+     * Name of the user id preference
+     */
+    private String USER_ID = "user_id";
+
+    /**
+     * Name of the max operation tries count preference
+     */
+    private String MAX_TRY = "max_try";
+
+    /**
+     * Name of the interval between retries preference
+     */
+    private String RETRY_WAIT = "retry_wait";
+
+    /**
      * instance of SharedPreferences
      */
     private SharedPreferences settings;
@@ -74,24 +104,24 @@ class SharedPreferencesManager implements PreferencesManager{
     }
 
     @Override
-    public int getMaxTry() {
+    public int getMaxOperationsTryCount() {
         return settings.getInt(MAX_TRY, 3);
     }
 
     @Override
-    public void setMaxTry(int maxTry) {
+    public void setMaxOperationsTryCount(int maxTry) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(MAX_TRY, maxTry);
         editor.apply();
     }
 
     @Override
-    public long getRetryWait() {
+    public long getIntervalBetweenRetries() {
         return settings.getLong(RETRY_WAIT, 5000);
     }
 
     @Override
-    public void setRetryWait(long retryWait) {
+    public void setIntervalBetweenRetries(long retryWait) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong(RETRY_WAIT, retryWait);
         editor.apply();

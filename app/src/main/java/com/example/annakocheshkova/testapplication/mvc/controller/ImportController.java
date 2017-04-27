@@ -5,7 +5,6 @@ import com.example.annakocheshkova.testapplication.database.DataStoreFactory;
 import com.example.annakocheshkova.testapplication.manager.FileManager;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesFactory;
 import com.example.annakocheshkova.testapplication.manager.preference.PreferencesManager;
-import com.example.annakocheshkova.testapplication.error.BaseError;
 import com.example.annakocheshkova.testapplication.utils.importer.Importer;
 import com.example.annakocheshkova.testapplication.utils.importer.ImporterFactory;
 import com.example.annakocheshkova.testapplication.model.Task;
@@ -78,7 +77,7 @@ public class ImportController implements ImportListener<Task>{
     }
 
     @Override
-    public void onError(BaseError error) {
-        view.showError(error);
+    public void onError(Exception exception) {
+        view.showError(exception);
     }
 }

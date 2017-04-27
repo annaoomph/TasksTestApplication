@@ -1,7 +1,7 @@
 package com.example.annakocheshkova.testapplication.utils.exporter;
 
 import com.example.annakocheshkova.testapplication.model.Task;
-import com.example.annakocheshkova.testapplication.utils.NotImplementedException;
+import com.example.annakocheshkova.testapplication.utils.exception.NotImplementedException;
 
 /**
  * A factory to get the exporter instance we need

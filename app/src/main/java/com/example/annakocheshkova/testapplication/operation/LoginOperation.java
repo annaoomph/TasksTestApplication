@@ -12,7 +12,7 @@ import okhttp3.RequestBody;
 /**
  * Class for sending login http requests
  */
-class LoginOperation extends BaseOperation {
+public class LoginOperation extends BaseOperation {
 
     /**
      * Username to be sent (null if there is no)
@@ -33,7 +33,7 @@ class LoginOperation extends BaseOperation {
      * Creates an instance of LoginOperation
      * @param url to visit
      */
-    LoginOperation(String url) {
+    public LoginOperation(String url) {
         super(url);
     }
 
@@ -43,7 +43,7 @@ class LoginOperation extends BaseOperation {
      * @param username entered by user
      * @param password entered by user
      */
-    LoginOperation(String url, String username, String password) {
+    public LoginOperation(String url, String username, String password) {
         super(url);
         this.username = username;
         this.password = password;
@@ -87,20 +87,19 @@ class LoginOperation extends BaseOperation {
     }
 
     @Override
-    public boolean onFakeResponse() {
+    public String getFakeResponseJson() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) + 1);
         Date date = new Date(calendar.getTimeInMillis());
         String dateString = DateParser.parse(date);
-        String json = "{code:200, message:\"\", token:\"fake_token\", userName:\"Anna\", expirationDate:\"" + dateString + "\"}";
-        return handleResponse(json);
+        return "{code:200, message:\"\", token:\"fake_token\", userName:\"Anna\", expirationDate:\"" + dateString + "\"}";
     }
 
     /**
      * Gets the instance of Login response
      * @return login response
      */
-    LoginResponse getLoginResponse() {
+    public LoginResponse getLoginResponse() {
         return loginResponse;
     }
 }
